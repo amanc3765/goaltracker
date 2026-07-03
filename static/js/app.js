@@ -60,12 +60,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Initial render
   renderer.render();
+  renderSummaryDashboard();
 
   // Store subscription: re-render UI & trigger backend auto-save
   store.subscribe(() => {
     renderer.render();
+    renderSummaryDashboard();
     triggerAutoSave();
   });
+
 
 
   const toggleCollapseBtn = document.getElementById('toggle-collapse-btn');
@@ -160,3 +163,70 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 });
+
+/**
+ * Render Top Summary Dashboard Cards
+ */
+function renderSummaryDashboard() {
+  const container = document.getElementById('summary-dashboard');
+  if (!container || !store) return;
+
+  const stats = store.getSummaryStats();
+
+  const createCircularSvg = (completed, total, colorClass = 'cyan') => {
+    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+    const radius = 16;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (pct / 100) * circumference;
+
+    return `
+      <div class="summary-circular-wrapper">
+        <svg class="summary-circular-svg" width="42" height="42" viewBox="0 0 42 42">
+          <circle class="summary-circle-bg" cx="21" cy="21" r="${radius}"></circle>
+          <circle class="summary-circle-fill ${colorClass}" cx="21" cy="21" r="${radius}"
+            stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"></circle>
+        </svg>
+        <div class="summary-circular-text">${completed}/${total}</div>
+      </div>
+    `;
+  };
+
+  container.innerHTML = `
+    <div class="summary-card">
+      <div class="summary-card-header">
+        <span class="summary-card-title">Programs</span>
+        <span class="summary-card-icon">🔷</span>
+      </div>
+      <div class="summary-card-value">${stats.numPrograms}</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-header">
+        <span class="summary-card-title">Projects</span>
+        <span class="summary-card-icon">🔮</span>
+      </div>
+      <div class="summary-card-value">${stats.numProjects}</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-header">
+        <span class="summary-card-title">Milestones</span>
+        <span class="summary-card-icon">💎</span>
+      </div>
+      <div class="summary-card-body">
+        ${createCircularSvg(stats.completedMilestones, stats.totalMilestones, 'cyan')}
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-card-header">
+        <span class="summary-card-title">Tasks Completed</span>
+        <span class="summary-card-icon">❇️</span>
+      </div>
+      <div class="summary-card-body">
+        ${createCircularSvg(stats.completedTasks, stats.totalTasks, 'emerald')}
+      </div>
+    </div>
+  `;
+}
+

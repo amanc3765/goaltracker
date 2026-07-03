@@ -98,6 +98,48 @@ export class GoalStore {
     this.tree.forEach(prog => calculateNodeProgress(prog));
   }
 
+  /**
+   * Get overall summary statistics
+   */
+  getSummaryStats() {
+    let numPrograms = 0;
+    let numProjects = 0;
+    let totalMilestones = 0;
+    let completedMilestones = 0;
+    let totalTasks = 0;
+    let completedTasks = 0;
+
+    const traverse = (nodes) => {
+      nodes.forEach(node => {
+        if (node.type === 'program') numPrograms++;
+        else if (node.type === 'project') numProjects++;
+        else if (node.type === 'milestone') {
+          totalMilestones++;
+          if (node.status === 'completed' || node.progress === 100) completedMilestones++;
+        } else if (node.type === 'task') {
+          totalTasks++;
+          if (node.completed || node.status === 'completed' || node.progress === 100) completedTasks++;
+        }
+
+        if (node.children && node.children.length > 0) {
+          traverse(node.children);
+        }
+      });
+    };
+
+    traverse(this.tree);
+
+    return {
+      numPrograms,
+      numProjects,
+      totalMilestones,
+      completedMilestones,
+      totalTasks,
+      completedTasks
+    };
+  }
+
+
 
   /**
    * Find node and its parent by ID
