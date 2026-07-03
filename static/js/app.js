@@ -30,12 +30,12 @@ function triggerAutoSave() {
   saveDebounceTimer = setTimeout(async () => {
     try {
       await saveGoals(store.getTree());
-      showToast('Changes saved');
     } catch (err) {
-      showToast('Failed to save changes');
+      console.error('Failed to save goals:', err);
     }
-  }, 400);
+  }, 50);
 }
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   const treeContainer = document.getElementById('tree-container');
@@ -55,15 +55,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Instantiate Store
   store = new GoalStore(initialData);
 
-  // Instantiate Inspector Panel
-  inspector = new InspectorPanel(overlayEl, drawerEl, store);
-
   // Instantiate Tree Renderer
-  renderer = new TreeRenderer(treeContainer, store, {
-    onSelectNode: (node) => {
-      inspector.open(node.id);
-    }
-  });
+  renderer = new TreeRenderer(treeContainer, store);
 
   // Initial render
   renderer.render();
@@ -71,13 +64,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Store subscription: re-render UI & trigger backend auto-save
   store.subscribe(() => {
     renderer.render();
-    if (inspector.currentNodeId) {
-      const res = store.findNode(inspector.currentNodeId);
-      if (res) inspector.renderNodeDetails(res.node);
-      else inspector.close();
-    }
     triggerAutoSave();
   });
+
+
+  const toggleCollapseBtn = document.getElementById('toggle-collapse-btn');
+  let isAllCollapsed = false;
 
   // Add Top-Level Program Button
   if (addProgramBtn) {
@@ -86,12 +78,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // Toggle Collapse / Expand All Button
+  if (toggleCollapseBtn) {
+    toggleCollapseBtn.addEventListener('click', () => {
+      isAllCollapsed = !isAllCollapsed;
+      store.setAllCollapsed(isAllCollapsed);
+    });
+  }
+
+
   // Real-time Search Input Listener
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       store.setSearchQuery(e.target.value);
     });
   }
+
 
   // Keyboard Shortcuts Handler
   document.addEventListener('keydown', (e) => {

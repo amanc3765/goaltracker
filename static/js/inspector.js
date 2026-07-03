@@ -145,8 +145,19 @@ export class InspectorPanel {
     progressBg.style.height = '10px';
     const progressFill = document.createElement('div');
     progressFill.className = 'progress-bar-fill';
-    progressFill.style.width = `${Math.min(100, Math.max(0, node.progress || 0))}%`;
+    const pVal = node.progress || 0;
+    progressFill.style.width = `${Math.min(100, Math.max(0, pVal))}%`;
+
+    if (pVal < 25) {
+      progressFill.dataset.level = 'low';
+    } else if (pVal < 50) {
+      progressFill.dataset.level = 'medium';
+    } else {
+      progressFill.dataset.level = 'high';
+    }
+
     progressBg.appendChild(progressFill);
+
 
     progressGroup.append(progressLabel, progressBg);
 

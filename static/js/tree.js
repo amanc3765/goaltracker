@@ -48,9 +48,10 @@ export class TreeRenderer {
 
     this.container.appendChild(rootList);
 
-    // Initialize SortableJS for root level (Programs)
-    this.initSortable(rootList, 'program', null);
+    // Initialize SortableJS for all containers after appending to DOM
+    this.initAllSortables();
   }
+
 
   renderEmptyState() {
     const empty = document.createElement('div');
@@ -68,8 +69,9 @@ export class TreeRenderer {
 
     const btn = document.createElement('button');
     btn.className = 'btn-primary';
-    btn.textContent = '+ Add Program';
+    btn.textContent = 'Add Program';
     btn.addEventListener('click', () => this.store.addChildNode(null));
+
 
     empty.append(icon, title, desc, btn);
     this.container.appendChild(empty);
@@ -133,15 +135,15 @@ export class TreeRenderer {
     nodeWrapper.addEventListener('click', (e) => {
       e.stopPropagation();
       this.setFocusedNode(node.id);
-      if (this.onSelectNode) this.onSelectNode(node);
     });
+
 
     const card = document.createElement('div');
     card.className = 'node-card';
 
-    // LEFT SECTION
+    // 1. LEFT SECTION: Drag, Chevron/Check, Title & Description Preview
     const leftSec = document.createElement('div');
-    leftSec.className = 'node-left';
+    leftSec.className = 'col-main';
 
     // Drag Handle
     const dragHandle = document.createElement('div');
@@ -149,7 +151,7 @@ export class TreeRenderer {
     dragHandle.appendChild(this.createSvgIcon('drag'));
     leftSec.appendChild(dragHandle);
 
-    // Chevron Toggle (if allowed children exist or entity type is not task)
+    // Chevron Toggle or Checkbox
     if (node.type !== 'task') {
       const chevron = document.createElement('button');
       chevron.className = `chevron-toggle ${node.collapsed ? 'collapsed' : ''}`;
@@ -161,7 +163,6 @@ export class TreeRenderer {
       });
       leftSec.appendChild(chevron);
     } else {
-      // Task Checkbox
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.className = 'task-checkbox';
@@ -174,13 +175,6 @@ export class TreeRenderer {
       leftSec.appendChild(checkbox);
     }
 
-    // Type Badge
-    const typeBadge = document.createElement('span');
-    typeBadge.className = 'type-badge';
-    typeBadge.dataset.type = node.type;
-    typeBadge.textContent = node.type;
-    leftSec.appendChild(typeBadge);
-
     // Title Wrapper & Editable Title
     const titleWrapper = document.createElement('div');
     titleWrapper.className = 'node-title-wrapper';
@@ -189,83 +183,137 @@ export class TreeRenderer {
     titleSpan.className = 'node-title';
     titleSpan.textContent = node.title || 'Untitled';
     titleSpan.title = 'Click to edit title inline';
-
-    // Inline title edit on click
     titleSpan.addEventListener('click', (e) => {
       e.stopPropagation();
       this.startInlineTitleEdit(titleSpan, node);
     });
-
     titleWrapper.appendChild(titleSpan);
+
     leftSec.appendChild(titleWrapper);
 
-    // MIDDLE SECTION: Animated Progress Bar
-    const middleSec = document.createElement('div');
-    middleSec.className = 'node-middle';
 
+    // 2. TYPE COLUMN
+    const colType = document.createElement('div');
+    colType.className = 'col-type';
+    const typeBadge = document.createElement('span');
+    typeBadge.className = 'type-badge';
+    typeBadge.dataset.type = node.type;
+    typeBadge.textContent = node.type;
+    colType.appendChild(typeBadge);
+
+    // 3. STATUS COLUMN (Not Started, In Progress, Completed)
+    const colStatus = document.createElement('div');
+    colStatus.className = 'col-status';
+    const statusPill = document.createElement('div');
+    statusPill.className = 'status-pill';
+    statusPill.dataset.status = node.status || 'not-started';
+
+    const statusDot = document.createElement('span');
+    statusDot.className = 'status-dot';
+
+    const statusLabels = {
+      'not-started': 'Not Started',
+      'in-progress': 'In Progress',
+      'completed': 'Completed'
+    };
+
+    const statusLabel = document.createElement('span');
+    statusLabel.textContent = statusLabels[node.status] || 'Not Started';
+
+    statusPill.append(statusDot, statusLabel);
+    statusPill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.showStatusPicker(statusPill, node);
+    });
+    colStatus.appendChild(statusPill);
+
+    // 4. PRIORITY COLUMN
+    const colPriority = document.createElement('div');
+    colPriority.className = 'col-priority';
+    const priorityPill = document.createElement('div');
+    priorityPill.className = 'priority-pill';
+    priorityPill.dataset.priority = node.priority || 'medium';
+    const dot = document.createElement('span');
+    dot.className = 'priority-dot';
+    const prioLabel = document.createElement('span');
+    prioLabel.textContent = (node.priority || 'medium').charAt(0).toUpperCase() + (node.priority || 'medium').slice(1);
+    priorityPill.append(dot, prioLabel);
+    priorityPill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.showPriorityPicker(priorityPill, node);
+    });
+    colPriority.appendChild(priorityPill);
+
+    // 5. DEADLINE COLUMN (Simple text, opens inline Flatpickr date picker)
+    const colDeadline = document.createElement('div');
+    colDeadline.className = 'col-deadline';
+    const deadlineText = document.createElement('span');
+    deadlineText.className = 'deadline-simple-text';
+    const status = this.getDeadlineStatus(node.deadline);
+    deadlineText.textContent = status.label;
+    deadlineText.title = 'Click to set deadline';
+    if (status.isOverdue) deadlineText.classList.add('overdue');
+    else if (status.isDueSoon) deadlineText.classList.add('due-soon');
+    
+    deadlineText.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.openDeadlinePicker(deadlineText, node);
+    });
+    colDeadline.appendChild(deadlineText);
+
+
+    // 6. PROGRESS COLUMN
+    const colProgress = document.createElement('div');
+    colProgress.className = 'col-progress';
     const progressBg = document.createElement('div');
     progressBg.className = 'progress-bar-bg';
-
     const progressFill = document.createElement('div');
     progressFill.className = 'progress-bar-fill';
-    progressFill.style.width = `${Math.min(100, Math.max(0, node.progress || 0))}%`;
+    const pVal = node.progress || 0;
+    progressFill.style.width = `${Math.min(100, Math.max(0, pVal))}%`;
+
+    if (pVal < 25) {
+      progressFill.dataset.level = 'low';
+    } else if (pVal < 50) {
+      progressFill.dataset.level = 'medium';
+    } else {
+      progressFill.dataset.level = 'high';
+    }
 
     progressBg.appendChild(progressFill);
 
     const progressText = document.createElement('span');
     progressText.className = 'progress-text';
-    progressText.textContent = `${node.progress || 0}%`;
+    progressText.textContent = `${pVal}%`;
 
-    middleSec.append(progressBg, progressText);
 
-    // RIGHT SECTION: Priority Badge, Deadline, Actions
-    const rightSec = document.createElement('div');
-    rightSec.className = 'node-right';
+    colProgress.append(progressBg, progressText);
 
-    // Priority Pill
-    const priorityPill = document.createElement('div');
-    priorityPill.className = 'priority-pill';
-    priorityPill.dataset.priority = node.priority || 'medium';
-    
-    const dot = document.createElement('span');
-    dot.className = 'priority-dot';
-    const prioLabel = document.createElement('span');
-    prioLabel.textContent = (node.priority || 'medium').charAt(0).toUpperCase() + (node.priority || 'medium').slice(1);
-    
-    priorityPill.append(dot, prioLabel);
-
-    // Priority quick switch dropdown on click
-    priorityPill.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.showPriorityPicker(priorityPill, node);
-    });
-
-    rightSec.appendChild(priorityPill);
-
-    // Deadline Badge
-    if (node.deadline || node.type !== 'task') {
-      const deadlineBadge = document.createElement('div');
-      deadlineBadge.className = 'deadline-badge';
-      
-      const status = this.getDeadlineStatus(node.deadline);
-      if (status.isOverdue) deadlineBadge.classList.add('overdue');
-      else if (status.isDueSoon) deadlineBadge.classList.add('due-soon');
-
-      const calIcon = this.createSvgIcon(status.isOverdue ? 'warning' : 'calendar');
-      const dateText = document.createElement('span');
-      dateText.textContent = status.label;
-
-      deadlineBadge.append(calIcon, dateText);
-      deadlineBadge.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (this.onSelectNode) this.onSelectNode(node);
-      });
-      rightSec.appendChild(deadlineBadge);
-    }
-
-    // Hover Action Buttons (+ Child, Delete)
+    // 7. ACTIONS COLUMN
+    const colActions = document.createElement('div');
+    colActions.className = 'col-actions';
     const actionsGroup = document.createElement('div');
     actionsGroup.className = 'node-actions';
+
+    const moveUpBtn = document.createElement('button');
+    moveUpBtn.className = 'icon-btn';
+    moveUpBtn.title = 'Move up';
+    moveUpBtn.appendChild(this.createSvgIcon('arrow-up'));
+    moveUpBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.store.moveNodeRelative(node.id, -1);
+    });
+    actionsGroup.appendChild(moveUpBtn);
+
+    const moveDownBtn = document.createElement('button');
+    moveDownBtn.className = 'icon-btn';
+    moveDownBtn.title = 'Move down';
+    moveDownBtn.appendChild(this.createSvgIcon('arrow-down'));
+    moveDownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.store.moveNodeRelative(node.id, 1);
+    });
+    actionsGroup.appendChild(moveDownBtn);
 
     const childType = TYPE_HIERARCHY[node.type];
     if (childType) {
@@ -291,22 +339,41 @@ export class TreeRenderer {
       }
     });
     actionsGroup.appendChild(delBtn);
+    colActions.appendChild(actionsGroup);
 
-    rightSec.appendChild(actionsGroup);
-
-    // Assemble Card
-    card.append(leftSec, middleSec, rightSec);
+    // Assemble Card in exact field order
+    card.append(leftSec, colType, colStatus, colPriority, colDeadline, colProgress, colActions);
     nodeWrapper.append(card, childrenContainer);
 
-    // Setup SortableJS on child container if childType is valid
-    if (childType) {
-      this.initSortable(childrenContainer, childType, node.id);
-    }
+
 
     return nodeWrapper;
   }
 
+  initAllSortables() {
+    this.cleanupSortables();
+    if (typeof Sortable === 'undefined') return;
+
+    // Root level programs container
+    const rootContainer = this.container.querySelector('.root-container');
+    if (rootContainer) {
+      this.initSortable(rootContainer, 'program', null);
+    }
+
+    // All nested children containers
+    const childContainers = this.container.querySelectorAll('.node-children-container:not(.root-container)');
+    childContainers.forEach(container => {
+      const parentType = container.dataset.type;
+      const parentId = container.dataset.parentId;
+      const childType = TYPE_HIERARCHY[parentType];
+      if (childType) {
+        this.initSortable(container, childType, parentId);
+      }
+    });
+  }
+
   setFocusedNode(id) {
+
     this.focusedNodeId = id;
     document.querySelectorAll('.tree-node').forEach(el => {
       if (el.dataset.id === id) {
@@ -356,11 +423,12 @@ export class TreeRenderer {
     dropdown.className = 'priority-dropdown';
 
     const priorities = [
-      { id: 'critical', label: 'Critical 🔴' },
+      { id: 'urgent', label: 'Urgent 🔴' },
       { id: 'high', label: 'High 🟠' },
-      { id: 'medium', label: 'Medium 🔵' },
-      { id: 'low', label: 'Low ⚪' }
+      { id: 'medium', label: 'Medium 🟡' },
+      { id: 'low', label: 'Low 🟢' }
     ];
+
 
     priorities.forEach(p => {
       const opt = document.createElement('div');
@@ -389,6 +457,88 @@ export class TreeRenderer {
     setTimeout(() => document.addEventListener('click', closeHandler), 10);
   }
 
+  showStatusPicker(anchorEl, node) {
+    document.querySelectorAll('.priority-dropdown, .status-dropdown').forEach(el => el.remove());
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'status-dropdown';
+
+    const statuses = [
+      { id: 'not-started', label: 'Not Started ⚪' },
+      { id: 'in-progress', label: 'In Progress 🟡' },
+      { id: 'completed', label: 'Completed 🟢' }
+    ];
+
+    statuses.forEach(s => {
+      const opt = document.createElement('div');
+      opt.className = 'status-option';
+      opt.textContent = s.label;
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.store.updateNode(node.id, { status: s.id });
+        dropdown.remove();
+      });
+      dropdown.appendChild(opt);
+    });
+
+    const rect = anchorEl.getBoundingClientRect();
+    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`;
+    dropdown.style.left = `${rect.left + window.scrollX}px`;
+
+    document.body.appendChild(dropdown);
+
+    const closeHandler = (e) => {
+      if (!dropdown.contains(e.target) && e.target !== anchorEl) {
+        dropdown.remove();
+        document.removeEventListener('click', closeHandler);
+      }
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 10);
+  }
+
+  openDeadlinePicker(anchorEl, node) {
+    if (typeof flatpickr === 'undefined') {
+      const newDate = prompt('Enter deadline (YYYY-MM-DD):', node.deadline || '');
+      if (newDate !== null) {
+        this.store.updateNode(node.id, { deadline: newDate.trim() });
+      }
+      return;
+    }
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.style.position = 'absolute';
+    input.style.opacity = '0';
+    input.style.width = '0';
+    input.style.height = '0';
+
+    const rect = anchorEl.getBoundingClientRect();
+    input.style.top = `${rect.bottom + window.scrollY}px`;
+    input.style.left = `${rect.left + window.scrollX}px`;
+
+    document.body.appendChild(input);
+
+    const fp = flatpickr(input, {
+      dateFormat: 'Y-m-d',
+      defaultDate: node.deadline || null,
+      onChange: (selectedDates, dateStr) => {
+        this.store.updateNode(node.id, { deadline: dateStr });
+        try { fp.destroy(); } catch (e) {}
+        input.remove();
+      },
+      onClose: () => {
+        setTimeout(() => {
+          try { fp.destroy(); } catch (e) {}
+          input.remove();
+        }, 100);
+      }
+    });
+
+    fp.open();
+  }
+
+
+
   getDeadlineStatus(deadlineStr) {
     if (!deadlineStr) return { label: 'Set date', isOverdue: false, isDueSoon: false };
 
@@ -416,11 +566,21 @@ export class TreeRenderer {
     if (typeof Sortable === 'undefined') return;
 
     const instance = new Sortable(containerEl, {
-      group: `level-${itemType}`,
+      group: {
+        name: `level-${itemType}`,
+        pull: true,
+        put: true
+      },
       animation: 150,
       handle: '.drag-handle',
       ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      dragClass: 'sortable-drag',
       draggable: `.tree-node[data-type="${itemType}"]`,
+      forceFallback: true,
+      fallbackTolerance: 3,
+      fallbackClass: 'sortable-drag',
+      swapThreshold: 0.65,
       onEnd: (evt) => {
         const movedNodeId = evt.item.dataset.id;
         const newParentContainer = evt.to;
@@ -433,6 +593,8 @@ export class TreeRenderer {
 
     this.sortableInstances.push(instance);
   }
+
+
 
   cleanupSortables() {
     this.sortableInstances.forEach(inst => {
@@ -500,7 +662,16 @@ export class TreeRenderer {
       const l2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
       l2.setAttribute('x1', '12'); l2.setAttribute('y1', '17'); l2.setAttribute('x2', '12.01'); l2.setAttribute('y2', '17');
       svg.append(path, l1, l2);
+    } else if (name === 'arrow-up') {
+      const p = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      p.setAttribute('points', '18 15 12 9 6 15');
+      svg.appendChild(p);
+    } else if (name === 'arrow-down') {
+      const p = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      p.setAttribute('points', '6 9 12 15 18 9');
+      svg.appendChild(p);
     } else if (name === 'folder-plus') {
+
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       path.setAttribute('d', 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z');
       const l1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');

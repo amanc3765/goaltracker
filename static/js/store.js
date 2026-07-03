@@ -52,14 +52,32 @@ export class GoalStore {
     const calculateNodeProgress = (node) => {
       if (!node.children) node.children = [];
 
+      if (!node.status) {
+        node.status = node.completed ? 'completed' : 'not-started';
+      }
+
       if (node.type === 'task') {
-        node.progress = node.completed ? 100 : 0;
+        if (node.status === 'completed' || node.completed) {
+          node.completed = true;
+          node.status = 'completed';
+          node.progress = 100;
+        } else if (node.status === 'in-progress') {
+          node.completed = false;
+          node.progress = 50;
+        } else {
+          node.completed = false;
+          node.status = 'not-started';
+          node.progress = 0;
+        }
         return node.progress;
       }
 
       if (node.children.length === 0) {
-        node.progress = 0;
-        return 0;
+        if (!node.status) node.status = 'not-started';
+        if (node.status === 'completed') node.progress = 100;
+        else if (node.status === 'in-progress' && (!node.progress || node.progress === 0)) node.progress = 50;
+        else if (node.status === 'not-started') node.progress = 0;
+        return node.progress || 0;
       }
 
       let sum = 0;
@@ -68,11 +86,18 @@ export class GoalStore {
       });
 
       node.progress = Math.round(sum / node.children.length);
+
+      // Auto update status based on calculated progress
+      if (node.progress === 100) node.status = 'completed';
+      else if (node.progress > 0) node.status = 'in-progress';
+      else node.status = 'not-started';
+
       return node.progress;
     };
 
     this.tree.forEach(prog => calculateNodeProgress(prog));
   }
+
 
   /**
    * Find node and its parent by ID
@@ -124,6 +149,7 @@ export class GoalStore {
       id: `${childType}-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
       title: defaultTitles[childType] || 'New Goal',
       type: childType,
+      status: 'not-started',
       description: '',
       priority: childType === 'task' ? 'medium' : 'high',
       deadline: '',
@@ -146,16 +172,31 @@ export class GoalStore {
     const res = this.findNode(id);
     if (!res) return false;
 
+    if (fields.status !== undefined) {
+      if (fields.status === 'completed') {
+        res.node.completed = true;
+        res.node.progress = 100;
+      } else if (fields.status === 'in-progress') {
+        res.node.completed = false;
+        if (res.node.type === 'task') res.node.progress = 50;
+      } else if (fields.status === 'not-started') {
+        res.node.completed = false;
+        if (res.node.type === 'task') res.node.progress = 0;
+      }
+    }
+
     Object.assign(res.node, fields);
     
     // If updating task completion status, auto recalculate progress
     if (res.node.type === 'task' && fields.completed !== undefined) {
       res.node.progress = res.node.completed ? 100 : 0;
+      res.node.status = res.node.completed ? 'completed' : 'not-started';
     }
 
     this.notify();
     return true;
   }
+
 
   /**
    * Delete node by ID
@@ -189,6 +230,23 @@ export class GoalStore {
   }
 
   /**
+   * Expand or collapse all non-task nodes in tree
+   */
+  setAllCollapsed(collapsedState) {
+    const applyCollapse = (node) => {
+      if (node.type !== 'task') {
+        node.collapsed = collapsedState;
+      }
+      if (node.children && node.children.length > 0) {
+        node.children.forEach(applyCollapse);
+      }
+    };
+    this.tree.forEach(applyCollapse);
+    this.notify();
+  }
+
+
+  /**
    * Move node to a new parent or new position in tree
    */
   moveNode(nodeId, newParentId, newIndex) {
@@ -210,14 +268,16 @@ export class GoalStore {
       return false;
     }
 
-    // Remove from current location
-    if (!res.parent) {
-      this.tree = this.tree.filter(n => n.id !== nodeId);
-    } else {
-      res.parent.children = res.parent.children.filter(n => n.id !== nodeId);
+    // Determine current parent array
+    let sourceArray = this.tree;
+    if (res.parent) {
+      sourceArray = res.parent.children;
     }
 
-    // Insert at new target
+    const oldIndex = sourceArray.findIndex(n => n.id === nodeId);
+    if (oldIndex === -1) return false;
+
+    // Determine target parent array
     let targetArray = this.tree;
     if (newParentId) {
       const targetParentRes = this.findNode(newParentId);
@@ -225,10 +285,43 @@ export class GoalStore {
       targetArray = targetParentRes.node.children;
     }
 
-    targetArray.splice(newIndex, 0, movingNode);
+    // Remove from source location
+    sourceArray.splice(oldIndex, 1);
+
+    // Clamp newIndex
+    const clampedIndex = Math.max(0, Math.min(newIndex, targetArray.length));
+    targetArray.splice(clampedIndex, 0, movingNode);
+
     this.notify();
     return true;
   }
+
+  /**
+   * Move node up (-1) or down (+1) within its current sibling list
+   */
+  moveNodeRelative(nodeId, direction) {
+    const res = this.findNode(nodeId);
+    if (!res) return false;
+
+    let targetArray = this.tree;
+    if (res.parent) {
+      targetArray = res.parent.children;
+    }
+
+    const currentIndex = targetArray.findIndex(n => n.id === nodeId);
+    if (currentIndex === -1) return false;
+
+    const newIndex = currentIndex + direction;
+    if (newIndex < 0 || newIndex >= targetArray.length) return false;
+
+    const [moved] = targetArray.splice(currentIndex, 1);
+    targetArray.splice(newIndex, 0, moved);
+
+    this.notify();
+    return true;
+  }
+
+
 
   /**
    * Search filter check
