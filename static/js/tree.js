@@ -472,8 +472,10 @@ export class TreeRenderer {
     });
 
     const rect = anchorEl.getBoundingClientRect();
-    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`;
-    dropdown.style.left = `${rect.left + window.scrollX}px`;
+    dropdown.style.position = 'fixed';
+    dropdown.style.top = `${rect.bottom + 4}px`;
+    dropdown.style.left = `${rect.left}px`;
+    dropdown.style.zIndex = '10000';
 
     document.body.appendChild(dropdown);
 
@@ -487,7 +489,7 @@ export class TreeRenderer {
   }
 
   showStatusPicker(anchorEl, node) {
-    document.querySelectorAll('.priority-dropdown, .status-dropdown').forEach(el => el.remove());
+    document.querySelectorAll('.priority-dropdown, .status-dropdown, .domain-dropdown').forEach(el => el.remove());
 
     const dropdown = document.createElement('div');
     dropdown.className = 'status-dropdown';
@@ -511,8 +513,10 @@ export class TreeRenderer {
     });
 
     const rect = anchorEl.getBoundingClientRect();
-    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`;
-    dropdown.style.left = `${rect.left + window.scrollX}px`;
+    dropdown.style.position = 'fixed';
+    dropdown.style.top = `${rect.bottom + 4}px`;
+    dropdown.style.left = `${rect.left}px`;
+    dropdown.style.zIndex = '10000';
 
     document.body.appendChild(dropdown);
 
@@ -551,8 +555,10 @@ export class TreeRenderer {
     });
 
     const rect = anchorEl.getBoundingClientRect();
-    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`;
-    dropdown.style.left = `${rect.left + window.scrollX}px`;
+    dropdown.style.position = 'fixed';
+    dropdown.style.top = `${rect.bottom + 4}px`;
+    dropdown.style.left = `${rect.left}px`;
+    dropdown.style.zIndex = '10000';
 
     document.body.appendChild(dropdown);
 
@@ -564,6 +570,7 @@ export class TreeRenderer {
     };
     setTimeout(() => document.addEventListener('click', closeHandler), 10);
   }
+
 
   showConfirmDialog({ title, message, confirmText = 'Delete', cancelText = 'Cancel', onConfirm }) {
     document.querySelectorAll('.modal-overlay').forEach(el => el.remove());
