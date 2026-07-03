@@ -78,11 +78,12 @@ export class TreeRenderer {
       if (isCurrentField) {
         col.classList.add('active-sort');
         const isDesc = currentSort.endsWith('-desc');
-        arrow.textContent = isDesc ? ' ↓' : ' ↑';
+        arrow.textContent = isDesc ? '↓' : '↑';
       } else {
-        arrow.textContent = ' ↕';
+        arrow.textContent = '↕';
         arrow.classList.add('muted-arrow');
       }
+
 
       col.append(text, arrow);
       col.style.cursor = 'pointer';
@@ -101,17 +102,23 @@ export class TreeRenderer {
       return col;
     };
 
+    const leftSpacer = document.createElement('div');
+    leftSpacer.className = 'table-header-spacer';
+
     const colTitle = createHeaderCol('title', 'Goal Title', 'col-main');
     const colType = createHeaderCol('type', 'Type', 'col-type');
     const colStatus = createHeaderCol('status', 'Status', 'col-status');
     const colPriority = createHeaderCol('priority', 'Priority', 'col-priority');
     const colDeadline = createHeaderCol('deadline', 'Deadline', 'col-deadline');
+    const colTimeLeft = createHeaderCol('deadline', 'Time Left', 'col-timeleft');
     const colProgress = createHeaderCol('progress', 'Progress', 'col-progress');
 
     const colActions = document.createElement('div');
     colActions.className = 'table-header-col col-actions';
 
-    headerRow.append(colTitle, colType, colStatus, colPriority, colDeadline, colProgress, colActions);
+    headerRow.append(leftSpacer, colTitle, colType, colStatus, colPriority, colDeadline, colTimeLeft, colProgress, colActions);
+
+
     return headerRow;
   }
 
@@ -181,9 +188,13 @@ export class TreeRenderer {
 
     const nodeWrapper = document.createElement('div');
     nodeWrapper.className = `tree-node ${this.focusedNodeId === node.id ? 'focused' : ''} ${node.completed ? 'completed' : ''}`;
+    if (node.type === 'program' && !node.collapsed) {
+      nodeWrapper.classList.add('expanded-program');
+    }
     nodeWrapper.dataset.id = node.id;
     nodeWrapper.dataset.type = node.type;
     nodeWrapper.setAttribute('tabindex', '0');
+
 
     // Focus handler
     nodeWrapper.addEventListener('click', (e) => {
@@ -331,13 +342,15 @@ export class TreeRenderer {
     });
     colPriority.appendChild(priorityPill);
 
-    // 5. DEADLINE COLUMN (Simple text, opens inline Flatpickr date picker)
+    // 5. DEADLINE COLUMN (Date Text & Datepicker)
     const colDeadline = document.createElement('div');
     colDeadline.className = 'col-deadline';
     const deadlineText = document.createElement('span');
     deadlineText.className = 'deadline-simple-text';
-    const status = this.getDeadlineStatus(node.deadline);
-    deadlineText.textContent = status.label;
+    const status = this.getDeadlineStatus(node.deadline, node.type, node.createdAt, node.deadlineSetAt);
+
+
+    deadlineText.textContent = status.formattedDate;
     deadlineText.title = 'Click to set deadline';
     if (status.isOverdue) deadlineText.classList.add('overdue');
     else if (status.isDueSoon) deadlineText.classList.add('due-soon');
@@ -348,6 +361,39 @@ export class TreeRenderer {
     });
     colDeadline.appendChild(deadlineText);
 
+    // 5b. TIME LEFT COLUMN (Time Remaining Bar & Inverted Color Coding)
+    const colTimeLeft = document.createElement('div');
+    colTimeLeft.className = 'col-timeleft';
+
+    if (node.deadline && status.timePct !== null) {
+      const timeText = document.createElement('span');
+      timeText.className = 'time-left-text';
+      timeText.textContent = status.label;
+
+      const timeBg = document.createElement('div');
+      timeBg.className = 'time-bar-bg';
+      const timeFill = document.createElement('div');
+      timeFill.className = 'time-bar-fill';
+      timeFill.style.width = `${Math.min(100, Math.max(0, status.timePct))}%`;
+
+      // Time Remaining Color Thresholds: Red if <25%, Yellow if 25%-74%, Green if >=75%
+      if (status.timePct < 25) {
+        timeFill.dataset.level = 'low'; // Red if less than 25%
+      } else if (status.timePct < 75) {
+        timeFill.dataset.level = 'medium'; // Yellow if 25% - 74%
+      } else {
+        timeFill.dataset.level = 'high'; // Green if 75% or more
+      }
+
+
+      timeBg.appendChild(timeFill);
+      colTimeLeft.append(timeText, timeBg);
+    } else {
+      const timeMuted = document.createElement('span');
+      timeMuted.className = 'time-left-muted';
+      timeMuted.textContent = '-';
+      colTimeLeft.appendChild(timeMuted);
+    }
 
     // 6. PROGRESS COLUMN
     const colProgress = document.createElement('div');
@@ -372,7 +418,6 @@ export class TreeRenderer {
     const progressText = document.createElement('span');
     progressText.className = 'progress-text';
     progressText.textContent = `${pVal}%`;
-
 
     colProgress.append(progressBg, progressText);
 
@@ -434,9 +479,10 @@ export class TreeRenderer {
     actionsGroup.appendChild(delBtn);
     colActions.appendChild(actionsGroup);
 
-    // Assemble Card in exact field order
-    card.append(leftSec, colType, colStatus, colPriority, colDeadline, colProgress, colActions);
+    // Assemble Card in exact field order: Title -> Type -> Status -> Priority -> Deadline -> Time Left -> Progress -> Actions
+    card.append(leftSec, colType, colStatus, colPriority, colDeadline, colTimeLeft, colProgress, colActions);
     nodeWrapper.append(card, childrenContainer);
+
 
 
 
@@ -729,28 +775,55 @@ export class TreeRenderer {
 
 
 
-  getDeadlineStatus(deadlineStr) {
-    if (!deadlineStr) return { label: 'Set date', isOverdue: false, isDueSoon: false };
+  getDeadlineStatus(deadlineStr, nodeType = 'task', createdAtStr = null, deadlineSetAtStr = null) {
+    if (!deadlineStr) return { label: '-', formattedDate: 'Set date', isOverdue: false, isDueSoon: false, timePct: null };
 
+    // Set deadline to end of target day (23:59:59) so the full target day is included
     const deadline = new Date(deadlineStr);
+    deadline.setHours(23, 59, 59, 999);
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const diffDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
-
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    const formatted = deadline.toLocaleDateString(undefined, options);
-
-    if (diffDays < 0) {
-      return { label: `Overdue (${formatted})`, isOverdue: true, isDueSoon: false };
-    } else if (diffDays === 0) {
-      return { label: 'Due today', isOverdue: false, isDueSoon: true };
-    } else if (diffDays <= 3) {
-      return { label: `Due in ${diffDays} day${diffDays > 1 ? 's' : ''}`, isOverdue: false, isDueSoon: true };
+    let startDate;
+    if (deadlineSetAtStr) {
+      startDate = new Date(deadlineSetAtStr);
+    } else if (createdAtStr) {
+      startDate = new Date(createdAtStr);
     } else {
-      return { label: formatted, isOverdue: false, isDueSoon: false };
+      startDate = new Date(today);
+    }
+    startDate.setHours(0, 0, 0, 0);
+
+    if (startDate >= deadline) {
+      startDate = new Date(today);
+    }
+
+    const totalDays = Math.max(1, Math.ceil((deadline - startDate) / (1000 * 60 * 60 * 24)));
+    const remainingDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+
+    let timePct = 0;
+    if (remainingDays <= 0) {
+      timePct = 0;
+    } else {
+      timePct = Math.min(100, Math.max(0, Math.round((remainingDays / totalDays) * 100)));
+    }
+
+    const options = { month: 'short', day: 'numeric' };
+    const formattedDate = deadline.toLocaleDateString(undefined, options);
+
+    if (remainingDays <= 0) {
+      return { label: `0 / ${totalDays}d remaining`, formattedDate, isOverdue: true, isDueSoon: false, timePct: 0 };
+    } else {
+      return { label: `${remainingDays} / ${totalDays}d remaining`, formattedDate, isOverdue: remainingDays <= 3, isDueSoon: remainingDays <= 3, timePct };
     }
   }
+
+
+
+
+
+
 
   initSortable(containerEl, itemType, parentId) {
     if (typeof Sortable === 'undefined') return;

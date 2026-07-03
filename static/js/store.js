@@ -201,11 +201,13 @@ export class GoalStore {
       description: '',
       priority: childType === 'task' ? 'medium' : 'high',
       deadline: '',
+      createdAt: new Date().toISOString().split('T')[0],
       progress: 0,
       collapsed: false,
       completed: false,
       children: []
     };
+
 
 
     targetChildren.push(newNode);
@@ -221,7 +223,12 @@ export class GoalStore {
     const res = this.findNode(id);
     if (!res) return false;
 
+    if (fields.deadline !== undefined) {
+      fields.deadlineSetAt = new Date().toISOString().split('T')[0];
+    }
+
     if (fields.status !== undefined) {
+
       if (fields.status === 'completed') {
         res.node.completed = true;
         res.node.progress = 100;

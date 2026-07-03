@@ -70,12 +70,13 @@ body {
 .app-container {
   display: flex;
   flex-direction: column;
-  max-width: 1320px;
-  width: 90vw;
+  max-width: 1480px;
+  width: 95vw;
   margin: 0 auto;
   padding: 24px 16px 40px 16px;
   min-height: 100vh;
 }
+
 
 
 
@@ -455,6 +456,21 @@ body {
   margin-bottom: 0px;
 }
 
+/* Enclosing Rounded Rectangle Panel for Expanded Programs */
+.tree-node[data-type="program"].expanded-program {
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  background: linear-gradient(180deg, rgba(19, 23, 38, 0.6) 0%, rgba(15, 17, 26, 0.4) 100%);
+  border-radius: 16px;
+  padding: 10px 12px 14px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.tree-node[data-type="program"].expanded-program > .node-children-container {
+  margin-top: 8px;
+}
+
+
 .tree-node[data-type="project"] {
   margin-left: 0px;
 }
@@ -560,16 +576,30 @@ body {
   user-select: none;
 }
 
+.table-header-spacer {
+  flex: 0 0 16px;
+  width: 16px;
+}
+
 .table-header-col {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  flex-shrink: 0 !important;
   gap: 4px;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-muted);
+  white-space: nowrap !important;
   transition: color var(--transition-speed);
+}
+
+
+.table-header-col .header-col-label {
+  white-space: nowrap !important;
 }
 
 .table-header-col:hover {
@@ -583,6 +613,10 @@ body {
 .header-col-arrow {
   font-size: 11px;
   font-weight: 800;
+  white-space: nowrap !important;
+  display: inline-block;
+  line-height: 1;
+  flex-shrink: 0 !important;
 }
 
 .header-col-arrow.muted-arrow {
@@ -599,52 +633,75 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex: 1 1 580px;
-  min-width: 240px;
-  max-width: 600px;
+  flex: 1 1 380px;
+  min-width: 180px;
   overflow: hidden;
 }
 
-
-
-
-
 .col-type {
-  flex: 0 0 85px;
-  width: 85px;
+  flex: 0 0 90px;
+  width: 90px;
+  min-width: 90px;
   display: flex;
   align-items: center;
 }
 
 .col-status {
-  flex: 0 0 110px;
-  width: 110px;
+  flex: 0 0 115px;
+  width: 115px;
+  min-width: 115px;
   display: flex;
   align-items: center;
 }
 
 .col-priority {
-  flex: 0 0 95px;
-  width: 95px;
+  flex: 0 0 100px;
+  width: 100px;
+  min-width: 100px;
   display: flex;
   align-items: center;
 }
 
-
 .col-deadline {
-  flex: 0 0 110px;
-  width: 110px;
+  flex: 0 0 150px;
+  width: 150px;
+  min-width: 150px;
   display: flex;
   align-items: center;
+}
+
+.col-timeleft {
+  flex: 0 0 160px;
+  width: 160px;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+
+
+
+.time-left-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.time-left-muted {
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
 .col-progress {
-  flex: 0 0 130px;
-  width: 130px;
+  flex: 0 0 135px;
+  width: 135px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
 
 .col-actions {
   flex: 0 0 110px;
@@ -1077,6 +1134,39 @@ body {
   background-color: rgba(249, 115, 22, 0.1);
   border-color: rgba(249, 115, 22, 0.25);
 }
+
+
+
+.time-bar-bg {
+  width: 90%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.time-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 200ms ease, background-color 200ms ease;
+}
+
+/* Inverted Color Coding: Red if less time remaining (<25%), Yellow if medium (<50%), Green if more (>=50%) */
+.time-bar-fill[data-level="low"] {
+  background-color: #FF4D6D !important;
+  box-shadow: 0 0 6px rgba(255, 77, 109, 0.5);
+}
+
+.time-bar-fill[data-level="medium"] {
+  background-color: #FBBF24 !important;
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.5);
+}
+
+.time-bar-fill[data-level="high"] {
+  background-color: #10B981 !important;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+}
+
 
 /* Hover Action Buttons */
 .node-actions {
