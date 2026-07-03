@@ -57,25 +57,15 @@ export class TreeRenderer {
     const empty = document.createElement('div');
     empty.className = 'empty-state';
 
-    const icon = this.createSvgIcon('folder-plus', 'empty-icon');
-    
-    const title = document.createElement('div');
-    title.className = 'empty-title';
-    title.textContent = 'No Goals Created Yet';
-
-    const desc = document.createElement('div');
-    desc.className = 'empty-desc';
-    desc.textContent = 'Start tracking your life goals across Year, Quarter, Month, and Week horizons.';
-
     const btn = document.createElement('button');
     btn.className = 'btn-primary';
     btn.textContent = 'Add Program';
     btn.addEventListener('click', () => this.store.addChildNode(null));
 
-
-    empty.append(icon, title, desc, btn);
+    empty.appendChild(btn);
     this.container.appendChild(empty);
   }
+
 
   renderNoSearchResults() {
     const empty = document.createElement('div');
@@ -367,10 +357,16 @@ export class TreeRenderer {
     delBtn.appendChild(this.createSvgIcon('trash'));
     delBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (confirm(`Delete "${node.title}" and all its sub-items?`)) {
-        this.store.deleteNode(node.id);
-      }
+      this.showConfirmDialog({
+        title: 'Delete Goal Item',
+        message: `Are you sure you want to delete <strong>"${node.title}"</strong> and all its sub-items?`,
+        confirmText: 'Delete',
+        onConfirm: () => {
+          this.store.deleteNode(node.id);
+        }
+      });
     });
+
     actionsGroup.appendChild(delBtn);
     colActions.appendChild(actionsGroup);
 
@@ -569,8 +565,57 @@ export class TreeRenderer {
     setTimeout(() => document.addEventListener('click', closeHandler), 10);
   }
 
+  showConfirmDialog({ title, message, confirmText = 'Delete', cancelText = 'Cancel', onConfirm }) {
+    document.querySelectorAll('.modal-overlay').forEach(el => el.remove());
+
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-card';
+
+    modal.innerHTML = `
+      <div class="modal-header">
+        <div class="modal-icon-danger">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </div>
+        <h3 class="modal-title">${title}</h3>
+      </div>
+      <div class="modal-body">
+        <p>${message}</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary modal-cancel-btn">${cancelText}</button>
+        <button class="btn-danger modal-confirm-btn">${confirmText}</button>
+      </div>
+    `;
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    setTimeout(() => overlay.classList.add('active'), 10);
+
+    const close = () => {
+      overlay.classList.remove('active');
+      setTimeout(() => overlay.remove(), 200);
+    };
+
+    modal.querySelector('.modal-cancel-btn').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+
+    modal.querySelector('.modal-confirm-btn').addEventListener('click', () => {
+      close();
+      if (onConfirm) onConfirm();
+    });
+  }
 
   openDeadlinePicker(anchorEl, node) {
+
     if (typeof flatpickr === 'undefined') {
       const newDate = prompt('Enter deadline (YYYY-MM-DD):', node.deadline || '');
       if (newDate !== null) {

@@ -1,182 +1,30 @@
 [
   {
-    "children": [
-      {
-        "children": [
-          {
-            "children": [
-              {
-                "children": [],
-                "completed": true,
-                "deadline": "2026-07-10",
-                "description": "Configure auto-debit on the 1st of every month.",
-                "id": "task-10001",
-                "priority": "high",
-                "progress": 100,
-                "status": "completed",
-                "title": "Set up automated SIPs for monthly target",
-                "type": "task"
-              }
-            ],
-            "collapsed": false,
-            "deadline": "2026-08-15",
-            "description": "Consistently invest monthly target into low-cost Nifty 50 and S&P 500 index funds.",
-            "id": "ms-1001",
-            "priority": "critical",
-            "progress": 100,
-            "status": "completed",
-            "title": "Save & Invest ₹20L in Index Funds",
-            "type": "milestone"
-          },
-          {
-            "children": [
-              {
-                "children": [],
-                "completed": true,
-                "deadline": "2026-07-15",
-                "description": "Transfer initial 3 months of buffer.",
-                "id": "task-10003",
-                "priority": "high",
-                "progress": 100,
-                "status": "completed",
-                "title": "Open high-yield liquid mutual fund account",
-                "type": "task"
-              }
-            ],
-            "collapsed": false,
-            "deadline": "2026-07-31",
-            "description": "6 months of living expenses parked in liquid instruments.",
-            "id": "ms-1002",
-            "priority": "high",
-            "progress": 100,
-            "status": "completed",
-            "title": "Create Emergency Reserve Fund",
-            "type": "milestone"
-          }
-        ],
-        "collapsed": false,
-        "deadline": "2026-09-30",
-        "description": "Establish a diversified asset allocation across equities, real estate, and fixed income.",
-        "id": "proj-101",
-        "priority": "high",
-        "progress": 100,
-        "status": "completed",
-        "title": "Build Investment Portfolio",
-        "type": "project"
-      },
-      {
-        "children": [],
-        "collapsed": false,
-        "completed": false,
-        "deadline": "2026-07-07",
-        "description": "",
-        "id": "project-1783089815563-v2yy",
-        "priority": "high",
-        "progress": 0,
-        "status": "not-started",
-        "title": "New Project",
-        "type": "project"
-      },
-      {
-        "children": [],
-        "collapsed": false,
-        "completed": false,
-        "deadline": "",
-        "description": "",
-        "id": "project-1783089818166-dq3d",
-        "priority": "high",
-        "progress": 0,
-        "status": "not-started",
-        "title": "New Project",
-        "type": "project"
-      }
-    ],
-    "collapsed": false,
-    "deadline": "2026-12-31",
-    "description": "Build sustainable wealth, passive income streams, and achieve long-term financial security.",
-    "domain": "finance",
-    "id": "prog-1",
-    "priority": "urgent",
-    "progress": 33,
-    "status": "in-progress",
-    "title": "Become Financially Independent",
-    "type": "program"
-  },
-
-  {
-    "children": [
-      {
-        "children": [
-          {
-            "children": [
-              {
-                "children": [],
-                "completed": true,
-                "deadline": "2026-07-12",
-                "description": "Track via wearable device every evening.",
-                "id": "task-20001",
-                "priority": "medium",
-                "progress": 100,
-                "status": "completed",
-                "title": "Walk 8,000 steps daily",
-                "type": "task"
-              },
-              {
-                "children": [],
-                "completed": false,
-                "deadline": "2026-07-20",
-                "description": "45 mins of cycling or jogging at 120-135 BPM.",
-                "id": "task-20002",
-                "priority": "high",
-                "progress": 0,
-                "status": "not-started",
-                "title": "Zone 2 Cardio session 3x per week",
-                "type": "task"
-              },
-              {
-                "children": [],
-                "completed": false,
-                "deadline": "2026-07-18",
-                "description": "No screens 1 hour before bed.",
-                "id": "task-20003",
-                "priority": "medium",
-                "progress": 0,
-                "status": "not-started",
-                "title": "Maintain 8 hours of sleep hygiene schedule",
-                "type": "task"
-              }
-            ],
-            "collapsed": false,
-            "deadline": "2026-08-31",
-            "description": "Improve Zone 2 endurance and heart rate recovery.",
-            "id": "ms-2001",
-            "priority": "medium",
-            "progress": 33,
-            "status": "in-progress",
-            "title": "Lower Resting HR below 65 BPM",
-            "type": "milestone"
-          }
-        ],
-        "collapsed": false,
-        "deadline": "2026-09-30",
-        "description": "Reach target body fat percentage while building lean muscle mass.",
-        "id": "proj-201",
-        "priority": "high",
-        "progress": 33,
-        "status": "in-progress",
-        "title": "Fat Loss & Metabolic Health",
-        "type": "project"
-      }
-    ],
-    "collapsed": false,
-    "deadline": "2026-12-31",
-    "description": "Transform health, build functional strength, optimize cardiovascular stamina, and improve sleep quality.",
-    "domain": "health",
-    "id": "prog-2",
+    "id": "program-1783090983036-33mb",
+    "title": "Get promoted at Work",
+    "type": "program",
+    "domain": "work",
+    "status": "not-started",
+    "description": "",
     "priority": "high",
-    "progress": 33,
-    "status": "in-progress",
-    "title": "Get into Peak Physical Shape",
-    "type": "program"
+    "deadline": "",
+    "progress": 0,
+    "collapsed": false,
+    "completed": false,
+    "children": []
+  },
+  {
+    "id": "program-1783091001168-9ku5",
+    "title": "Fix health",
+    "type": "program",
+    "domain": "work",
+    "status": "not-started",
+    "description": "",
+    "priority": "high",
+    "deadline": "",
+    "progress": 0,
+    "collapsed": false,
+    "completed": false,
+    "children": []
   }
 ]

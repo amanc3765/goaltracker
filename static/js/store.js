@@ -16,9 +16,11 @@ export class GoalStore {
     this.tree = initialData;
     this.selectedNodeId = null;
     this.searchQuery = '';
+    this.hideCompleted = false;
     this.listeners = [];
     this.recalculateAllProgress();
   }
+
 
   subscribe(listener) {
     this.listeners.push(listener);
@@ -367,10 +369,23 @@ export class GoalStore {
 
 
 
+  toggleHideCompleted() {
+    this.hideCompleted = !this.hideCompleted;
+    this.notify();
+    return this.hideCompleted;
+  }
+
+  isNodeCompleted(node) {
+    return node.completed || node.status === 'completed' || node.progress === 100;
+  }
+
   /**
-   * Search filter check
+   * Search and completion filter check
    */
   matchesSearch(node, query) {
+    if (this.hideCompleted && this.isNodeCompleted(node)) {
+      return false;
+    }
     if (!query) return true;
     const q = query.toLowerCase();
     const titleMatch = node.title && node.title.toLowerCase().includes(q);
@@ -383,3 +398,4 @@ export class GoalStore {
     this.notify();
   }
 }
+
