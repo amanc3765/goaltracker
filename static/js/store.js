@@ -17,10 +17,11 @@ export class GoalStore {
     this.selectedNodeId = null;
     this.searchQuery = '';
     this.hideCompleted = false;
-    this.sortBy = 'manual';
+    this.sortBy = 'priority-desc';
     this.listeners = [];
     this.recalculateAllProgress();
   }
+
 
 
 
