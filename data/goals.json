@@ -479,9 +479,9 @@
   },
   {
     "id": "program-1783092847120-8haw",
-    "title": "New Program",
+    "title": "Manage finances",
     "type": "program",
-    "domain": "work",
+    "domain": "finance",
     "status": "not-started",
     "description": "",
     "priority": "high",
@@ -490,6 +490,36 @@
     "progress": 0,
     "collapsed": false,
     "completed": false,
-    "children": []
+    "children": [
+      {
+        "id": "project-1783092857580-s4hq",
+        "title": "Q3 2026",
+        "type": "project",
+        "status": "not-started",
+        "description": "",
+        "priority": "high",
+        "deadline": "",
+        "createdAt": "2026-07-03",
+        "progress": 0,
+        "collapsed": false,
+        "completed": false,
+        "children": [
+          {
+            "id": "milestone-1783092882214-5eta",
+            "title": "File ITR",
+            "type": "milestone",
+            "status": "not-started",
+            "description": "",
+            "priority": "high",
+            "deadline": "",
+            "createdAt": "2026-07-03",
+            "progress": 0,
+            "collapsed": false,
+            "completed": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]
