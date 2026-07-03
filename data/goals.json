@@ -1,0 +1,139 @@
+[
+  {
+    "id": "prog-1",
+    "title": "Become Financially Independent",
+    "type": "program",
+    "description": "Build sustainable wealth, passive income streams, and achieve long-term financial security.",
+    "priority": "critical",
+    "deadline": "2026-12-31",
+    "collapsed": false,
+    "children": [
+      {
+        "id": "proj-101",
+        "title": "Build Investment Portfolio",
+        "type": "project",
+        "description": "Establish a diversified asset allocation across equities, real estate, and fixed income.",
+        "priority": "high",
+        "deadline": "2026-09-30",
+        "collapsed": false,
+        "children": [
+          {
+            "id": "ms-1001",
+            "title": "Save & Invest ₹20L in Index Funds",
+            "type": "milestone",
+            "description": "Consistently invest monthly target into low-cost Nifty 50 and S&P 500 index funds.",
+            "priority": "critical",
+            "deadline": "2026-08-15",
+            "collapsed": false,
+            "children": [
+              {
+                "id": "task-10001",
+                "title": "Set up automated SIPs for monthly target",
+                "type": "task",
+                "description": "Configure auto-debit on the 1st of every month.",
+                "priority": "high",
+                "deadline": "2026-07-10",
+                "completed": true,
+                "children": []
+              },
+              {
+                "id": "task-10002",
+                "title": "Review portfolio allocation and rebalance",
+                "type": "task",
+                "description": "Ensure equity:debt ratio stays at 80:20.",
+                "priority": "medium",
+                "deadline": "2026-07-25",
+                "completed": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ms-1002",
+            "title": "Create Emergency Reserve Fund",
+            "type": "milestone",
+            "description": "6 months of living expenses parked in liquid instruments.",
+            "priority": "high",
+            "deadline": "2026-07-31",
+            "collapsed": false,
+            "children": [
+              {
+                "id": "task-10003",
+                "title": "Open high-yield liquid mutual fund account",
+                "type": "task",
+                "description": "Transfer initial 3 months of buffer.",
+                "priority": "high",
+                "deadline": "2026-07-15",
+                "completed": true,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "prog-2",
+    "title": "Get into Peak Physical Shape",
+    "type": "program",
+    "description": "Transform health, build functional strength, optimize cardiovascular stamina, and improve sleep quality.",
+    "priority": "high",
+    "deadline": "2026-12-31",
+    "collapsed": false,
+    "children": [
+      {
+        "id": "proj-201",
+        "title": "Fat Loss & Metabolic Health",
+        "type": "project",
+        "description": "Reach target body fat percentage while building lean muscle mass.",
+        "priority": "high",
+        "deadline": "2026-09-30",
+        "collapsed": false,
+        "children": [
+          {
+            "id": "ms-2001",
+            "title": "Lower Resting HR below 65 BPM",
+            "type": "milestone",
+            "description": "Improve Zone 2 endurance and heart rate recovery.",
+            "priority": "medium",
+            "deadline": "2026-08-31",
+            "collapsed": false,
+            "children": [
+              {
+                "id": "task-20001",
+                "title": "Walk 8,000 steps daily",
+                "type": "task",
+                "description": "Track via wearable device every evening.",
+                "priority": "medium",
+                "deadline": "2026-07-12",
+                "completed": true,
+                "children": []
+              },
+              {
+                "id": "task-20002",
+                "title": "Zone 2 Cardio session 3x per week",
+                "type": "task",
+                "description": "45 mins of cycling or jogging at 120-135 BPM.",
+                "priority": "high",
+                "deadline": "2026-07-20",
+                "completed": false,
+                "children": []
+              },
+              {
+                "id": "task-20003",
+                "title": "Maintain 8 hours of sleep hygiene schedule",
+                "type": "task",
+                "description": "No screens 1 hour before bed.",
+                "priority": "medium",
+                "deadline": "2026-07-18",
+                "completed": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
