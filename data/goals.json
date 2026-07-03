@@ -56,7 +56,21 @@
     "type": "program"
   },
   {
-    "children": [],
+    "children": [
+      {
+        "children": [],
+        "collapsed": false,
+        "completed": false,
+        "deadline": "",
+        "description": "",
+        "id": "project-1783091580737-lnfr",
+        "priority": "high",
+        "progress": 0,
+        "status": "not-started",
+        "title": "Maintain normalcy",
+        "type": "project"
+      }
+    ],
     "collapsed": false,
     "completed": false,
     "deadline": "",
@@ -70,7 +84,21 @@
     "type": "program"
   },
   {
-    "children": [],
+    "children": [
+      {
+        "children": [],
+        "collapsed": false,
+        "completed": false,
+        "deadline": "",
+        "description": "",
+        "id": "project-1783091605216-5ah2",
+        "priority": "urgent",
+        "progress": 0,
+        "status": "not-started",
+        "title": "Send her to college",
+        "type": "project"
+      }
+    ],
     "collapsed": false,
     "completed": false,
     "deadline": "",

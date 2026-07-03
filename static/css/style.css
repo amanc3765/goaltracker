@@ -448,7 +448,13 @@ body {
 /* Indentation Hierarchy Levels inside col-main to preserve 100% card width and perfect table column alignment */
 .tree-node[data-type="program"] {
   margin-left: 0px;
+  margin-bottom: 24px;
 }
+
+.tree-node[data-type="program"]:last-child {
+  margin-bottom: 0px;
+}
+
 .tree-node[data-type="project"] {
   margin-left: 0px;
 }
@@ -458,6 +464,7 @@ body {
 .tree-node[data-type="task"] {
   margin-left: 0px;
 }
+
 
 .tree-node[data-type="program"] > .node-card > .col-main {
   padding-left: 0px;
