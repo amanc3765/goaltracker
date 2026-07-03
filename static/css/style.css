@@ -356,23 +356,27 @@ body {
 
 /* Level styling distinctions */
 .tree-node[data-type="program"] > .node-card {
-  border-left: 4px solid var(--accent-blue);
-  background-color: #171A21;
+  border-left: 4px solid #6366F1;
+  background-color: #131726;
 }
 
 .tree-node[data-type="project"] > .node-card {
-  border-left: 4px solid #8B5CF6;
+  border-left: 4px solid #A855F7;
+  background-color: #161426;
 }
 
 .tree-node[data-type="milestone"] > .node-card {
-  border-left: 4px solid #EC4899;
+  border-left: 3.5px solid #06B6D4;
+  background-color: #111A24;
 }
 
 .tree-node[data-type="task"] > .node-card {
   border-left: 3px solid #10B981;
+  background-color: #141720;
   padding: 5px 10px;
   border-radius: var(--radius-md);
 }
+
 
 /* Aligned Table Columns */
 .col-main {
@@ -630,28 +634,29 @@ body {
 }
 
 .type-badge[data-type="program"] {
-  background-color: rgba(99, 102, 241, 0.16);
+  background-color: rgba(99, 102, 241, 0.18);
   color: #818CF8;
-  border: 1px solid rgba(99, 102, 241, 0.35);
+  border: 1px solid rgba(99, 102, 241, 0.4);
 }
 
 .type-badge[data-type="project"] {
-  background-color: rgba(168, 85, 247, 0.16);
+  background-color: rgba(168, 85, 247, 0.18);
   color: #C084FC;
-  border: 1px solid rgba(168, 85, 247, 0.35);
+  border: 1px solid rgba(168, 85, 247, 0.4);
 }
 
 .type-badge[data-type="milestone"] {
-  background-color: rgba(236, 72, 153, 0.16);
-  color: #F472B6;
-  border: 1px solid rgba(236, 72, 153, 0.35);
+  background-color: rgba(6, 182, 212, 0.18);
+  color: #22D3EE;
+  border: 1px solid rgba(6, 182, 212, 0.4);
 }
 
 .type-badge[data-type="task"] {
-  background-color: rgba(20, 184, 166, 0.16);
-  color: #2DD4BF;
-  border: 1px solid rgba(20, 184, 166, 0.35);
+  background-color: rgba(16, 185, 129, 0.18);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
 }
+
 
 
 /* Title Input & Inline Text */

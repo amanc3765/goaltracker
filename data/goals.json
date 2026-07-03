@@ -13,6 +13,7 @@
                 "id": "task-10001",
                 "priority": "high",
                 "progress": 100,
+                "status": "completed",
                 "title": "Set up automated SIPs for monthly target",
                 "type": "task"
               }
@@ -23,6 +24,7 @@
             "id": "ms-1001",
             "priority": "critical",
             "progress": 100,
+            "status": "completed",
             "title": "Save & Invest ₹20L in Index Funds",
             "type": "milestone"
           },
@@ -36,6 +38,7 @@
                 "id": "task-10003",
                 "priority": "high",
                 "progress": 100,
+                "status": "completed",
                 "title": "Open high-yield liquid mutual fund account",
                 "type": "task"
               }
@@ -46,6 +49,7 @@
             "id": "ms-1002",
             "priority": "high",
             "progress": 100,
+            "status": "completed",
             "title": "Create Emergency Reserve Fund",
             "type": "milestone"
           }
@@ -56,6 +60,7 @@
         "id": "proj-101",
         "priority": "high",
         "progress": 100,
+        "status": "completed",
         "title": "Build Investment Portfolio",
         "type": "project"
       },
@@ -63,11 +68,12 @@
         "children": [],
         "collapsed": false,
         "completed": false,
-        "deadline": "",
+        "deadline": "2026-07-07",
         "description": "",
         "id": "project-1783089815563-v2yy",
         "priority": "high",
         "progress": 0,
+        "status": "not-started",
         "title": "New Project",
         "type": "project"
       },
@@ -80,6 +86,7 @@
         "id": "project-1783089818166-dq3d",
         "priority": "high",
         "progress": 0,
+        "status": "not-started",
         "title": "New Project",
         "type": "project"
       }
@@ -90,6 +97,7 @@
     "id": "prog-1",
     "priority": "critical",
     "progress": 33,
+    "status": "in-progress",
     "title": "Become Financially Independent",
     "type": "program"
   },
@@ -107,6 +115,7 @@
                 "id": "task-20001",
                 "priority": "medium",
                 "progress": 100,
+                "status": "completed",
                 "title": "Walk 8,000 steps daily",
                 "type": "task"
               },
@@ -118,6 +127,7 @@
                 "id": "task-20002",
                 "priority": "high",
                 "progress": 0,
+                "status": "not-started",
                 "title": "Zone 2 Cardio session 3x per week",
                 "type": "task"
               },
@@ -129,6 +139,7 @@
                 "id": "task-20003",
                 "priority": "medium",
                 "progress": 0,
+                "status": "not-started",
                 "title": "Maintain 8 hours of sleep hygiene schedule",
                 "type": "task"
               }
@@ -139,6 +150,7 @@
             "id": "ms-2001",
             "priority": "medium",
             "progress": 33,
+            "status": "in-progress",
             "title": "Lower Resting HR below 65 BPM",
             "type": "milestone"
           }
@@ -149,6 +161,7 @@
         "id": "proj-201",
         "priority": "high",
         "progress": 33,
+        "status": "in-progress",
         "title": "Fat Loss & Metabolic Health",
         "type": "project"
       }
@@ -159,6 +172,7 @@
     "id": "prog-2",
     "priority": "high",
     "progress": 33,
+    "status": "in-progress",
     "title": "Get into Peak Physical Shape",
     "type": "program"
   }
