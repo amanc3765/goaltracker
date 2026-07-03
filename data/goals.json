@@ -94,13 +94,15 @@
     "collapsed": false,
     "deadline": "2026-12-31",
     "description": "Build sustainable wealth, passive income streams, and achieve long-term financial security.",
+    "domain": "finance",
     "id": "prog-1",
-    "priority": "critical",
+    "priority": "urgent",
     "progress": 33,
     "status": "in-progress",
     "title": "Become Financially Independent",
     "type": "program"
   },
+
   {
     "children": [
       {
@@ -169,6 +171,7 @@
     "collapsed": false,
     "deadline": "2026-12-31",
     "description": "Transform health, build functional strength, optimize cardiovascular stamina, and improve sleep quality.",
+    "domain": "health",
     "id": "prog-2",
     "priority": "high",
     "progress": 33,

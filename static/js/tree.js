@@ -192,14 +192,47 @@ export class TreeRenderer {
     leftSec.appendChild(titleWrapper);
 
 
-    // 2. TYPE COLUMN
+    // 2. TYPE & DOMAIN COLUMN
     const colType = document.createElement('div');
     colType.className = 'col-type';
-    const typeBadge = document.createElement('span');
-    typeBadge.className = 'type-badge';
-    typeBadge.dataset.type = node.type;
-    typeBadge.textContent = node.type;
-    colType.appendChild(typeBadge);
+
+    if (node.type === 'program') {
+      const domainPill = document.createElement('span');
+      domainPill.className = 'domain-pill';
+      domainPill.dataset.domain = node.domain || 'work';
+
+      const domainIcons = {
+        health: '🏃‍♂️',
+        finance: '💰',
+        relationship: '❤️',
+        work: '💼'
+      };
+
+      const domainLabels = {
+        health: 'Health',
+        finance: 'Finance',
+        relationship: 'Relationship',
+        work: 'Work'
+      };
+
+      const domKey = node.domain || 'work';
+      domainPill.textContent = `${domainIcons[domKey] || '💼'} ${domainLabels[domKey] || 'Work'}`;
+      domainPill.title = 'Click to change domain';
+
+      domainPill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.showDomainPicker(domainPill, node);
+      });
+
+      colType.appendChild(domainPill);
+    } else {
+      const typeBadge = document.createElement('span');
+      typeBadge.className = 'type-badge';
+      typeBadge.dataset.type = node.type;
+      typeBadge.textContent = node.type;
+      colType.appendChild(typeBadge);
+    }
+
 
     // 3. STATUS COLUMN (Not Started, In Progress, Completed)
     const colStatus = document.createElement('div');
@@ -495,6 +528,47 @@ export class TreeRenderer {
     };
     setTimeout(() => document.addEventListener('click', closeHandler), 10);
   }
+
+  showDomainPicker(anchorEl, node) {
+    document.querySelectorAll('.priority-dropdown, .status-dropdown, .domain-dropdown').forEach(el => el.remove());
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'domain-dropdown';
+
+    const domains = [
+      { id: 'health', label: '🏃‍♂️ Health' },
+      { id: 'finance', label: '💰 Finance' },
+      { id: 'relationship', label: '❤️ Relationship' },
+      { id: 'work', label: '💼 Work' }
+    ];
+
+    domains.forEach(d => {
+      const opt = document.createElement('div');
+      opt.className = 'domain-option';
+      opt.textContent = d.label;
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.store.updateNode(node.id, { domain: d.id });
+        dropdown.remove();
+      });
+      dropdown.appendChild(opt);
+    });
+
+    const rect = anchorEl.getBoundingClientRect();
+    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`;
+    dropdown.style.left = `${rect.left + window.scrollX}px`;
+
+    document.body.appendChild(dropdown);
+
+    const closeHandler = (e) => {
+      if (!dropdown.contains(e.target) && e.target !== anchorEl) {
+        dropdown.remove();
+        document.removeEventListener('click', closeHandler);
+      }
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 10);
+  }
+
 
   openDeadlinePicker(anchorEl, node) {
     if (typeof flatpickr === 'undefined') {

@@ -149,6 +149,7 @@ export class GoalStore {
       id: `${childType}-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
       title: defaultTitles[childType] || 'New Goal',
       type: childType,
+      domain: childType === 'program' ? 'work' : undefined,
       status: 'not-started',
       description: '',
       priority: childType === 'task' ? 'medium' : 'high',
@@ -158,6 +159,7 @@ export class GoalStore {
       completed: false,
       children: []
     };
+
 
     targetChildren.push(newNode);
     this.selectedNodeId = newNode.id;
