@@ -118,7 +118,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
+  // Sort Select Listener
+  const sortSelect = document.getElementById('sort-select');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      store.setSortBy(e.target.value);
+    });
+  }
+
   // Real-time Search Input Listener
+
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       store.setSearchQuery(e.target.value);

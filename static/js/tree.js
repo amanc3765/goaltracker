@@ -17,7 +17,7 @@ export class TreeRenderer {
 
   render() {
     this.cleanupSortables();
-    const treeData = this.store.getTree();
+    const treeData = this.store.getSortedTree();
     const searchQuery = this.store.searchQuery;
 
     this.container.replaceChildren();

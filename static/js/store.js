@@ -17,9 +17,11 @@ export class GoalStore {
     this.selectedNodeId = null;
     this.searchQuery = '';
     this.hideCompleted = false;
+    this.sortBy = 'manual';
     this.listeners = [];
     this.recalculateAllProgress();
   }
+
 
 
   subscribe(listener) {
@@ -397,5 +399,64 @@ export class GoalStore {
     this.searchQuery = query;
     this.notify();
   }
+
+  setSortBy(sortKey) {
+    this.sortBy = sortKey;
+    this.notify();
+  }
+
+  getSortedTree() {
+    if (this.sortBy === 'manual') return this.tree;
+    return this.sortNodes([...this.tree]);
+  }
+
+  sortNodes(nodes) {
+    if (!nodes || nodes.length === 0) return [];
+
+    const priorityRanks = { urgent: 4, high: 3, medium: 2, low: 1 };
+    const statusRanks = { 'not-started': 1, 'in-progress': 2, 'completed': 3 };
+
+    const sorted = [...nodes].sort((a, b) => {
+      switch (this.sortBy) {
+        case 'title-asc':
+          return (a.title || '').localeCompare(b.title || '');
+        case 'title-desc':
+          return (b.title || '').localeCompare(a.title || '');
+        case 'priority-desc':
+          return (priorityRanks[b.priority || 'medium'] || 0) - (priorityRanks[a.priority || 'medium'] || 0);
+        case 'priority-asc':
+          return (priorityRanks[a.priority || 'medium'] || 0) - (priorityRanks[b.priority || 'medium'] || 0);
+        case 'status-asc':
+          return (statusRanks[a.status || 'not-started'] || 0) - (statusRanks[b.status || 'not-started'] || 0);
+        case 'status-desc':
+          return (statusRanks[b.status || 'not-started'] || 0) - (statusRanks[a.status || 'not-started'] || 0);
+        case 'deadline-asc':
+          if (!a.deadline) return 1;
+          if (!b.deadline) return -1;
+          return new Date(a.deadline) - new Date(b.deadline);
+        case 'deadline-desc':
+          if (!a.deadline) return 1;
+          if (!b.deadline) return -1;
+          return new Date(b.deadline) - new Date(a.deadline);
+        case 'progress-desc':
+          return (b.progress || 0) - (a.progress || 0);
+        case 'progress-asc':
+          return (a.progress || 0) - (b.progress || 0);
+        default:
+          return 0;
+      }
+    });
+
+    return sorted.map(node => {
+      if (node.children && node.children.length > 0) {
+        return {
+          ...node,
+          children: this.sortNodes(node.children)
+        };
+      }
+      return node;
+    });
+  }
 }
+
 

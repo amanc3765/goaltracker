@@ -1,30 +1,86 @@
 [
   {
-    "id": "program-1783090983036-33mb",
-    "title": "Get promoted at Work",
-    "type": "program",
-    "domain": "work",
-    "status": "not-started",
-    "description": "",
-    "priority": "high",
-    "deadline": "",
-    "progress": 0,
+    "children": [
+      {
+        "id": "project-1783091213389-ha7v",
+        "title": "Q3 2026",
+        "type": "project",
+        "status": "not-started",
+        "description": "",
+        "priority": "high",
+        "deadline": "",
+        "progress": 0,
+        "collapsed": false,
+        "completed": false,
+        "children": []
+      }
+    ],
     "collapsed": false,
     "completed": false,
-    "children": []
+    "deadline": "",
+    "description": "",
+    "domain": "work",
+    "id": "program-1783090983036-33mb",
+    "priority": "high",
+    "progress": 0,
+    "status": "not-started",
+    "title": "Get promoted at Work",
+    "type": "program"
   },
   {
-    "id": "program-1783091001168-9ku5",
-    "title": "Fix health",
-    "type": "program",
-    "domain": "work",
-    "status": "not-started",
-    "description": "",
-    "priority": "high",
-    "deadline": "",
-    "progress": 0,
+    "children": [
+      {
+        "id": "project-1783091246260-sunv",
+        "title": "New Project",
+        "type": "project",
+        "status": "not-started",
+        "description": "",
+        "priority": "high",
+        "deadline": "",
+        "progress": 0,
+        "collapsed": false,
+        "completed": false,
+        "children": []
+      }
+    ],
     "collapsed": false,
     "completed": false,
-    "children": []
+    "deadline": "",
+    "description": "",
+    "domain": "health",
+    "id": "program-1783091001168-9ku5",
+    "priority": "urgent",
+    "progress": 0,
+    "status": "not-started",
+    "title": "Fix health - Reduce cholesterol levels",
+    "type": "program"
+  },
+  {
+    "children": [],
+    "collapsed": false,
+    "completed": false,
+    "deadline": "",
+    "description": "",
+    "domain": "relationship",
+    "id": "program-1783091126605-oqkg",
+    "priority": "high",
+    "progress": 0,
+    "status": "not-started",
+    "title": "Manage relationship with Parents",
+    "type": "program"
+  },
+  {
+    "children": [],
+    "collapsed": false,
+    "completed": false,
+    "deadline": "",
+    "description": "",
+    "domain": "relationship",
+    "id": "program-1783091144155-w9oc",
+    "priority": "high",
+    "progress": 0,
+    "status": "not-started",
+    "title": "Manage relationship with noBi",
+    "type": "program"
   }
 ]
