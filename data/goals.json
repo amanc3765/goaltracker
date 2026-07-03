@@ -2,17 +2,17 @@
   {
     "children": [
       {
-        "id": "project-1783091213389-ha7v",
-        "title": "Q3 2026",
-        "type": "project",
-        "status": "not-started",
-        "description": "",
-        "priority": "high",
-        "deadline": "",
-        "progress": 0,
+        "children": [],
         "collapsed": false,
         "completed": false,
-        "children": []
+        "deadline": "",
+        "description": "",
+        "id": "project-1783091213389-ha7v",
+        "priority": "high",
+        "progress": 0,
+        "status": "not-started",
+        "title": "Q3 2026",
+        "type": "project"
       }
     ],
     "collapsed": false,
@@ -30,17 +30,17 @@
   {
     "children": [
       {
-        "id": "project-1783091246260-sunv",
-        "title": "New Project",
-        "type": "project",
-        "status": "not-started",
-        "description": "",
-        "priority": "high",
-        "deadline": "",
-        "progress": 0,
+        "children": [],
         "collapsed": false,
         "completed": false,
-        "children": []
+        "deadline": "",
+        "description": "",
+        "id": "project-1783091246260-sunv",
+        "priority": "high",
+        "progress": 0,
+        "status": "not-started",
+        "title": "Reach",
+        "type": "project"
       }
     ],
     "collapsed": false,

@@ -540,7 +540,54 @@ body {
 }
 
 
+/* Table Header Row with Column Sorting Arrows */
+.tree-table-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background-color: rgba(21, 24, 33, 0.85);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-bottom: 8px;
+  user-select: none;
+}
+
+.table-header-col {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  transition: color var(--transition-speed);
+}
+
+.table-header-col:hover {
+  color: var(--text-primary);
+}
+
+.table-header-col.active-sort {
+  color: var(--accent-blue);
+}
+
+.header-col-arrow {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.header-col-arrow.muted-arrow {
+  opacity: 0.35;
+}
+
+.table-header-col:hover .header-col-arrow.muted-arrow {
+  opacity: 0.8;
+}
+
 /* Aligned Table Columns */
+
 .col-main {
   display: flex;
   align-items: center;

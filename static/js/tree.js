@@ -27,9 +27,14 @@ export class TreeRenderer {
       return;
     }
 
+    // Render Table Header Row with Column Sorting Arrows
+    const tableHeader = this.renderTableHeader();
+    this.container.appendChild(tableHeader);
+
     const rootList = document.createElement('div');
     rootList.className = 'node-children-container root-container';
     rootList.dataset.type = 'root';
+
 
     let visibleCount = 0;
 
@@ -51,6 +56,65 @@ export class TreeRenderer {
     // Initialize SortableJS for all containers after appending to DOM
     this.initAllSortables();
   }
+
+  renderTableHeader() {
+    const headerRow = document.createElement('div');
+    headerRow.className = 'tree-table-header';
+
+    const currentSort = this.store.sortBy;
+
+    const createHeaderCol = (fieldKey, label, className) => {
+      const col = document.createElement('div');
+      col.className = `table-header-col ${className}`;
+
+      const text = document.createElement('span');
+      text.className = 'header-col-label';
+      text.textContent = label;
+
+      const arrow = document.createElement('span');
+      arrow.className = 'header-col-arrow';
+
+      const isCurrentField = currentSort.startsWith(fieldKey);
+      if (isCurrentField) {
+        col.classList.add('active-sort');
+        const isDesc = currentSort.endsWith('-desc');
+        arrow.textContent = isDesc ? ' ↓' : ' ↑';
+      } else {
+        arrow.textContent = ' ↕';
+        arrow.classList.add('muted-arrow');
+      }
+
+      col.append(text, arrow);
+      col.style.cursor = 'pointer';
+      col.title = `Click to sort by ${label}`;
+
+      col.addEventListener('click', () => {
+        if (!isCurrentField) {
+          this.store.setSortBy(`${fieldKey}-asc`);
+        } else if (currentSort.endsWith('-asc')) {
+          this.store.setSortBy(`${fieldKey}-desc`);
+        } else {
+          this.store.setSortBy('manual');
+        }
+      });
+
+      return col;
+    };
+
+    const colTitle = createHeaderCol('title', 'Goal Title', 'col-main');
+    const colType = createHeaderCol('type', 'Type', 'col-type');
+    const colStatus = createHeaderCol('status', 'Status', 'col-status');
+    const colPriority = createHeaderCol('priority', 'Priority', 'col-priority');
+    const colDeadline = createHeaderCol('deadline', 'Deadline', 'col-deadline');
+    const colProgress = createHeaderCol('progress', 'Progress', 'col-progress');
+
+    const colActions = document.createElement('div');
+    colActions.className = 'table-header-col col-actions';
+
+    headerRow.append(colTitle, colType, colStatus, colPriority, colDeadline, colProgress, colActions);
+    return headerRow;
+  }
+
 
 
   renderEmptyState() {

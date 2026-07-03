@@ -415,6 +415,7 @@ export class GoalStore {
 
     const priorityRanks = { urgent: 4, high: 3, medium: 2, low: 1 };
     const statusRanks = { 'not-started': 1, 'in-progress': 2, 'completed': 3 };
+    const typeRanks = { program: 4, project: 3, milestone: 2, task: 1 };
 
     const sorted = [...nodes].sort((a, b) => {
       switch (this.sortBy) {
@@ -422,6 +423,10 @@ export class GoalStore {
           return (a.title || '').localeCompare(b.title || '');
         case 'title-desc':
           return (b.title || '').localeCompare(a.title || '');
+        case 'type-asc':
+          return (typeRanks[a.type] || 0) - (typeRanks[b.type] || 0);
+        case 'type-desc':
+          return (typeRanks[b.type] || 0) - (typeRanks[a.type] || 0);
         case 'priority-desc':
           return (priorityRanks[b.priority || 'medium'] || 0) - (priorityRanks[a.priority || 'medium'] || 0);
         case 'priority-asc':
@@ -446,6 +451,7 @@ export class GoalStore {
           return 0;
       }
     });
+
 
     return sorted.map(node => {
       if (node.children && node.children.length > 0) {
