@@ -175,21 +175,22 @@ function renderSummaryDashboard() {
 
   const createCircularSvg = (completed, total, colorClass = 'cyan') => {
     const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
-    const radius = 16;
+    const radius = 21;
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (pct / 100) * circumference;
 
     return `
       <div class="summary-circular-wrapper">
-        <svg class="summary-circular-svg" width="42" height="42" viewBox="0 0 42 42">
-          <circle class="summary-circle-bg" cx="21" cy="21" r="${radius}"></circle>
-          <circle class="summary-circle-fill ${colorClass}" cx="21" cy="21" r="${radius}"
+        <svg class="summary-circular-svg" width="52" height="52" viewBox="0 0 52 52">
+          <circle class="summary-circle-bg" cx="26" cy="26" r="${radius}"></circle>
+          <circle class="summary-circle-fill ${colorClass}" cx="26" cy="26" r="${radius}"
             stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"></circle>
         </svg>
         <div class="summary-circular-text">${completed}/${total}</div>
       </div>
     `;
   };
+
 
   container.innerHTML = `
     <div class="summary-card">
