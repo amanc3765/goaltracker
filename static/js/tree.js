@@ -479,31 +479,40 @@ export class TreeRenderer {
       colTimeLeft.appendChild(timeMuted);
     }
 
-    // 6. PROGRESS COLUMN
+    // 6. PROGRESS COLUMN (Programs, Projects, Milestones only; Tasks are binary 0/1)
     const colProgress = document.createElement('div');
     colProgress.className = 'col-progress';
-    const progressBg = document.createElement('div');
-    progressBg.className = 'progress-bar-bg';
-    const progressFill = document.createElement('div');
-    progressFill.className = 'progress-bar-fill';
-    const pVal = node.progress || 0;
-    progressFill.style.width = `${Math.min(100, Math.max(0, pVal))}%`;
 
-    if (pVal < 25) {
-      progressFill.dataset.level = 'low';
-    } else if (pVal < 50) {
-      progressFill.dataset.level = 'medium';
+    if (node.type === 'task') {
+      const taskMuted = document.createElement('span');
+      taskMuted.className = 'time-left-muted';
+      taskMuted.textContent = '-';
+      colProgress.appendChild(taskMuted);
     } else {
-      progressFill.dataset.level = 'high';
+      const progressBg = document.createElement('div');
+      progressBg.className = 'progress-bar-bg';
+      const progressFill = document.createElement('div');
+      progressFill.className = 'progress-bar-fill';
+      const pVal = node.progress || 0;
+      progressFill.style.width = `${Math.min(100, Math.max(0, pVal))}%`;
+
+      if (pVal < 25) {
+        progressFill.dataset.level = 'low';
+      } else if (pVal < 50) {
+        progressFill.dataset.level = 'medium';
+      } else {
+        progressFill.dataset.level = 'high';
+      }
+
+      progressBg.appendChild(progressFill);
+
+      const progressText = document.createElement('span');
+      progressText.className = 'progress-text';
+      progressText.textContent = `${pVal}%`;
+
+      colProgress.append(progressBg, progressText);
     }
 
-    progressBg.appendChild(progressFill);
-
-    const progressText = document.createElement('span');
-    progressText.className = 'progress-text';
-    progressText.textContent = `${pVal}%`;
-
-    colProgress.append(progressBg, progressText);
 
     // 7. ACTIONS COLUMN
     const colActions = document.createElement('div');
