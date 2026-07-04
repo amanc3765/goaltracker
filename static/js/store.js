@@ -275,6 +275,18 @@ export class GoalStore {
   }
 
   expandTreeToLevel(targetLevel) {
+    if (targetLevel === 'collapse-all') {
+      const traverseAll = (node) => {
+        node.collapsed = true;
+        if (node.children && node.children.length > 0) {
+          node.children.forEach(child => traverseAll(child));
+        }
+      };
+      this.tree.forEach(program => traverseAll(program));
+      this.notify();
+      return;
+    }
+
     const levels = ['program', 'project', 'milestone', 'task'];
     const targetIdx = levels.indexOf(targetLevel);
     if (targetIdx === -1) return;
@@ -291,6 +303,26 @@ export class GoalStore {
     this.tree.forEach(program => traverse(program));
     this.notify();
   }
+
+  expandParentsOfNode(nodeId) {
+    const expandParents = (nodes) => {
+      for (const node of nodes) {
+        if (node.id === nodeId) return true;
+        if (node.children && node.children.length > 0) {
+          const foundInChild = expandParents(node.children);
+          if (foundInChild) {
+            node.collapsed = false;
+            return true;
+          }
+        }
+      }
+      return false;
+    };
+    expandParents(this.tree);
+    this.notify();
+  }
+
+
 
 
   togglePickupTask(id) {

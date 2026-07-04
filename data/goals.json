@@ -7,8 +7,9 @@
             "children": [
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": false,
+                "completedAt": null,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-05",
                 "deadlineSetAt": "2026-07-04",
@@ -19,13 +20,13 @@
                 "progress": 50,
                 "status": "in-progress",
                 "title": "Change multi asset editing demo",
-                "type": "task",
-                "completedAt": null
+                "type": "task"
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": false,
+                "completedAt": null,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-05",
                 "deadlineSetAt": "2026-07-04",
@@ -36,13 +37,13 @@
                 "progress": 50,
                 "status": "in-progress",
                 "title": "Resolve ADR CoreX feedback",
-                "type": "task",
-                "completedAt": null
+                "type": "task"
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": false,
+                "completedAt": null,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-05",
                 "deadlineSetAt": "2026-07-04",
@@ -53,8 +54,7 @@
                 "progress": 50,
                 "status": "in-progress",
                 "title": "Finalize deck",
-                "type": "task",
-                "completedAt": null
+                "type": "task"
               }
             ],
             "collapsed": false,
@@ -72,7 +72,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -87,7 +87,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -102,7 +102,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -117,7 +117,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -132,7 +132,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -147,7 +147,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-31",
@@ -162,7 +162,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-31",
@@ -177,7 +177,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-31",
@@ -223,7 +223,7 @@
         "children": [
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "deadline": "2026-07-12",
             "description": "",
@@ -236,7 +236,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "deadline": "2026-08-01",
             "deadlineSetAt": "2026-07-03",
@@ -250,7 +250,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "deadline": "2026-10-01",
             "deadlineSetAt": "2026-07-03",
@@ -297,7 +297,7 @@
             "children": [
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": true,
                 "completedAt": "2026-07-04",
                 "createdAt": "2026-07-03",
@@ -313,7 +313,7 @@
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": true,
                 "completedAt": "2026-07-04",
                 "createdAt": "2026-07-03",
@@ -329,7 +329,7 @@
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": true,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-04",
@@ -344,7 +344,7 @@
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": true,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-04",
@@ -359,7 +359,7 @@
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": true,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-04",
@@ -374,7 +374,7 @@
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": true,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-04",
@@ -388,7 +388,7 @@
                 "type": "task"
               }
             ],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-04",
@@ -402,8 +402,112 @@
             "type": "milestone"
           },
           {
+            "children": [
+              {
+                "children": [],
+                "collapsed": true,
+                "completed": true,
+                "completedAt": "2026-07-04",
+                "createdAt": "2026-07-03",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783092542911-jydt",
+                "priority": "high",
+                "progress": 100,
+                "status": "completed",
+                "title": "Narayana - Book",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": true,
+                "completed": true,
+                "completedAt": "2026-07-04",
+                "createdAt": "2026-07-03",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783092573420-7pvh",
+                "priority": "high",
+                "progress": 100,
+                "status": "completed",
+                "title": "Ortho - Book",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": true,
+                "completed": false,
+                "createdAt": "2026-07-03",
+                "deadline": "2026-07-07",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783092604126-tgo5",
+                "pickedUp": true,
+                "priority": "high",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Dentist - Book",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783164876042-67s7",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Narayana - Visit",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783164889491-ptt6",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Ortho - Visit",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783164901191-hjfn",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Dentist - Visit",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
+            "completed": false,
+            "createdAt": "2026-07-04",
+            "deadline": "2026-07-12",
+            "deadlineSetAt": "2026-07-04",
+            "description": "",
+            "id": "milestone-1783159969650-2n5d",
+            "priority": "high",
+            "progress": 33,
+            "status": "in-progress",
+            "title": "Health checkup",
+            "type": "milestone"
+          },
+          {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "",
@@ -419,64 +523,7 @@
             "children": [
               {
                 "children": [],
-                "collapsed": false,
-                "completed": false,
-                "createdAt": "2026-07-03",
-                "deadline": "",
-                "description": "",
-                "id": "task-1783092542911-jydt",
-                "priority": "high",
-                "progress": 0,
-                "status": "not-started",
-                "title": "Mom - Narayana appointment",
-                "type": "task"
-              },
-              {
-                "children": [],
-                "collapsed": false,
-                "completed": false,
-                "createdAt": "2026-07-03",
-                "deadline": "",
-                "description": "",
-                "id": "task-1783092573420-7pvh",
-                "priority": "high",
-                "progress": 0,
-                "status": "not-started",
-                "title": "Papa - Ortho appointment",
-                "type": "task"
-              },
-              {
-                "children": [],
-                "collapsed": false,
-                "completed": false,
-                "createdAt": "2026-07-03",
-                "deadline": "",
-                "description": "",
-                "id": "task-1783092604126-tgo5",
-                "priority": "high",
-                "progress": 0,
-                "status": "not-started",
-                "title": "Mom - Dentist appointment",
-                "type": "task"
-              }
-            ],
-            "collapsed": true,
-            "completed": false,
-            "createdAt": "2026-07-04",
-            "deadline": "",
-            "description": "",
-            "id": "milestone-1783159969650-2n5d",
-            "priority": "high",
-            "progress": 0,
-            "status": "not-started",
-            "title": "Health checkup",
-            "type": "milestone"
-          },
-          {
-            "children": [
-              {
-                "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": false,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-04",
@@ -484,14 +531,14 @@
                 "description": "",
                 "id": "task-1783161287831-uhbm",
                 "pickedUp": true,
-                "priority": "medium",
+                "priority": "high",
                 "progress": 0,
                 "status": "not-started",
                 "title": "Buy table cloth",
                 "type": "task"
               }
             ],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-04",
             "deadline": "",
@@ -504,27 +551,27 @@
             "type": "milestone"
           }
         ],
-        "collapsed": true,
+        "collapsed": false,
         "completed": false,
         "deadline": "2026-10-01",
         "deadlineSetAt": "2026-07-03",
         "description": "",
         "id": "project-1783091580737-lnfr",
         "priority": "high",
-        "progress": 25,
+        "progress": 33,
         "status": "in-progress",
         "title": "Manage Bengaluru visit",
         "type": "project"
       }
     ],
-    "collapsed": true,
+    "collapsed": false,
     "completed": false,
     "deadline": "",
     "description": "",
     "domain": "relationship",
     "id": "program-1783091126605-oqkg",
     "priority": "high",
-    "progress": 25,
+    "progress": 33,
     "status": "in-progress",
     "title": "Manage relationship with Parents",
     "type": "program"
@@ -535,7 +582,7 @@
         "children": [
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-15",
@@ -550,7 +597,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-01",
@@ -565,7 +612,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-01",
@@ -580,7 +627,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-05",
@@ -595,7 +642,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-12",
@@ -610,7 +657,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-09",
@@ -624,7 +671,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": true,
+        "collapsed": false,
         "completed": false,
         "deadline": "2026-08-15",
         "deadlineSetAt": "2026-07-03",
@@ -637,7 +684,7 @@
         "type": "project"
       }
     ],
-    "collapsed": true,
+    "collapsed": false,
     "completed": false,
     "deadline": "",
     "description": "",
@@ -657,10 +704,11 @@
             "children": [
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": false,
                 "createdAt": "2026-07-03",
-                "deadline": "",
+                "deadline": "2026-07-06",
+                "deadlineSetAt": "2026-07-04",
                 "description": "",
                 "id": "task-1783092619718-ii0v",
                 "pickedUp": true,
@@ -671,7 +719,7 @@
                 "type": "task"
               }
             ],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-04",
             "deadline": "",
@@ -684,7 +732,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": true,
+        "collapsed": false,
         "completed": false,
         "createdAt": "2026-07-04",
         "deadline": "",
@@ -697,7 +745,7 @@
         "type": "project"
       }
     ],
-    "collapsed": true,
+    "collapsed": false,
     "completed": false,
     "createdAt": "2026-07-03",
     "deadline": "",
@@ -718,7 +766,7 @@
             "children": [
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": false,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-05",
@@ -731,9 +779,37 @@
                 "status": "not-started",
                 "title": "Fill ITR form",
                 "type": "task"
+              },
+              {
+                "id": "task-1783165326597-y1cc",
+                "title": "Fill foreign asset schedule",
+                "type": "task",
+                "status": "not-started",
+                "description": "",
+                "priority": "medium",
+                "deadline": "",
+                "createdAt": "2026-07-04",
+                "progress": 0,
+                "collapsed": false,
+                "completed": false,
+                "children": []
+              },
+              {
+                "id": "task-1783165347033-bh33",
+                "title": "Help aunty to fill ITR",
+                "type": "task",
+                "status": "not-started",
+                "description": "",
+                "priority": "medium",
+                "deadline": "",
+                "createdAt": "2026-07-04",
+                "progress": 0,
+                "collapsed": false,
+                "completed": false,
+                "children": []
               }
             ],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-20",
@@ -747,8 +823,25 @@
             "type": "milestone"
           },
           {
-            "children": [],
-            "collapsed": true,
+            "children": [
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-11",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783164986130-31f6",
+                "pickedUp": false,
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Finance Tracker - July",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-20",
@@ -762,7 +855,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": true,
+        "collapsed": false,
         "completed": false,
         "createdAt": "2026-07-03",
         "deadline": "2026-10-01",
@@ -776,7 +869,7 @@
         "type": "project"
       }
     ],
-    "collapsed": true,
+    "collapsed": false,
     "completed": false,
     "createdAt": "2026-07-03",
     "deadline": "",
@@ -797,7 +890,7 @@
             "children": [
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": true,
                 "completedAt": "2026-07-04",
                 "createdAt": "2026-07-04",
@@ -812,7 +905,7 @@
                 "type": "task"
               }
             ],
-            "collapsed": true,
+            "collapsed": false,
             "completed": true,
             "createdAt": "2026-07-04",
             "deadline": "2026-07-04",
@@ -826,7 +919,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": true,
+        "collapsed": false,
         "completed": false,
         "createdAt": "2026-07-04",
         "deadline": "2026-10-01",
@@ -840,7 +933,7 @@
         "type": "project"
       }
     ],
-    "collapsed": true,
+    "collapsed": false,
     "completed": false,
     "createdAt": "2026-07-04",
     "deadline": "",

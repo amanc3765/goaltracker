@@ -64,25 +64,6 @@
           🏆
         </button>
 
-        <!-- Show Level Button -->
-        <button id="btn-show-level" class="btn-secondary level-picker-btn" title="Show hierarchy expanded up to a specific level">
-          Level ▾
-        </button>
-
-
-
-        <!-- Toggle Collapse/Expand All Button -->
-
-
-        <button id="toggle-collapse-btn" class="btn-secondary" title="Expand or collapse all goals">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="4 14 10 14 10 20"></polyline>
-            <polyline points="20 10 14 10 14 4"></polyline>
-            <line x1="14" y1="10" x2="21" y2="3"></line>
-            <line x1="3" y1="21" x2="10" y2="14"></line>
-          </svg>
-        </button>
-
         <!-- Toggle Hide/Show Completed Button -->
         <button id="toggle-hide-completed-btn" class="btn-secondary" title="Hide or show completed goals">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -91,7 +72,14 @@
           </svg>
         </button>
 
-
+        <!-- Show Level Hierarchy Depth Button (Icon Only, beside Add Program) -->
+        <button id="btn-show-level" class="btn-secondary level-picker-btn" title="Expand hierarchy up to specific depth level (Program, Project, Milestone, Task)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </button>
 
         <!-- Add Top Level Program Button -->
         <button id="add-program-btn" class="btn-primary" title="Create a new 1-Year Program">
@@ -101,6 +89,7 @@
           </svg>
           Add Program
         </button>
+
 
       </div>
     </header>

@@ -88,24 +88,64 @@ function renderTodoView() {
       const info = document.createElement('div');
       info.className = 'todo-item-info';
 
-      const title = document.createElement('div');
-      title.className = 'todo-item-title';
-      title.textContent = task.title;
-
-      const meta = document.createElement('div');
-      meta.className = 'todo-item-meta';
-
       const priorityPill = document.createElement('span');
       priorityPill.className = 'priority-pill';
       priorityPill.dataset.priority = task.priority || 'medium';
       priorityPill.textContent = (task.priority || 'medium').toUpperCase();
 
-      const pathSpan = document.createElement('span');
-      pathSpan.className = 'todo-path-badge';
-      pathSpan.textContent = task.contextPath || '';
+      const title = document.createElement('div');
+      title.className = 'todo-item-title';
+      title.textContent = task.title;
 
-      meta.append(priorityPill, pathSpan);
-      info.append(title, meta);
+      const deadlineSpan = document.createElement('span');
+      deadlineSpan.className = 'todo-deadline-badge';
+      deadlineSpan.style.cursor = 'pointer';
+      deadlineSpan.title = 'Click to change deadline';
+      const status = renderer ? renderer.getDeadlineStatus(task.deadline, 'task', task.createdAt, task.deadlineSetAt) : null;
+      const dateText = status ? status.formattedDate : (task.deadline || 'Set deadline');
+      deadlineSpan.textContent = `📅 ${dateText}`;
+      if (status && status.isOverdue) deadlineSpan.classList.add('overdue');
+      else if (status && status.isDueSoon) deadlineSpan.classList.add('due-soon');
+
+      deadlineSpan.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (renderer) {
+          renderer.openDeadlinePicker(deadlineSpan, task);
+        }
+      });
+
+      const pickupBtn = document.createElement('button');
+      pickupBtn.className = 'pickup-dot active';
+      pickupBtn.title = 'Remove from Daily To-Do';
+      pickupBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        store.togglePickupTask(task.id);
+        showToast('Task removed from To-Do list');
+      });
+
+      info.append(pickupBtn, priorityPill, title, deadlineSpan);
+
+
+
+
+
+      const locateBtn = document.createElement('button');
+      locateBtn.className = 'todo-locate-btn';
+      locateBtn.title = 'Locate in Goals Tree';
+      locateBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="2" x2="12" y2="6"></line>
+          <line x1="12" y1="18" x2="12" y2="22"></line>
+          <line x1="2" y1="12" x2="6" y2="12"></line>
+          <line x1="18" y1="12" x2="22" y2="12"></line>
+        </svg>
+      `;
+      locateBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        locateNodeInTree(task.id);
+      });
+
 
       const removeBtn = document.createElement('button');
       removeBtn.className = 'todo-remove-btn';
@@ -115,6 +155,9 @@ function renderTodoView() {
         store.togglePickupTask(task.id);
         showToast('Task removed from To-Do list');
       });
+
+      row.append(check, info, locateBtn, removeBtn);
+
 
       row.append(check, info, removeBtn);
       pendingListEl.appendChild(row);
@@ -248,6 +291,44 @@ function renderTodoView() {
     });
   }
 }
+
+function locateNodeInTree(nodeId) {
+  const tabTreeBtn = document.getElementById('tab-btn-tree');
+  const viewTreeEl = document.getElementById('view-tree');
+  const viewTodoEl = document.getElementById('view-todo');
+
+  if (store.showOnlyAchievements) {
+    store.showOnlyAchievements = false;
+    const filterAchievementsBtn = document.getElementById('btn-filter-achievements');
+    if (filterAchievementsBtn) filterAchievementsBtn.classList.remove('active');
+  }
+
+  store.expandParentsOfNode(nodeId);
+
+  if (tabTreeBtn && viewTreeEl) {
+    tabTreeBtn.classList.add('active');
+    const tabTodoBtn = document.getElementById('tab-btn-todo');
+    if (tabTodoBtn) tabTodoBtn.classList.remove('active');
+
+    viewTreeEl.classList.remove('hidden');
+    viewTreeEl.classList.add('active');
+    if (viewTodoEl) {
+      viewTodoEl.classList.add('hidden');
+      viewTodoEl.classList.remove('active');
+    }
+  }
+
+  setTimeout(() => {
+    renderer.setFocusedNode(nodeId);
+    const targetNodeEl = document.querySelector(`.tree-node[data-id="${nodeId}"]`);
+    if (targetNodeEl) {
+      targetNodeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      targetNodeEl.classList.add('locate-pulse');
+      setTimeout(() => targetNodeEl.classList.remove('locate-pulse'), 2000);
+    }
+  }, 100);
+}
+
 
 function renderCompletedSummaryView() {
   if (!renderer) return;

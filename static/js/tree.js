@@ -850,11 +850,13 @@ export class TreeRenderer {
     dropdown.className = 'level-dropdown';
 
     const levels = [
+      { id: 'collapse-all', label: '📁 Collapse All' },
       { id: 'program', label: '🔷 Program' },
       { id: 'project', label: '🔮 Project' },
       { id: 'milestone', label: '💎 Milestone' },
-      { id: 'task', label: '⚡ Task (All Expanded)' }
+      { id: 'task', label: '⚡ Task' }
     ];
+
 
     levels.forEach(lvl => {
       const opt = document.createElement('div');
