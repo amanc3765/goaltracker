@@ -830,8 +830,6 @@ export class TreeRenderer {
     }
 
     const closeHandler = (e) => {
-
-
       if (!dropdown.contains(e.target) && e.target !== anchorEl) {
         dropdown.remove();
         document.removeEventListener('click', closeHandler);
@@ -839,6 +837,55 @@ export class TreeRenderer {
     };
     setTimeout(() => document.addEventListener('click', closeHandler), 10);
   }
+
+  showLevelPicker(anchorEl) {
+    document.querySelectorAll('.priority-dropdown, .status-dropdown, .domain-dropdown, .type-dropdown, .level-dropdown').forEach(el => el.remove());
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'level-dropdown';
+
+    const levels = [
+      { id: 'program', label: '🔷 Program' },
+      { id: 'project', label: '🔮 Project' },
+      { id: 'milestone', label: '💎 Milestone' },
+      { id: 'task', label: '⚡ Task (All Expanded)' }
+    ];
+
+    levels.forEach(lvl => {
+      const opt = document.createElement('div');
+      opt.className = 'level-option';
+      opt.textContent = lvl.label;
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.store.expandTreeToLevel(lvl.id);
+        dropdown.remove();
+      });
+      dropdown.appendChild(opt);
+    });
+
+    const rect = anchorEl.getBoundingClientRect();
+    dropdown.style.position = 'fixed';
+    dropdown.style.left = `${rect.left}px`;
+    dropdown.style.zIndex = '10000';
+
+    document.body.appendChild(dropdown);
+
+    const dropHeight = dropdown.offsetHeight || 160;
+    if (rect.bottom + dropHeight > window.innerHeight - 20) {
+      dropdown.style.top = `${Math.max(10, rect.top - dropHeight - 4)}px`;
+    } else {
+      dropdown.style.top = `${rect.bottom + 4}px`;
+    }
+
+    const closeHandler = (e) => {
+      if (!dropdown.contains(e.target) && e.target !== anchorEl) {
+        dropdown.remove();
+        document.removeEventListener('click', closeHandler);
+      }
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 10);
+  }
+
 
 
 

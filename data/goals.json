@@ -16,10 +16,11 @@
                 "id": "task-1783163109619-1o4z",
                 "pickedUp": true,
                 "priority": "urgent",
-                "progress": 0,
-                "status": "not-started",
+                "progress": 50,
+                "status": "in-progress",
                 "title": "Change multi asset editing demo",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -32,10 +33,11 @@
                 "id": "task-1783162981001-t371",
                 "pickedUp": true,
                 "priority": "urgent",
-                "progress": 0,
-                "status": "not-started",
+                "progress": 50,
+                "status": "in-progress",
                 "title": "Resolve ADR CoreX feedback",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -48,10 +50,11 @@
                 "id": "task-1783163076394-lwyz",
                 "pickedUp": true,
                 "priority": "urgent",
-                "progress": 0,
-                "status": "not-started",
+                "progress": 50,
+                "status": "in-progress",
                 "title": "Finalize deck",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               }
             ],
             "collapsed": false,
@@ -62,14 +65,14 @@
             "description": "",
             "id": "milestone-1783092673006-kqjp",
             "priority": "urgent",
-            "progress": 0,
-            "status": "not-started",
+            "progress": 50,
+            "status": "in-progress",
             "title": "I/O BLR deliver",
             "type": "milestone"
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -84,7 +87,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -99,7 +102,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -114,7 +117,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -129,7 +132,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -144,7 +147,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-31",
@@ -159,7 +162,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-31",
@@ -174,7 +177,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-31",
@@ -195,8 +198,8 @@
         "description": "",
         "id": "project-1783091213389-ha7v",
         "priority": "high",
-        "progress": 0,
-        "status": "not-started",
+        "progress": 6,
+        "status": "in-progress",
         "title": "Q3 2026",
         "type": "project"
       }
@@ -209,8 +212,8 @@
     "domain": "work",
     "id": "program-1783090983036-33mb",
     "priority": "high",
-    "progress": 0,
-    "status": "not-started",
+    "progress": 6,
+    "status": "in-progress",
     "title": "Get promoted at Work",
     "type": "program"
   },
@@ -220,7 +223,7 @@
         "children": [
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "deadline": "2026-07-12",
             "description": "",
@@ -233,7 +236,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "deadline": "2026-08-01",
             "deadlineSetAt": "2026-07-03",
@@ -247,7 +250,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "deadline": "2026-10-01",
             "deadlineSetAt": "2026-07-03",
@@ -385,7 +388,7 @@
                 "type": "task"
               }
             ],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-04",
@@ -400,7 +403,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "",
@@ -457,7 +460,7 @@
                 "type": "task"
               }
             ],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-04",
             "deadline": "",
@@ -488,7 +491,7 @@
                 "type": "task"
               }
             ],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-04",
             "deadline": "",
@@ -501,7 +504,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": false,
+        "collapsed": true,
         "completed": false,
         "deadline": "2026-10-01",
         "deadlineSetAt": "2026-07-03",
@@ -514,7 +517,7 @@
         "type": "project"
       }
     ],
-    "collapsed": false,
+    "collapsed": true,
     "completed": false,
     "deadline": "",
     "description": "",
@@ -532,7 +535,7 @@
         "children": [
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-15",
@@ -547,7 +550,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-01",
@@ -562,7 +565,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-01",
@@ -577,7 +580,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-05",
@@ -592,7 +595,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-12",
@@ -607,7 +610,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-09",
@@ -621,7 +624,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": false,
+        "collapsed": true,
         "completed": false,
         "deadline": "2026-08-15",
         "deadlineSetAt": "2026-07-03",
@@ -634,7 +637,7 @@
         "type": "project"
       }
     ],
-    "collapsed": false,
+    "collapsed": true,
     "completed": false,
     "deadline": "",
     "description": "",
@@ -668,7 +671,7 @@
                 "type": "task"
               }
             ],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-04",
             "deadline": "",
@@ -681,7 +684,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": false,
+        "collapsed": true,
         "completed": false,
         "createdAt": "2026-07-04",
         "deadline": "",
@@ -694,7 +697,7 @@
         "type": "project"
       }
     ],
-    "collapsed": false,
+    "collapsed": true,
     "completed": false,
     "createdAt": "2026-07-03",
     "deadline": "",
@@ -730,7 +733,7 @@
                 "type": "task"
               }
             ],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-20",
@@ -745,7 +748,7 @@
           },
           {
             "children": [],
-            "collapsed": false,
+            "collapsed": true,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-20",
@@ -759,7 +762,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": false,
+        "collapsed": true,
         "completed": false,
         "createdAt": "2026-07-03",
         "deadline": "2026-10-01",
@@ -773,7 +776,7 @@
         "type": "project"
       }
     ],
-    "collapsed": false,
+    "collapsed": true,
     "completed": false,
     "createdAt": "2026-07-03",
     "deadline": "",
@@ -809,7 +812,7 @@
                 "type": "task"
               }
             ],
-            "collapsed": false,
+            "collapsed": true,
             "completed": true,
             "createdAt": "2026-07-04",
             "deadline": "2026-07-04",
@@ -823,7 +826,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": false,
+        "collapsed": true,
         "completed": false,
         "createdAt": "2026-07-04",
         "deadline": "2026-10-01",
@@ -837,7 +840,7 @@
         "type": "project"
       }
     ],
-    "collapsed": false,
+    "collapsed": true,
     "completed": false,
     "createdAt": "2026-07-04",
     "deadline": "",

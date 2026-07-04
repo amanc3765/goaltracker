@@ -274,6 +274,25 @@ export class GoalStore {
     return true;
   }
 
+  expandTreeToLevel(targetLevel) {
+    const levels = ['program', 'project', 'milestone', 'task'];
+    const targetIdx = levels.indexOf(targetLevel);
+    if (targetIdx === -1) return;
+
+    const traverse = (node) => {
+      const currentIdx = levels.indexOf(node.type);
+      node.collapsed = currentIdx >= targetIdx;
+
+      if (node.children && node.children.length > 0) {
+        node.children.forEach(child => traverse(child));
+      }
+    };
+
+    this.tree.forEach(program => traverse(program));
+    this.notify();
+  }
+
+
   togglePickupTask(id) {
     const res = this.findNode(id);
     if (!res || res.node.type !== 'task') return false;

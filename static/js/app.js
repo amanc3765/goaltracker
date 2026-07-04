@@ -331,6 +331,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  const showLevelBtn = document.getElementById('btn-show-level');
+  if (showLevelBtn) {
+    showLevelBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      renderer.showLevelPicker(showLevelBtn);
+    });
+  }
+
+
 
   // Store subscription: re-render UI & trigger backend auto-save
   store.subscribe(() => {
