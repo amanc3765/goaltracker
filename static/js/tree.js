@@ -483,12 +483,7 @@ export class TreeRenderer {
     const colProgress = document.createElement('div');
     colProgress.className = 'col-progress';
 
-    if (node.type === 'task') {
-      const taskMuted = document.createElement('span');
-      taskMuted.className = 'time-left-muted';
-      taskMuted.textContent = '-';
-      colProgress.appendChild(taskMuted);
-    } else {
+    if (node.type !== 'task') {
       const progressBg = document.createElement('div');
       progressBg.className = 'progress-bar-bg';
       const progressFill = document.createElement('div');
@@ -512,6 +507,7 @@ export class TreeRenderer {
 
       colProgress.append(progressBg, progressText);
     }
+
 
 
     // 7. ACTIONS COLUMN
