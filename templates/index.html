@@ -26,6 +26,28 @@
         </div>
       </div>
 
+      <!-- View Navigation Tabs -->
+      <div class="view-tabs">
+        <button id="tab-btn-tree" class="view-tab-btn active" title="Goals Hierarchy Tree">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          Goals Tree
+        </button>
+        <button id="tab-btn-todo" class="view-tab-btn" title="Daily To-Do List & Completed History">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          Daily To-Do
+          <span id="todo-badge-count" class="todo-badge">0</span>
+        </button>
+      </div>
+
+
 
       <div class="top-actions">
         <!-- Search Bar -->
@@ -36,6 +58,12 @@
           </svg>
           <input type="text" id="search-input" class="search-input" placeholder="Search goals or descriptions..." autocomplete="off">
         </div>
+
+        <!-- 🏆 Achievements Filter Button -->
+        <button id="btn-filter-achievements" class="btn-secondary achievement-btn" title="Filter Completed Achievements & Milestones (without strikethrough)">
+          🏆
+        </button>
+
 
         <!-- Toggle Collapse/Expand All Button -->
 
@@ -74,12 +102,44 @@
     <!-- Top Summary Dashboard Bar -->
     <div id="summary-dashboard" class="summary-dashboard"></div>
 
-    <!-- Main Tree View Workspace -->
-    <main id="tree-container" class="tree-container">
+    <!-- View 1: Tree View Workspace -->
+    <div id="view-tree" class="app-view active">
+      <main id="tree-container" class="tree-container"></main>
+    </div>
 
-      <!-- Tree view dynamically rendered by tree.js -->
-    </main>
+    <!-- View 2: Daily To-Do Execution Page -->
+    <div id="view-todo" class="app-view hidden">
+      <!-- Section A: Pending Picked-Up Tasks Box -->
+      <section class="todo-section">
+        <div class="todo-card-box">
+          <div class="todo-box-header">
+            <div class="todo-box-title">
+              <span class="todo-box-icon">⚡</span>
+              <h2>Active To-Do List</h2>
+            </div>
+            <span id="todo-pending-count" class="todo-count-pill">0 Pending</span>
+          </div>
+          <div id="todo-pending-list" class="todo-task-list"></div>
+        </div>
+      </section>
+
+      <!-- Section B: History of Completed Tasks Grouped by Date (Latest First, Collapsed by Default) -->
+      <section class="todo-history-section">
+        <div class="todo-history-box">
+          <div class="todo-box-header">
+            <div class="todo-box-title">
+              <span class="todo-box-icon">📅</span>
+              <h2>Completed Tasks History</h2>
+            </div>
+          </div>
+          <div id="todo-history-list" class="todo-history-accordions"></div>
+        </div>
+      </section>
+    </div>
   </div>
+
+
+
 
   <!-- Vendor Libraries -->
 

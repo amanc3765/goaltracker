@@ -57,9 +57,40 @@ export class TreeRenderer {
     this.initAllSortables();
   }
 
-  renderTableHeader() {
+  renderCompletedTree(targetContainer) {
+    if (!targetContainer) return;
+    targetContainer.innerHTML = '';
+
+    const header = this.renderTableHeader(true);
+    targetContainer.appendChild(header);
+
+    const sortedTree = this.store.getSortedTree();
+    const nonTaskNodes = sortedTree.filter(n => n.type !== 'task');
+
+    if (nonTaskNodes.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.innerHTML = `<p class="empty-title">No higher-level goals found</p>`;
+      targetContainer.appendChild(empty);
+      return;
+    }
+
+    const rootList = document.createElement('div');
+    rootList.className = 'tree-root-list';
+
+    nonTaskNodes.forEach(node => {
+      const el = this.createNodeElement(node, null, true);
+      if (el) rootList.appendChild(el);
+    });
+
+    targetContainer.appendChild(rootList);
+  }
+
+
+  renderTableHeader(isCompletedView = false) {
     const headerRow = document.createElement('div');
     headerRow.className = 'tree-table-header';
+
 
     const currentSort = this.store.sortBy;
 
@@ -109,18 +140,24 @@ export class TreeRenderer {
     const colType = createHeaderCol('type', 'Type', 'col-type');
     const colStatus = createHeaderCol('status', 'Status', 'col-status');
     const colPriority = createHeaderCol('priority', 'Priority', 'col-priority');
-    const colDeadline = createHeaderCol('deadline', 'Deadline', 'col-deadline');
-    const colTimeLeft = createHeaderCol('deadline', 'Time Left', 'col-timeleft');
     const colProgress = createHeaderCol('progress', 'Progress', 'col-progress');
 
-    const colActions = document.createElement('div');
-    colActions.className = 'table-header-col col-actions';
+    const isAchievementMode = this.store ? this.store.showOnlyAchievements : false;
 
-    headerRow.append(leftSpacer, colTitle, colType, colStatus, colPriority, colDeadline, colTimeLeft, colProgress, colActions);
+    if (isCompletedView || isAchievementMode) {
+      headerRow.append(leftSpacer, colTitle, colType, colStatus, colPriority);
+    } else {
+      const colDeadline = createHeaderCol('deadline', 'Deadline', 'col-deadline');
+      const colTimeLeft = createHeaderCol('deadline', 'Time Left', 'col-timeleft');
+      const colActions = document.createElement('div');
+      colActions.className = 'table-header-col col-actions';
+      headerRow.append(leftSpacer, colTitle, colType, colStatus, colPriority, colDeadline, colTimeLeft, colProgress, colActions);
+    }
 
 
     return headerRow;
   }
+
 
 
 
@@ -157,7 +194,20 @@ export class TreeRenderer {
   /**
    * Recursively build node DOM element
    */
-  createNodeElement(node, searchQuery) {
+  createNodeElement(node, searchQuery, isCompletedView = false) {
+    if (isCompletedView && node.type === 'task') return null;
+
+    const isAchievementMode = this.store.showOnlyAchievements;
+
+    // Achievement Mode Logic: Only show completed milestones and their ancestor Programs/Projects (no tasks, no uncompleted milestones!)
+    if (isAchievementMode) {
+      if (node.type === 'task') return null;
+      if (node.type === 'milestone') {
+        const isDone = node.completed || node.status === 'completed' || node.progress === 100;
+        if (!isDone) return null;
+      }
+    }
+
     const matchesSelf = this.store.matchesSearch(node, searchQuery);
     let childMatchCount = 0;
     
@@ -168,12 +218,20 @@ export class TreeRenderer {
 
     if (node.children && node.children.length > 0) {
       node.children.forEach(child => {
-        const childEl = this.createNodeElement(child, searchQuery);
+        if (isCompletedView && child.type === 'task') return;
+        const childEl = this.createNodeElement(child, searchQuery, isCompletedView);
         if (childEl) {
           childrenContainer.appendChild(childEl);
           childMatchCount++;
         }
       });
+    }
+
+    if (isAchievementMode) {
+      if (node.type !== 'milestone' && childMatchCount === 0) {
+        return null;
+      }
+      childrenContainer.classList.remove('collapsed');
     }
 
     // Hide node if search filter is active and neither self nor children match
@@ -187,7 +245,9 @@ export class TreeRenderer {
     }
 
     const nodeWrapper = document.createElement('div');
-    nodeWrapper.className = `tree-node ${this.focusedNodeId === node.id ? 'focused' : ''} ${node.completed ? 'completed' : ''}`;
+    const isCompletedClass = (!isAchievementMode && node.completed) ? 'completed' : '';
+    nodeWrapper.className = `tree-node ${this.focusedNodeId === node.id ? 'focused' : ''} ${isCompletedClass}`;
+
     if (node.type === 'program' && !node.collapsed) {
       nodeWrapper.classList.add('expanded-program');
     }
@@ -238,7 +298,21 @@ export class TreeRenderer {
         this.store.updateNode(node.id, { completed: checkbox.checked });
       });
       leftSec.appendChild(checkbox);
+
+      // Red Pick-Up Dot button for Task Execution List
+      const pickupDot = document.createElement('button');
+      pickupDot.className = `pickup-dot ${node.pickedUp ? 'active' : ''}`;
+      pickupDot.title = node.pickedUp ? 'Remove from Daily To-Do list' : 'Pick up task for Daily To-Do list';
+      pickupDot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isPicked = this.store.togglePickupTask(node.id);
+        if (typeof window.showToast === 'function') {
+          window.showToast(isPicked ? 'Task added to Daily To-Do list ⚡' : 'Task removed from Daily To-Do list');
+        }
+      });
+      leftSec.appendChild(pickupDot);
     }
+
 
     // Title Wrapper & Editable Title
     const titleWrapper = document.createElement('div');
@@ -270,15 +344,18 @@ export class TreeRenderer {
         health: '🏃‍♂️',
         finance: '💰',
         relationship: '❤️',
-        work: '💼'
+        work: '💼',
+        growth: '🌱'
       };
 
       const domainLabels = {
         health: 'Health',
         finance: 'Finance',
         relationship: 'Relationship',
-        work: 'Work'
+        work: 'Work',
+        growth: 'Growth'
       };
+
 
       const domKey = node.domain || 'work';
       domainPill.textContent = `${domainIcons[domKey] || '💼'} ${domainLabels[domKey] || 'Work'}`;
@@ -295,8 +372,15 @@ export class TreeRenderer {
       typeBadge.className = 'type-badge';
       typeBadge.dataset.type = node.type;
       typeBadge.textContent = node.type;
+      typeBadge.title = 'Click to change goal type';
+      typeBadge.style.cursor = 'pointer';
+      typeBadge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.showTypePicker(typeBadge, node);
+      });
       colType.appendChild(typeBadge);
     }
+
 
 
     // 3. STATUS COLUMN (Not Started, In Progress, Completed)
@@ -480,14 +564,17 @@ export class TreeRenderer {
     colActions.appendChild(actionsGroup);
 
     // Assemble Card in exact field order: Title -> Type -> Status -> Priority -> Deadline -> Time Left -> Progress -> Actions
-    card.append(leftSec, colType, colStatus, colPriority, colDeadline, colTimeLeft, colProgress, colActions);
+    if (isCompletedView || isAchievementMode) {
+      card.append(leftSec, colType, colStatus, colPriority);
+    } else {
+      card.append(leftSec, colType, colStatus, colPriority, colDeadline, colTimeLeft, colProgress, colActions);
+    }
+
     nodeWrapper.append(card, childrenContainer);
-
-
-
 
     return nodeWrapper;
   }
+
 
   initAllSortables() {
     this.cleanupSortables();
@@ -583,11 +670,18 @@ export class TreeRenderer {
 
     const rect = anchorEl.getBoundingClientRect();
     dropdown.style.position = 'fixed';
-    dropdown.style.top = `${rect.bottom + 4}px`;
     dropdown.style.left = `${rect.left}px`;
     dropdown.style.zIndex = '10000';
 
     document.body.appendChild(dropdown);
+
+    const dropHeight = dropdown.offsetHeight || 160;
+    if (rect.bottom + dropHeight > window.innerHeight - 20) {
+      dropdown.style.top = `${Math.max(10, rect.top - dropHeight - 4)}px`;
+    } else {
+      dropdown.style.top = `${rect.bottom + 4}px`;
+    }
+
 
     const closeHandler = (e) => {
       if (!dropdown.contains(e.target) && e.target !== anchorEl) {
@@ -599,7 +693,7 @@ export class TreeRenderer {
   }
 
   showStatusPicker(anchorEl, node) {
-    document.querySelectorAll('.priority-dropdown, .status-dropdown, .domain-dropdown').forEach(el => el.remove());
+    document.querySelectorAll('.priority-dropdown, .status-dropdown, .domain-dropdown, .type-dropdown').forEach(el => el.remove());
 
     const dropdown = document.createElement('div');
     dropdown.className = 'status-dropdown';
@@ -624,11 +718,17 @@ export class TreeRenderer {
 
     const rect = anchorEl.getBoundingClientRect();
     dropdown.style.position = 'fixed';
-    dropdown.style.top = `${rect.bottom + 4}px`;
     dropdown.style.left = `${rect.left}px`;
     dropdown.style.zIndex = '10000';
 
     document.body.appendChild(dropdown);
+
+    const dropHeight = dropdown.offsetHeight || 140;
+    if (rect.bottom + dropHeight > window.innerHeight - 20) {
+      dropdown.style.top = `${Math.max(10, rect.top - dropHeight - 4)}px`;
+    } else {
+      dropdown.style.top = `${rect.bottom + 4}px`;
+    }
 
     const closeHandler = (e) => {
       if (!dropdown.contains(e.target) && e.target !== anchorEl) {
@@ -640,7 +740,7 @@ export class TreeRenderer {
   }
 
   showDomainPicker(anchorEl, node) {
-    document.querySelectorAll('.priority-dropdown, .status-dropdown, .domain-dropdown').forEach(el => el.remove());
+    document.querySelectorAll('.priority-dropdown, .status-dropdown, .domain-dropdown, .type-dropdown').forEach(el => el.remove());
 
     const dropdown = document.createElement('div');
     dropdown.className = 'domain-dropdown';
@@ -649,7 +749,8 @@ export class TreeRenderer {
       { id: 'health', label: '🏃‍♂️ Health' },
       { id: 'finance', label: '💰 Finance' },
       { id: 'relationship', label: '❤️ Relationship' },
-      { id: 'work', label: '💼 Work' }
+      { id: 'work', label: '💼 Work' },
+      { id: 'growth', label: '🌱 Growth' }
     ];
 
     domains.forEach(d => {
@@ -666,11 +767,17 @@ export class TreeRenderer {
 
     const rect = anchorEl.getBoundingClientRect();
     dropdown.style.position = 'fixed';
-    dropdown.style.top = `${rect.bottom + 4}px`;
     dropdown.style.left = `${rect.left}px`;
     dropdown.style.zIndex = '10000';
 
     document.body.appendChild(dropdown);
+
+    const dropHeight = dropdown.offsetHeight || 180;
+    if (rect.bottom + dropHeight > window.innerHeight - 20) {
+      dropdown.style.top = `${Math.max(10, rect.top - dropHeight - 4)}px`;
+    } else {
+      dropdown.style.top = `${rect.bottom + 4}px`;
+    }
 
     const closeHandler = (e) => {
       if (!dropdown.contains(e.target) && e.target !== anchorEl) {
@@ -680,6 +787,59 @@ export class TreeRenderer {
     };
     setTimeout(() => document.addEventListener('click', closeHandler), 10);
   }
+
+  showTypePicker(anchorEl, node) {
+    document.querySelectorAll('.priority-dropdown, .status-dropdown, .domain-dropdown, .type-dropdown').forEach(el => el.remove());
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'type-dropdown';
+
+    const types = [
+      { id: 'program', label: 'Program' },
+      { id: 'project', label: 'Project' },
+      { id: 'milestone', label: 'Milestone' },
+      { id: 'task', label: 'Task' }
+    ];
+
+    types.forEach(t => {
+      const opt = document.createElement('div');
+      opt.className = 'type-option';
+      opt.textContent = t.label;
+      if (node.type === t.id) opt.classList.add('selected');
+
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.store.changeNodeType(node.id, t.id);
+        dropdown.remove();
+      });
+      dropdown.appendChild(opt);
+    });
+
+    const rect = anchorEl.getBoundingClientRect();
+    dropdown.style.position = 'fixed';
+    dropdown.style.left = `${rect.left}px`;
+    dropdown.style.zIndex = '10000';
+
+    document.body.appendChild(dropdown);
+
+    const dropHeight = dropdown.offsetHeight || 160;
+    if (rect.bottom + dropHeight > window.innerHeight - 20) {
+      dropdown.style.top = `${Math.max(10, rect.top - dropHeight - 4)}px`;
+    } else {
+      dropdown.style.top = `${rect.bottom + 4}px`;
+    }
+
+    const closeHandler = (e) => {
+
+
+      if (!dropdown.contains(e.target) && e.target !== anchorEl) {
+        dropdown.remove();
+        document.removeEventListener('click', closeHandler);
+      }
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 10);
+  }
+
 
 
   showConfirmDialog({ title, message, confirmText = 'Delete', cancelText = 'Cancel', onConfirm }) {

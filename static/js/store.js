@@ -17,10 +17,18 @@ export class GoalStore {
     this.selectedNodeId = null;
     this.searchQuery = '';
     this.hideCompleted = false;
+    this.showOnlyAchievements = false;
     this.sortBy = 'priority-desc';
     this.listeners = [];
     this.recalculateAllProgress();
   }
+
+  toggleAchievementFilter() {
+    this.showOnlyAchievements = !this.showOnlyAchievements;
+    this.notify();
+    return this.showOnlyAchievements;
+  }
+
 
 
 
@@ -228,16 +236,24 @@ export class GoalStore {
     }
 
     if (fields.status !== undefined) {
-
       if (fields.status === 'completed') {
         res.node.completed = true;
         res.node.progress = 100;
+        if (res.node.type === 'task' && !res.node.completedAt) {
+          res.node.completedAt = new Date().toISOString().split('T')[0];
+        }
       } else if (fields.status === 'in-progress') {
         res.node.completed = false;
-        if (res.node.type === 'task') res.node.progress = 50;
+        if (res.node.type === 'task') {
+          res.node.progress = 50;
+          res.node.completedAt = null;
+        }
       } else if (fields.status === 'not-started') {
         res.node.completed = false;
-        if (res.node.type === 'task') res.node.progress = 0;
+        if (res.node.type === 'task') {
+          res.node.progress = 0;
+          res.node.completedAt = null;
+        }
       }
     }
 
@@ -247,11 +263,211 @@ export class GoalStore {
     if (res.node.type === 'task' && fields.completed !== undefined) {
       res.node.progress = res.node.completed ? 100 : 0;
       res.node.status = res.node.completed ? 'completed' : 'not-started';
+      if (res.node.completed && !res.node.completedAt) {
+        res.node.completedAt = new Date().toISOString().split('T')[0];
+      } else if (!res.node.completed) {
+        res.node.completedAt = null;
+      }
     }
 
     this.notify();
     return true;
   }
+
+  togglePickupTask(id) {
+    const res = this.findNode(id);
+    if (!res || res.node.type !== 'task') return false;
+
+    res.node.pickedUp = !res.node.pickedUp;
+    this.notify();
+    return res.node.pickedUp;
+  }
+
+  getPickedUpTasks() {
+    const activeTasks = [];
+
+    const traverse = (node, path = []) => {
+      const currentPath = [...path, node.title];
+      if (node.type === 'task' && node.pickedUp && !node.completed && node.status !== 'completed') {
+        activeTasks.push({
+          ...node,
+          contextPath: currentPath.slice(0, -1).join(' ➔ ')
+        });
+      }
+      if (node.children && node.children.length > 0) {
+        node.children.forEach(child => traverse(child, currentPath));
+      }
+    };
+
+    this.tree.forEach(program => traverse(program, []));
+    return activeTasks;
+  }
+
+  getCompletedHistoryGroupedByDate() {
+    const completedTasks = [];
+
+    const traverse = (node, path = [], domain = 'work') => {
+      const currentDomain = node.type === 'program' ? (node.domain || 'work') : domain;
+      const currentPath = [...path, { title: node.title, type: node.type, domain: currentDomain }];
+
+      if (node.type === 'task' && (node.completed || node.status === 'completed')) {
+        const compDate = node.completedAt || new Date().toISOString().split('T')[0];
+
+        
+        const prog = currentPath.find(p => p.type === 'program') || { title: 'Program', domain: 'work' };
+        const proj = currentPath.find(p => p.type === 'project') || { title: 'Project' };
+        const ms = currentPath.find(p => p.type === 'milestone') || { title: 'Milestone' };
+
+        completedTasks.push({
+          ...node,
+          completedAt: compDate,
+          programTitle: prog.title,
+          domain: prog.domain,
+          projectTitle: proj.title,
+          milestoneTitle: ms.title
+        });
+      }
+
+      if (node.children && node.children.length > 0) {
+        node.children.forEach(child => traverse(child, currentPath, currentDomain));
+      }
+    };
+
+    this.tree.forEach(program => traverse(program, []));
+
+    const grouped = {};
+    completedTasks.forEach(task => {
+      const date = task.completedAt;
+      if (!grouped[date]) grouped[date] = [];
+      grouped[date].push(task);
+    });
+
+    const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
+
+    return sortedDates.map(date => ({
+      date,
+      tasks: grouped[date]
+    }));
+  }
+
+  getCompletedHigherLevelGoals() {
+    const results = {
+      programs: [],
+      projects: [],
+      milestones: []
+    };
+
+    const traverse = (node, path = []) => {
+      const currentPath = [...path, node.title];
+
+      if (node.type !== 'task' && (node.progress === 100 || node.completed || node.status === 'completed')) {
+        const itemData = {
+          ...node,
+          contextPath: currentPath.slice(0, -1).join(' ➔ ')
+        };
+
+        if (node.type === 'program') results.programs.push(itemData);
+        else if (node.type === 'project') results.projects.push(itemData);
+        else if (node.type === 'milestone') results.milestones.push(itemData);
+      }
+
+      if (node.children && node.children.length > 0) {
+        node.children.forEach(child => traverse(child, currentPath));
+      }
+    };
+
+    this.tree.forEach(program => traverse(program, []));
+    return results;
+  }
+
+
+
+
+  /**
+   * Change type of a goal node (program, project, milestone, task)
+   * and automatically adjust its parent position to maintain a valid hierarchy.
+   */
+  changeNodeType(id, newType) {
+    const res = this.findNode(id);
+    if (!res) return false;
+
+    const node = res.node;
+    if (node.type === newType) return true;
+
+    node.type = newType;
+
+    // 1. If changing to program, move to root level array
+    if (newType === 'program') {
+      if (!node.domain) node.domain = 'work';
+      if (res.parent) {
+        res.parent.children = res.parent.children.filter(n => n.id !== id);
+        this.tree.push(node);
+      }
+    }
+
+    // 2. If changing to project, parent must be a program
+    else if (newType === 'project') {
+      delete node.domain;
+      if (res.parent && res.parent.type !== 'program') {
+        let progParent = this.findAncestorOfType(id, 'program');
+        if (!progParent && this.tree.length > 0) progParent = this.tree[0];
+        if (progParent) {
+          res.parent.children = res.parent.children.filter(n => n.id !== id);
+          if (!progParent.children) progParent.children = [];
+          progParent.children.push(node);
+        }
+      }
+    }
+
+    // 3. If changing to milestone, parent must be a project
+    else if (newType === 'milestone') {
+      delete node.domain;
+      if (res.parent && res.parent.type !== 'project') {
+        let projParent = this.findAncestorOfType(id, 'project');
+        if (res.parent && res.parent.type === 'milestone') {
+          const grandParentRes = this.findNode(res.parent.id);
+          if (grandParentRes && grandParentRes.parent && grandParentRes.parent.type === 'project') {
+            projParent = grandParentRes.parent;
+          }
+        }
+        if (projParent) {
+          res.parent.children = res.parent.children.filter(n => n.id !== id);
+          if (!projParent.children) projParent.children = [];
+          projParent.children.push(node);
+        }
+      }
+    }
+
+    // 4. If changing to task, parent must be a milestone
+    else if (newType === 'task') {
+      delete node.domain;
+      if (res.parent && res.parent.type !== 'milestone') {
+        let msParent = this.findAncestorOfType(id, 'milestone');
+        if (msParent) {
+          res.parent.children = res.parent.children.filter(n => n.id !== id);
+          if (!msParent.children) msParent.children = [];
+          msParent.children.push(node);
+        }
+      }
+    }
+
+    this.notify();
+    return true;
+  }
+
+  findAncestorOfType(nodeId, targetType) {
+    const res = this.findNode(nodeId);
+    if (!res) return null;
+    let curr = res.parent;
+    while (curr) {
+      if (curr.type === targetType) return curr;
+      const parentRes = this.findNode(curr.id);
+      curr = parentRes ? parentRes.parent : null;
+    }
+    return null;
+  }
+
+
 
 
   /**
@@ -306,8 +522,10 @@ export class GoalStore {
    * Move node to a new parent or new position in tree
    */
   moveNode(nodeId, newParentId, newIndex) {
+    this.sortBy = 'manual';
     const res = this.findNode(nodeId);
     if (!res) return false;
+
 
     const movingNode = res.node;
 
@@ -356,8 +574,10 @@ export class GoalStore {
    * Move node up (-1) or down (+1) within its current sibling list
    */
   moveNodeRelative(nodeId, direction) {
+    this.sortBy = 'manual';
     const res = this.findNode(nodeId);
     if (!res) return false;
+
 
     let targetArray = this.tree;
     if (res.parent) {

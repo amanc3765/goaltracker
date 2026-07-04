@@ -4,23 +4,57 @@
       {
         "children": [
           {
-            "children": [],
-            "collapsed": true,
-            "completed": false,
-            "createdAt": "2026-07-03",
-            "deadline": "2026-07-31",
-            "deadlineSetAt": "2026-07-03",
-            "description": "",
-            "id": "milestone-1783092660578-208o",
-            "priority": "urgent",
-            "progress": 0,
-            "status": "not-started",
-            "title": "I/O Shangai content",
-            "type": "milestone"
-          },
-          {
-            "children": [],
-            "collapsed": true,
+            "children": [
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-05",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783163109619-1o4z",
+                "pickedUp": true,
+                "priority": "urgent",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Change multi asset editing demo",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-05",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783162981001-t371",
+                "pickedUp": true,
+                "priority": "urgent",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Resolve ADR CoreX feedback",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-05",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783163076394-lwyz",
+                "pickedUp": true,
+                "priority": "urgent",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Finalize deck",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-14",
@@ -35,7 +69,22 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
+            "completed": false,
+            "createdAt": "2026-07-03",
+            "deadline": "2026-07-31",
+            "deadlineSetAt": "2026-07-03",
+            "description": "",
+            "id": "milestone-1783092660578-208o",
+            "priority": "urgent",
+            "progress": 0,
+            "status": "not-started",
+            "title": "I/O Shangai content",
+            "type": "milestone"
+          },
+          {
+            "children": [],
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -50,7 +99,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -65,7 +114,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -80,7 +129,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-31",
@@ -95,7 +144,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-31",
@@ -110,7 +159,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-31",
@@ -125,7 +174,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-31",
@@ -139,7 +188,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": true,
+        "collapsed": false,
         "completed": false,
         "deadline": "2026-10-01",
         "deadlineSetAt": "2026-07-03",
@@ -171,7 +220,7 @@
         "children": [
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "deadline": "2026-07-12",
             "description": "",
@@ -184,7 +233,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "deadline": "2026-08-01",
             "deadlineSetAt": "2026-07-03",
@@ -198,7 +247,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "deadline": "2026-10-01",
             "deadlineSetAt": "2026-07-03",
@@ -246,17 +295,125 @@
               {
                 "children": [],
                 "collapsed": false,
-                "completed": false,
+                "completed": true,
+                "completedAt": "2026-07-04",
                 "createdAt": "2026-07-03",
-                "deadline": "",
+                "deadline": "2026-07-04",
+                "deadlineSetAt": "2026-07-04",
                 "description": "",
                 "id": "task-1783092506842-txgl",
                 "priority": "high",
-                "progress": 0,
-                "status": "not-started",
+                "progress": 100,
+                "status": "completed",
                 "title": "Pick them from station",
                 "type": "task"
               },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": true,
+                "completedAt": "2026-07-04",
+                "createdAt": "2026-07-03",
+                "deadline": "2026-07-04",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783092523290-amit",
+                "priority": "high",
+                "progress": 100,
+                "status": "completed",
+                "title": "Restock kitchen",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": true,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-04",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783161133181-1zdj",
+                "priority": "medium",
+                "progress": 100,
+                "status": "completed",
+                "title": "Fix jet spray",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": true,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-04",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783161155539-57ck",
+                "priority": "medium",
+                "progress": 100,
+                "status": "completed",
+                "title": "Setup desktop for papa",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": true,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-04",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783161187589-k19s",
+                "priority": "urgent",
+                "progress": 100,
+                "status": "completed",
+                "title": "Buy Nebulizer",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": true,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-04",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783161198792-jzmc",
+                "priority": "low",
+                "progress": 100,
+                "status": "completed",
+                "title": "Cook lunch",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
+            "completed": false,
+            "createdAt": "2026-07-03",
+            "deadline": "2026-07-04",
+            "deadlineSetAt": "2026-07-04",
+            "description": "",
+            "id": "milestone-1783092472749-yt2x",
+            "priority": "high",
+            "progress": 100,
+            "status": "completed",
+            "title": "Manage arrival",
+            "type": "milestone"
+          },
+          {
+            "children": [],
+            "collapsed": false,
+            "completed": false,
+            "createdAt": "2026-07-03",
+            "deadline": "",
+            "description": "",
+            "id": "task-1783092634209-qcvs",
+            "priority": "high",
+            "progress": 0,
+            "status": "not-started",
+            "title": "Marriage conversation",
+            "type": "milestone"
+          },
+          {
+            "children": [
               {
                 "children": [],
                 "collapsed": false,
@@ -264,14 +421,13 @@
                 "createdAt": "2026-07-03",
                 "deadline": "",
                 "description": "",
-                "id": "task-1783092523290-amit",
-                "priority": "medium",
+                "id": "task-1783092542911-jydt",
+                "priority": "high",
                 "progress": 0,
                 "status": "not-started",
-                "title": "Prepare breakfast at home",
+                "title": "Mom - Narayana appointment",
                 "type": "task"
               },
-
               {
                 "children": [],
                 "collapsed": false,
@@ -299,63 +455,6 @@
                 "status": "not-started",
                 "title": "Mom - Dentist appointment",
                 "type": "task"
-              },
-              {
-                "children": [],
-                "collapsed": false,
-                "completed": false,
-                "createdAt": "2026-07-03",
-                "deadline": "",
-                "description": "",
-                "id": "task-1783092619718-ii0v",
-                "priority": "medium",
-                "progress": 0,
-                "status": "not-started",
-                "title": "Mama visit",
-                "type": "task"
-              },
-              {
-                "children": [],
-                "collapsed": false,
-                "completed": false,
-                "createdAt": "2026-07-03",
-                "deadline": "",
-                "description": "",
-                "id": "task-1783092634209-qcvs",
-                "priority": "medium",
-                "progress": 0,
-                "status": "not-started",
-                "title": "Marriage conversation",
-                "type": "task"
-              }
-            ],
-            "collapsed": false,
-            "completed": false,
-            "createdAt": "2026-07-03",
-            "deadline": "",
-            "description": "",
-            "id": "milestone-1783092472749-yt2x",
-            "priority": "high",
-            "progress": 0,
-            "status": "not-started",
-            "title": "Manage arrival",
-            "type": "milestone"
-          },
-          {
-            "children": [
-              {
-                "children": [],
-                "collapsed": false,
-                "completed": false,
-                "createdAt": "2026-07-03",
-                "deadline": "",
-                "description": "",
-                "id": "task-1783092542911-jydt",
-                "priority": "high",
-                "progress": 0,
-                "status": "not-started",
-                "title": "Mom - Narayana appointment",
-                "type": "task"
               }
             ],
             "collapsed": false,
@@ -367,10 +466,40 @@
             "priority": "high",
             "progress": 0,
             "status": "not-started",
-            "title": "Doctor visits",
+            "title": "Health checkup",
+            "type": "milestone"
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-04",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783161287831-uhbm",
+                "pickedUp": true,
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Buy table cloth",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
+            "completed": false,
+            "createdAt": "2026-07-04",
+            "deadline": "",
+            "description": "",
+            "id": "milestone-1783163389530-w23i",
+            "priority": "medium",
+            "progress": 0,
+            "status": "not-started",
+            "title": "Manage daily",
             "type": "milestone"
           }
-
         ],
         "collapsed": false,
         "completed": false,
@@ -379,8 +508,8 @@
         "description": "",
         "id": "project-1783091580737-lnfr",
         "priority": "high",
-        "progress": 0,
-        "status": "not-started",
+        "progress": 25,
+        "status": "in-progress",
         "title": "Manage Bengaluru visit",
         "type": "project"
       }
@@ -392,8 +521,8 @@
     "domain": "relationship",
     "id": "program-1783091126605-oqkg",
     "priority": "high",
-    "progress": 0,
-    "status": "not-started",
+    "progress": 25,
+    "status": "in-progress",
     "title": "Manage relationship with Parents",
     "type": "program"
   },
@@ -403,7 +532,7 @@
         "children": [
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-07-15",
@@ -418,11 +547,11 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
-            "deadline": "2026-07-31",
-            "deadlineSetAt": "2026-07-03",
+            "deadline": "2026-08-01",
+            "deadlineSetAt": "2026-07-04",
             "description": "",
             "id": "milestone-1783092771085-cgub",
             "priority": "high",
@@ -433,11 +562,11 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
-            "deadline": "2026-07-31",
-            "deadlineSetAt": "2026-07-03",
+            "deadline": "2026-08-01",
+            "deadlineSetAt": "2026-07-04",
             "description": "",
             "id": "milestone-1783092793831-kdz6",
             "priority": "high",
@@ -448,7 +577,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-05",
@@ -463,7 +592,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-12",
@@ -478,7 +607,7 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
             "deadline": "2026-08-09",
@@ -492,7 +621,7 @@
             "type": "milestone"
           }
         ],
-        "collapsed": true,
+        "collapsed": false,
         "completed": false,
         "deadline": "2026-08-15",
         "deadlineSetAt": "2026-07-03",
@@ -518,7 +647,53 @@
     "type": "program"
   },
   {
-    "children": [],
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-03",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783092619718-ii0v",
+                "pickedUp": true,
+                "priority": "high",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Visit Mama",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
+            "completed": false,
+            "createdAt": "2026-07-04",
+            "deadline": "",
+            "description": "",
+            "id": "milestone-1783160543412-tmky",
+            "priority": "high",
+            "progress": 0,
+            "status": "not-started",
+            "title": "Relatives",
+            "type": "milestone"
+          }
+        ],
+        "collapsed": false,
+        "completed": false,
+        "createdAt": "2026-07-04",
+        "deadline": "",
+        "description": "",
+        "id": "project-1783160467867-n8l0",
+        "priority": "high",
+        "progress": 0,
+        "status": "not-started",
+        "title": "Q3 2026",
+        "type": "project"
+      }
+    ],
     "collapsed": false,
     "completed": false,
     "createdAt": "2026-07-03",
@@ -529,7 +704,7 @@
     "priority": "medium",
     "progress": 0,
     "status": "not-started",
-    "title": "Manage relationship with Friends",
+    "title": "Manage relationship with Friends & Relatives",
     "type": "program"
   },
   {
@@ -537,12 +712,29 @@
       {
         "children": [
           {
-            "children": [],
-            "collapsed": true,
+            "children": [
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-05",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783163166836-0hkb",
+                "pickedUp": true,
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Fill ITR form",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
-            "deadline": "2026-07-05",
-            "deadlineSetAt": "2026-07-03",
+            "deadline": "2026-07-20",
+            "deadlineSetAt": "2026-07-04",
             "description": "",
             "id": "milestone-1783092882214-5eta",
             "priority": "urgent",
@@ -553,21 +745,21 @@
           },
           {
             "children": [],
-            "collapsed": true,
+            "collapsed": false,
             "completed": false,
             "createdAt": "2026-07-03",
-            "deadline": "2026-07-05",
-            "deadlineSetAt": "2026-07-03",
+            "deadline": "2026-07-20",
+            "deadlineSetAt": "2026-07-04",
             "description": "",
             "id": "milestone-1783093401989-e04e",
             "priority": "high",
             "progress": 0,
             "status": "not-started",
-            "title": "July report",
+            "title": "July checkpoint",
             "type": "milestone"
           }
         ],
-        "collapsed": true,
+        "collapsed": false,
         "completed": false,
         "createdAt": "2026-07-03",
         "deadline": "2026-10-01",
@@ -577,7 +769,7 @@
         "priority": "high",
         "progress": 0,
         "status": "not-started",
-        "title": "Q3 2026 - Continue investments",
+        "title": "Q3 2026",
         "type": "project"
       }
     ],
@@ -592,6 +784,70 @@
     "progress": 0,
     "status": "not-started",
     "title": "Manage Finances",
+    "type": "program"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": true,
+                "completedAt": "2026-07-04",
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-04",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783162477206-74i4",
+                "priority": "medium",
+                "progress": 100,
+                "status": "completed",
+                "title": "Review tasks",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
+            "completed": true,
+            "createdAt": "2026-07-04",
+            "deadline": "2026-07-04",
+            "deadlineSetAt": "2026-07-04",
+            "description": "",
+            "id": "milestone-1783162435066-ptgh",
+            "priority": "high",
+            "progress": 100,
+            "status": "completed",
+            "title": "Create Goal Tracker",
+            "type": "milestone"
+          }
+        ],
+        "collapsed": false,
+        "completed": false,
+        "createdAt": "2026-07-04",
+        "deadline": "2026-10-01",
+        "deadlineSetAt": "2026-07-04",
+        "description": "",
+        "id": "project-1783162426215-qwri",
+        "priority": "high",
+        "progress": 100,
+        "status": "completed",
+        "title": "Q3 2026",
+        "type": "project"
+      }
+    ],
+    "collapsed": false,
+    "completed": false,
+    "createdAt": "2026-07-04",
+    "deadline": "",
+    "description": "",
+    "domain": "growth",
+    "id": "program-1783162353430-mjms",
+    "priority": "medium",
+    "progress": 100,
+    "status": "completed",
+    "title": "Personal development",
     "type": "program"
   }
 ]
