@@ -328,13 +328,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     filterAchievementsBtn.addEventListener('click', () => {
       const isActive = store.toggleAchievementFilter();
       filterAchievementsBtn.classList.toggle('active', isActive);
-      if (isActive) {
-        showToast('Filtering completed achievements 🏆 (without strikethrough)');
-      } else {
-        showToast('Showing all goals tree');
-      }
     });
   }
+
 
   // Store subscription: re-render UI & trigger backend auto-save
   store.subscribe(() => {
