@@ -511,6 +511,28 @@ body {
   display: none !important;
 }
 
+/* Empty container drop zone hint for SortableJS drag & drop */
+.node-children-container:not(.collapsed):empty {
+  min-height: 28px;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  margin: 4px 0 4px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.node-children-container:not(.collapsed):empty::after {
+  content: 'Drop sub-items here';
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+
 /* Node Card Content & Aligned Table Layout */
 .node-card {
   display: flex;
@@ -663,12 +685,13 @@ body {
 }
 
 .col-deadline {
-  flex: 0 0 150px;
-  width: 150px;
-  min-width: 150px;
+  flex: 0 0 100px;
+  width: 100px;
+  min-width: 100px;
   display: flex;
   align-items: center;
 }
+
 
 .col-timeleft {
   flex: 0 0 160px;
