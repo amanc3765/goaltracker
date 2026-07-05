@@ -68,19 +68,27 @@ export class GoalStore {
       if (!node.status) {
         node.status = node.completed ? 'completed' : 'not-started';
       }
+      if (node.completedAt === undefined) {
+        node.completedAt = null;
+      }
 
       if (node.type === 'task') {
         if (node.status === 'completed' || node.completed) {
           node.completed = true;
           node.status = 'completed';
           node.progress = 100;
+          if (!node.completedAt) {
+            node.completedAt = new Date().toISOString().split('T')[0];
+          }
         } else if (node.status === 'in-progress') {
           node.completed = false;
           node.progress = 50;
+          node.completedAt = null;
         } else {
           node.completed = false;
           node.status = 'not-started';
           node.progress = 0;
+          node.completedAt = null;
         }
         return node.progress;
       }
@@ -90,22 +98,31 @@ export class GoalStore {
         if (node.status === 'completed') node.progress = 100;
         else if (node.status === 'in-progress' && (!node.progress || node.progress === 0)) node.progress = 50;
         else if (node.status === 'not-started') node.progress = 0;
-        return node.progress || 0;
+      } else {
+        let sum = 0;
+        node.children.forEach(child => {
+          sum += calculateNodeProgress(child);
+        });
+
+        node.progress = Math.round(sum / node.children.length);
+
+        // Auto update status based on calculated progress
+        if (node.progress === 100) node.status = 'completed';
+        else if (node.progress > 0) node.status = 'in-progress';
+        else node.status = 'not-started';
       }
 
-      let sum = 0;
-      node.children.forEach(child => {
-        sum += calculateNodeProgress(child);
-      });
+      if (node.status === 'completed' || node.completed || node.progress === 100) {
+        node.completed = true;
+        if (!node.completedAt) {
+          node.completedAt = new Date().toISOString().split('T')[0];
+        }
+      } else {
+        node.completed = false;
+        node.completedAt = null;
+      }
 
-      node.progress = Math.round(sum / node.children.length);
-
-      // Auto update status based on calculated progress
-      if (node.progress === 100) node.status = 'completed';
-      else if (node.progress > 0) node.status = 'in-progress';
-      else node.status = 'not-started';
-
-      return node.progress;
+      return node.progress || 0;
     };
 
     this.tree.forEach(prog => calculateNodeProgress(prog));
@@ -210,6 +227,7 @@ export class GoalStore {
       priority: childType === 'task' ? 'medium' : 'high',
       deadline: '',
       createdAt: new Date().toISOString().split('T')[0],
+      completedAt: null,
       progress: 0,
       collapsed: false,
       completed: false,
@@ -239,33 +257,37 @@ export class GoalStore {
       if (fields.status === 'completed') {
         res.node.completed = true;
         res.node.progress = 100;
-        if (res.node.type === 'task' && !res.node.completedAt) {
+        if (!res.node.completedAt) {
           res.node.completedAt = new Date().toISOString().split('T')[0];
         }
       } else if (fields.status === 'in-progress') {
         res.node.completed = false;
+        res.node.completedAt = null;
         if (res.node.type === 'task') {
           res.node.progress = 50;
-          res.node.completedAt = null;
         }
       } else if (fields.status === 'not-started') {
         res.node.completed = false;
+        res.node.completedAt = null;
         if (res.node.type === 'task') {
           res.node.progress = 0;
-          res.node.completedAt = null;
         }
       }
     }
 
     Object.assign(res.node, fields);
     
-    // If updating task completion status, auto recalculate progress
-    if (res.node.type === 'task' && fields.completed !== undefined) {
-      res.node.progress = res.node.completed ? 100 : 0;
-      res.node.status = res.node.completed ? 'completed' : 'not-started';
-      if (res.node.completed && !res.node.completedAt) {
-        res.node.completedAt = new Date().toISOString().split('T')[0];
-      } else if (!res.node.completed) {
+    // If updating completion status, auto recalculate progress
+    if (fields.completed !== undefined) {
+      if (res.node.type === 'task') {
+        res.node.progress = res.node.completed ? 100 : 0;
+        res.node.status = res.node.completed ? 'completed' : 'not-started';
+      }
+      if (res.node.completed || res.node.status === 'completed') {
+        if (!res.node.completedAt) {
+          res.node.completedAt = new Date().toISOString().split('T')[0];
+        }
+      } else {
         res.node.completedAt = null;
       }
     }

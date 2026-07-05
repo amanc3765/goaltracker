@@ -14,7 +14,8 @@
             "progress": 50,
             "status": "in-progress",
             "title": "Reach Soldier level",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -28,7 +29,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Reach Sergeant level",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -42,7 +44,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Reach Captain level",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [
@@ -59,7 +62,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "July Test",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -74,7 +78,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "August Test",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -89,7 +94,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "September Test",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               }
             ],
             "collapsed": false,
@@ -103,7 +109,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Check cholesterol levels",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           }
         ],
         "collapsed": false,
@@ -116,7 +123,8 @@
         "progress": 13,
         "status": "in-progress",
         "title": "Become a Captain",
-        "type": "project"
+        "type": "project",
+        "completedAt": null
       }
     ],
     "collapsed": false,
@@ -130,7 +138,8 @@
     "progress": 13,
     "status": "in-progress",
     "title": "Fix health - Reduce cholesterol levels",
-    "type": "program"
+    "type": "program",
+    "completedAt": null
   },
   {
     "children": [
@@ -198,12 +207,13 @@
                 "deadlineSetAt": "2026-07-04",
                 "description": "",
                 "id": "task-1783165463070-46n7",
+                "pickedUp": true,
                 "priority": "medium",
                 "progress": 0,
                 "status": "not-started",
                 "title": "Put message for Mari",
                 "type": "task",
-                "pickedUp": true
+                "completedAt": null
               },
               {
                 "children": [],
@@ -218,7 +228,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Do rehearsal",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               }
             ],
             "collapsed": false,
@@ -232,7 +243,8 @@
             "progress": 30,
             "status": "in-progress",
             "title": "I/O BLR deliver",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -247,7 +259,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "I/O Shangai content",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -262,7 +275,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Compose submit",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -277,7 +291,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Skill submit",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -292,7 +307,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Bench submit",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -307,7 +323,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "DAC Submit",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -322,7 +339,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "NLA packet",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -337,7 +355,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Cast partner",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -352,7 +371,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Inspector partner",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           }
         ],
         "collapsed": false,
@@ -365,7 +385,8 @@
         "progress": 3,
         "status": "in-progress",
         "title": "Q3 2026",
-        "type": "project"
+        "type": "project",
+        "completedAt": null
       }
     ],
     "collapsed": false,
@@ -379,7 +400,8 @@
     "progress": 3,
     "status": "in-progress",
     "title": "Get promoted at Work",
-    "type": "program"
+    "type": "program",
+    "completedAt": null
   },
   {
     "children": [
@@ -432,7 +454,8 @@
                 "progress": 100,
                 "status": "completed",
                 "title": "Fix jet spray",
-                "type": "task"
+                "type": "task",
+                "completedAt": "2026-07-04"
               },
               {
                 "children": [],
@@ -447,7 +470,8 @@
                 "progress": 100,
                 "status": "completed",
                 "title": "Setup desktop for papa",
-                "type": "task"
+                "type": "task",
+                "completedAt": "2026-07-04"
               },
               {
                 "children": [],
@@ -462,7 +486,8 @@
                 "progress": 100,
                 "status": "completed",
                 "title": "Buy Nebulizer",
-                "type": "task"
+                "type": "task",
+                "completedAt": "2026-07-04"
               },
               {
                 "children": [],
@@ -477,7 +502,8 @@
                 "progress": 100,
                 "status": "completed",
                 "title": "Cook lunch",
-                "type": "task"
+                "type": "task",
+                "completedAt": "2026-07-04"
               }
             ],
             "collapsed": false,
@@ -491,7 +517,8 @@
             "progress": 100,
             "status": "completed",
             "title": "Manage arrival",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": "2026-07-04"
           },
           {
             "children": [
@@ -499,7 +526,7 @@
                 "children": [],
                 "collapsed": true,
                 "completed": true,
-                "completedAt": "2026-07-04",
+                "completedAt": "2026-07-03",
                 "createdAt": "2026-07-03",
                 "deadline": "",
                 "description": "",
@@ -514,7 +541,7 @@
                 "children": [],
                 "collapsed": true,
                 "completed": true,
-                "completedAt": "2026-07-04",
+                "completedAt": "2026-07-03",
                 "createdAt": "2026-07-03",
                 "deadline": "",
                 "description": "",
@@ -526,19 +553,21 @@
                 "type": "task"
               },
               {
-                "id": "task-1783213436489-ssgg",
-                "title": "Narayana - Confirm",
-                "type": "task",
-                "status": "not-started",
-                "description": "",
-                "priority": "medium",
-                "deadline": "",
-                "createdAt": "2026-07-05",
-                "progress": 0,
+                "children": [],
                 "collapsed": false,
                 "completed": false,
-                "children": [],
-                "pickedUp": true
+                "createdAt": "2026-07-05",
+                "deadline": "2026-07-05",
+                "description": "",
+                "id": "task-1783213436489-ssgg",
+                "pickedUp": true,
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Narayana - Confirm",
+                "type": "task",
+                "deadlineSetAt": "2026-07-05",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -554,7 +583,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Dentist - Book",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -568,7 +598,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Narayana - Visit",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -582,7 +613,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Ortho - Visit",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -596,7 +628,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "PFT Test",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -610,7 +643,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Dentist - Visit",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               }
             ],
             "collapsed": false,
@@ -624,7 +658,8 @@
             "progress": 25,
             "status": "in-progress",
             "title": "Health checkup",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -638,25 +673,44 @@
             "progress": 0,
             "status": "not-started",
             "title": "Marriage conversation",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [
               {
                 "children": [],
                 "collapsed": true,
-                "completed": false,
+                "completed": true,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-04",
                 "deadlineSetAt": "2026-07-04",
                 "description": "",
                 "id": "task-1783161287831-uhbm",
-                "pickedUp": true,
+                "pickedUp": false,
                 "priority": "high",
-                "progress": 0,
-                "status": "not-started",
+                "progress": 100,
+                "status": "completed",
                 "title": "Buy table cloth",
-                "type": "task"
+                "type": "task",
+                "completedAt": "2026-07-05"
+              },
+              {
+                "id": "task-1783215450046-666m",
+                "title": "Ask aunty for gold",
+                "type": "task",
+                "status": "not-started",
+                "description": "",
+                "priority": "high",
+                "deadline": "2026-07-05",
+                "createdAt": "2026-07-05",
+                "progress": 0,
+                "collapsed": false,
+                "completed": false,
+                "children": [],
+                "pickedUp": true,
+                "deadlineSetAt": "2026-07-05",
+                "completedAt": null
               }
             ],
             "collapsed": false,
@@ -666,10 +720,11 @@
             "description": "",
             "id": "milestone-1783163389530-w23i",
             "priority": "medium",
-            "progress": 0,
-            "status": "not-started",
+            "progress": 50,
+            "status": "in-progress",
             "title": "Manage daily",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           }
         ],
         "collapsed": false,
@@ -679,10 +734,11 @@
         "description": "",
         "id": "project-1783091580737-lnfr",
         "priority": "high",
-        "progress": 31,
+        "progress": 44,
         "status": "in-progress",
         "title": "Manage Bengaluru visit",
-        "type": "project"
+        "type": "project",
+        "completedAt": null
       }
     ],
     "collapsed": false,
@@ -692,10 +748,11 @@
     "domain": "relationship",
     "id": "program-1783091126605-oqkg",
     "priority": "high",
-    "progress": 31,
+    "progress": 44,
     "status": "in-progress",
     "title": "Manage relationship with Parents",
-    "type": "program"
+    "type": "program",
+    "completedAt": null
   },
   {
     "children": [
@@ -714,7 +771,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Durgapur notice",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -729,7 +787,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Grade card original",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -744,7 +803,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Transcript",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -759,7 +819,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Online admission",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -774,7 +835,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Hostel allotment",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [],
@@ -789,7 +851,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Travel",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           }
         ],
         "collapsed": false,
@@ -802,7 +865,8 @@
         "progress": 0,
         "status": "not-started",
         "title": "Send her to college",
-        "type": "project"
+        "type": "project",
+        "completedAt": null
       }
     ],
     "collapsed": false,
@@ -815,7 +879,8 @@
     "progress": 0,
     "status": "not-started",
     "title": "Manage relationship with noBi",
-    "type": "program"
+    "type": "program",
+    "completedAt": null
   },
   {
     "children": [
@@ -837,7 +902,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Visit Mama",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               }
             ],
             "collapsed": false,
@@ -850,7 +916,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Relatives",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [
@@ -866,7 +933,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Vicky",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -880,7 +948,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Shubham",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               }
             ],
             "collapsed": false,
@@ -893,7 +962,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "Friends",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           }
         ],
         "collapsed": false,
@@ -906,7 +976,8 @@
         "progress": 0,
         "status": "not-started",
         "title": "Q3 2026",
-        "type": "project"
+        "type": "project",
+        "completedAt": null
       }
     ],
     "collapsed": false,
@@ -920,7 +991,8 @@
     "progress": 0,
     "status": "not-started",
     "title": "Manage relationship with Friends & Relatives",
-    "type": "program"
+    "type": "program",
+    "completedAt": null
   },
   {
     "children": [
@@ -942,7 +1014,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Fill ITR form",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
@@ -956,21 +1029,25 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Fill foreign assets",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               },
               {
                 "children": [],
                 "collapsed": true,
                 "completed": false,
                 "createdAt": "2026-07-04",
-                "deadline": "",
+                "deadline": "2026-07-05",
                 "description": "",
                 "id": "task-1783165347033-bh33",
                 "priority": "medium",
                 "progress": 0,
                 "status": "not-started",
                 "title": "Help aunty to fill ITR",
-                "type": "task"
+                "type": "task",
+                "pickedUp": true,
+                "deadlineSetAt": "2026-07-05",
+                "completedAt": null
               }
             ],
             "collapsed": false,
@@ -984,7 +1061,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "File ITR",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           },
           {
             "children": [
@@ -1002,7 +1080,8 @@
                 "progress": 0,
                 "status": "not-started",
                 "title": "Finance Tracker - July",
-                "type": "task"
+                "type": "task",
+                "completedAt": null
               }
             ],
             "collapsed": false,
@@ -1016,7 +1095,8 @@
             "progress": 0,
             "status": "not-started",
             "title": "July checkpoint",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": null
           }
         ],
         "collapsed": false,
@@ -1030,7 +1110,8 @@
         "progress": 0,
         "status": "not-started",
         "title": "Q3 2026",
-        "type": "project"
+        "type": "project",
+        "completedAt": null
       }
     ],
     "collapsed": false,
@@ -1044,7 +1125,8 @@
     "progress": 0,
     "status": "not-started",
     "title": "Manage Finances",
-    "type": "program"
+    "type": "program",
+    "completedAt": null
   },
   {
     "children": [
@@ -1080,22 +1162,24 @@
             "progress": 100,
             "status": "completed",
             "title": "Create Goal Tracker",
-            "type": "milestone"
+            "type": "milestone",
+            "completedAt": "2026-07-04"
           },
           {
-            "id": "milestone-1783213480102-s0yq",
-            "title": "Scooty servicing",
-            "type": "milestone",
-            "status": "not-started",
-            "description": "",
-            "priority": "high",
-            "deadline": "2026-08-10",
-            "createdAt": "2026-07-05",
-            "progress": 0,
+            "children": [],
             "collapsed": false,
             "completed": false,
-            "children": [],
-            "deadlineSetAt": "2026-07-05"
+            "createdAt": "2026-07-05",
+            "deadline": "2026-08-10",
+            "deadlineSetAt": "2026-07-05",
+            "description": "",
+            "id": "milestone-1783213480102-s0yq",
+            "priority": "high",
+            "progress": 0,
+            "status": "not-started",
+            "title": "Scooty servicing",
+            "type": "milestone",
+            "completedAt": null
           }
         ],
         "collapsed": false,
@@ -1109,7 +1193,8 @@
         "progress": 50,
         "status": "in-progress",
         "title": "Q3 2026",
-        "type": "project"
+        "type": "project",
+        "completedAt": null
       }
     ],
     "collapsed": false,
@@ -1123,6 +1208,7 @@
     "progress": 50,
     "status": "in-progress",
     "title": "Personal",
-    "type": "program"
+    "type": "program",
+    "completedAt": null
   }
 ]

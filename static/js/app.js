@@ -181,7 +181,12 @@ function renderTodoView() {
       const header = document.createElement('div');
       header.className = 'history-accordion-header';
 
-      const formattedDate = new Date(group.date).toLocaleDateString(undefined, {
+      const dateParts = (group.date || '').split('-');
+      const dateObj = dateParts.length === 3 
+        ? new Date(parseInt(dateParts[0], 10), parseInt(dateParts[1], 10) - 1, parseInt(dateParts[2], 10))
+        : new Date(group.date);
+
+      const formattedDate = dateObj.toLocaleDateString(undefined, {
         weekday: 'short',
         year: 'numeric',
         month: 'short',
