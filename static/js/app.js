@@ -39,6 +39,38 @@ function triggerAutoSave() {
 
 window.showToast = showToast;
 
+function getDueDateGroupInfo(deadlineStr) {
+  if (!deadlineStr) {
+    return { order: 9999, key: 'no-deadline', label: 'No Deadline', icon: '🗓️', isOverdue: false, isToday: false };
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const parts = deadlineStr.split('-');
+  let d;
+  if (parts.length === 3) {
+    d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+  } else {
+    d = new Date(deadlineStr);
+  }
+  d.setHours(0, 0, 0, 0);
+
+  const diffTime = d - today;
+  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0) {
+    return { order: -100 + diffDays, key: `overdue-${deadlineStr}`, label: `Overdue (${deadlineStr})`, icon: '⚠️', isOverdue: true, isToday: false };
+  } else if (diffDays === 0) {
+    return { order: 0, key: 'today', label: 'Due Today', icon: '⚡', isOverdue: false, isToday: true };
+  } else if (diffDays === 1) {
+    return { order: 1, key: 'tomorrow', label: 'Due Tomorrow', icon: '📅', isOverdue: false, isToday: false };
+  } else {
+    const formatted = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+    return { order: diffDays, key: deadlineStr, label: `Due ${formatted}`, icon: '📅', isOverdue: false, isToday: false };
+  }
+}
+
 function renderTodoView() {
   const badgeEl = document.getElementById('todo-badge-count');
   const pendingCountEl = document.getElementById('todo-pending-count');
@@ -48,19 +80,12 @@ function renderTodoView() {
   if (!pendingListEl || !historyListEl) return;
 
   const pickedUpTasks = store.getPickedUpTasks();
-  const priorityWeights = { urgent: 4, critical: 4, high: 3, medium: 2, low: 1 };
-  pickedUpTasks.sort((a, b) => {
-    const pA = priorityWeights[a.priority] || 2;
-    const pB = priorityWeights[b.priority] || 2;
-    return pB - pA;
-  });
 
   if (badgeEl) badgeEl.textContent = pickedUpTasks.length;
   if (pendingCountEl) pendingCountEl.textContent = `${pickedUpTasks.length} Pending`;
 
-  // Render Section A: Active To-Do List
+  // Render Section A: Active To-Do List Grouped & Sorted by Due Date
   pendingListEl.innerHTML = '';
-
 
   if (pickedUpTasks.length === 0) {
     const emptyState = document.createElement('div');
@@ -72,7 +97,19 @@ function renderTodoView() {
     `;
     pendingListEl.appendChild(emptyState);
   } else {
+    const groupsMap = new Map();
+
     pickedUpTasks.forEach(task => {
+      const gInfo = getDueDateGroupInfo(task.deadline);
+      if (!groupsMap.has(gInfo.key)) {
+        groupsMap.set(gInfo.key, { info: gInfo, tasks: [] });
+      }
+      groupsMap.get(gInfo.key).tasks.push(task);
+    });
+
+    const sortedGroups = Array.from(groupsMap.values()).sort((a, b) => a.info.order - b.info.order);
+
+    const createTaskRow = (task) => {
       const row = document.createElement('div');
       row.className = 'todo-item-row';
 
@@ -88,11 +125,6 @@ function renderTodoView() {
       const info = document.createElement('div');
       info.className = 'todo-item-info';
 
-      const priorityPill = document.createElement('span');
-      priorityPill.className = 'priority-pill';
-      priorityPill.dataset.priority = task.priority || 'medium';
-      priorityPill.textContent = (task.priority || 'medium').toUpperCase();
-
       const title = document.createElement('div');
       title.className = 'todo-item-title';
       title.textContent = task.title;
@@ -101,7 +133,7 @@ function renderTodoView() {
       deadlineSpan.className = 'todo-deadline-badge';
       deadlineSpan.style.cursor = 'pointer';
       deadlineSpan.title = 'Click to change deadline';
-      const status = renderer ? renderer.getDeadlineStatus(task.deadline, 'task', task.createdAt, task.deadlineSetAt) : null;
+      const status = renderer ? renderer.getDeadlineStatus(task.deadline, 'task', task.createdAt) : null;
       const dateText = status ? status.formattedDate : (task.deadline || 'Set deadline');
       deadlineSpan.textContent = `📅 ${dateText}`;
       if (status && status.isOverdue) deadlineSpan.classList.add('overdue');
@@ -123,11 +155,7 @@ function renderTodoView() {
         showToast('Task removed from To-Do list');
       });
 
-      info.append(pickupBtn, priorityPill, title, deadlineSpan);
-
-
-
-
+      info.append(pickupBtn, title, deadlineSpan);
 
       const locateBtn = document.createElement('button');
       locateBtn.className = 'todo-locate-btn';
@@ -146,7 +174,6 @@ function renderTodoView() {
         locateNodeInTree(task.id);
       });
 
-
       const removeBtn = document.createElement('button');
       removeBtn.className = 'todo-remove-btn';
       removeBtn.title = 'Un-pick task';
@@ -157,10 +184,36 @@ function renderTodoView() {
       });
 
       row.append(check, info, locateBtn, removeBtn);
+      return row;
+    };
 
+    sortedGroups.forEach(group => {
+      const dateGroupEl = document.createElement('div');
+      dateGroupEl.className = 'todo-date-group';
 
-      row.append(check, info, removeBtn);
-      pendingListEl.appendChild(row);
+      const groupHeader = document.createElement('div');
+      groupHeader.className = `todo-date-header ${group.info.isOverdue ? 'overdue' : ''} ${group.info.isToday ? 'today' : ''}`;
+      
+      const icon = document.createElement('span');
+      icon.className = 'todo-date-header-icon';
+      icon.textContent = group.info.icon;
+
+      const title = document.createElement('span');
+      title.className = 'todo-date-header-title';
+      title.textContent = group.info.label;
+
+      const count = document.createElement('span');
+      count.className = 'todo-date-header-count';
+      count.textContent = group.tasks.length;
+
+      groupHeader.append(icon, title, count);
+      dateGroupEl.appendChild(groupHeader);
+
+      group.tasks.forEach(task => {
+        dateGroupEl.appendChild(createTaskRow(task));
+      });
+
+      pendingListEl.appendChild(dateGroupEl);
     });
   }
 
@@ -265,10 +318,8 @@ function renderTodoView() {
             sortedTasks.forEach(t => {
               const item = document.createElement('div');
               item.className = 'history-task-item';
-              const priority = t.priority || 'medium';
               item.innerHTML = `
                 <div class="history-task-check">✓</div>
-                <span class="priority-dot" data-priority="${priority}" title="${priority.toUpperCase()} Priority"></span>
                 <span class="history-task-title">${t.title}</span>
               `;
               taskList.appendChild(item);
@@ -425,13 +476,52 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  const toggleColumnsBtn = document.getElementById('btn-toggle-columns');
+  if (toggleColumnsBtn) {
+    toggleColumnsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      renderer.showColumnPicker(toggleColumnsBtn);
+    });
+  }
 
+  const toggleHistoryBtn = document.getElementById('btn-toggle-history');
+  let isHistoryExpanded = false;
+
+  if (toggleHistoryBtn) {
+    toggleHistoryBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isHistoryExpanded = !isHistoryExpanded;
+      const accordions = document.querySelectorAll('#todo-history-list .history-accordion');
+      accordions.forEach(acc => {
+        acc.classList.toggle('collapsed', !isHistoryExpanded);
+      });
+      toggleHistoryBtn.classList.toggle('active', isHistoryExpanded);
+      toggleHistoryBtn.title = isHistoryExpanded ? 'Collapse all history items' : 'Expand all history items';
+    });
+  }
+
+  function applyColumnVisibility(vis) {
+    const container = document.querySelector('.app-container') || document.body;
+    const cols = ['title', 'type', 'status', 'priority', 'deadline', 'timeleft', 'progress', 'actions'];
+    cols.forEach(col => {
+      container.classList.toggle(`hide-col-${col}`, vis && vis[col] === false);
+    });
+
+    if (toggleColumnsBtn && store) {
+      const isAnyHidden = store.isAnyColumnHidden();
+      toggleColumnsBtn.classList.toggle('active', isAnyHidden);
+    }
+  }
+
+  // Initial column visibility application
+  applyColumnVisibility(store.columnVisibility);
 
   // Store subscription: re-render UI & trigger backend auto-save
   store.subscribe(() => {
     renderer.render();
     renderSummaryDashboard();
     renderTodoView();
+    applyColumnVisibility(store.columnVisibility);
     triggerAutoSave();
   });
 

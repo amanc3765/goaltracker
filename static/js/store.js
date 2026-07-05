@@ -18,9 +18,64 @@ export class GoalStore {
     this.searchQuery = '';
     this.hideCompleted = false;
     this.showOnlyAchievements = false;
-    this.sortBy = 'priority-desc';
+    this.sortBy = 'manual';
     this.listeners = [];
+    this.columnVisibility = this.loadColumnVisibility();
     this.recalculateAllProgress();
+  }
+
+  loadColumnVisibility() {
+    const defaultCols = {
+      title: true,
+      type: true,
+      status: true,
+      priority: true,
+      deadline: true,
+      timeleft: true,
+      progress: true,
+      actions: true
+    };
+    try {
+      const saved = localStorage.getItem('goaltracker_column_visibility');
+      if (saved) {
+        return { ...defaultCols, ...JSON.parse(saved) };
+      }
+    } catch (e) {
+      console.warn('Could not load column visibility from localStorage:', e);
+    }
+    return defaultCols;
+  }
+
+  toggleColumnVisibility(colKey) {
+    if (Object.prototype.hasOwnProperty.call(this.columnVisibility, colKey)) {
+      this.columnVisibility[colKey] = !this.columnVisibility[colKey];
+      try {
+        localStorage.setItem('goaltracker_column_visibility', JSON.stringify(this.columnVisibility));
+      } catch (e) {}
+      this.notify();
+    }
+    return this.columnVisibility[colKey];
+  }
+
+  resetColumnVisibility() {
+    this.columnVisibility = {
+      title: true,
+      type: true,
+      status: true,
+      priority: true,
+      deadline: true,
+      timeleft: true,
+      progress: true,
+      actions: true
+    };
+    try {
+      localStorage.setItem('goaltracker_column_visibility', JSON.stringify(this.columnVisibility));
+    } catch (e) {}
+    this.notify();
+  }
+
+  isAnyColumnHidden() {
+    return Object.values(this.columnVisibility).some(v => v === false);
   }
 
   toggleAchievementFilter() {
@@ -62,6 +117,7 @@ export class GoalStore {
    * Program: Avg of child projects
    */
   recalculateAllProgress() {
+    this.evaluateAutoPickup();
     const calculateNodeProgress = (node) => {
       if (!node.children) node.children = [];
 
@@ -250,7 +306,7 @@ export class GoalStore {
     if (!res) return false;
 
     if (fields.deadline !== undefined) {
-      fields.deadlineSetAt = new Date().toISOString().split('T')[0];
+      // deadline updated
     }
 
     if (fields.status !== undefined) {
@@ -347,11 +403,50 @@ export class GoalStore {
 
 
 
+  evaluateAutoPickup() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const traverse = (node) => {
+      if (node.type === 'task' && !node.completed && node.status !== 'completed' && node.deadline) {
+        const parts = node.deadline.split('-');
+        let d;
+        if (parts.length === 3) {
+          d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        } else {
+          d = new Date(node.deadline);
+        }
+        d.setHours(0, 0, 0, 0);
+
+        const diffTime = d - today;
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+        // Auto-pickup if due today or tomorrow or overdue (diffDays <= 1), unless manually dropped
+        if (diffDays <= 1 && !node.manuallyUnpicked) {
+          node.pickedUp = true;
+        }
+      }
+      if (node.children && node.children.length > 0) {
+        node.children.forEach(traverse);
+      }
+    };
+
+    if (this.tree && Array.isArray(this.tree)) {
+      this.tree.forEach(traverse);
+    }
+  }
+
   togglePickupTask(id) {
     const res = this.findNode(id);
     if (!res || res.node.type !== 'task') return false;
 
-    res.node.pickedUp = !res.node.pickedUp;
+    const nextState = !res.node.pickedUp;
+    res.node.pickedUp = nextState;
+    if (!nextState) {
+      res.node.manuallyUnpicked = true;
+    } else {
+      res.node.manuallyUnpicked = false;
+    }
     this.notify();
     return res.node.pickedUp;
   }

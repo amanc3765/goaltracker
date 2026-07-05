@@ -72,6 +72,13 @@
           </svg>
         </button>
 
+        <!-- Toggle Column Visibility Dropdown Button (Icon Only) -->
+        <button id="btn-toggle-columns" class="btn-secondary column-picker-btn" title="Toggle column visibility">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18"></path>
+          </svg>
+        </button>
+
         <!-- Show Level Hierarchy Depth Button (Icon Only, beside Add Program) -->
         <button id="btn-show-level" class="btn-secondary level-picker-btn" title="Expand hierarchy up to specific depth level (Program, Project, Milestone, Task)">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -126,6 +133,12 @@
               <span class="todo-box-icon">📅</span>
               <h2>Completed Tasks History</h2>
             </div>
+            <!-- Icon-only collapse/expand button for Completed Tasks History -->
+            <button id="btn-toggle-history" class="btn-secondary history-toggle-btn" title="Expand or collapse all completed task history">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
           </div>
           <div id="todo-history-list" class="todo-history-accordions"></div>
         </div>

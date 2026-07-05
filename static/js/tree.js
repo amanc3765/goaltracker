@@ -431,13 +431,20 @@ export class TreeRenderer {
     colDeadline.className = 'col-deadline';
     const deadlineText = document.createElement('span');
     deadlineText.className = 'deadline-simple-text';
-    const status = this.getDeadlineStatus(node.deadline, node.type, node.createdAt, node.deadlineSetAt);
+    const status = this.getDeadlineStatus(node.deadline, node.type, node.createdAt);
 
+
+    const isCompleted = !!node.completed || node.status === 'completed';
 
     deadlineText.textContent = status.formattedDate;
     deadlineText.title = 'Click to set deadline';
-    if (status.isOverdue) deadlineText.classList.add('overdue');
-    else if (status.isDueSoon) deadlineText.classList.add('due-soon');
+    if (isCompleted) {
+      deadlineText.classList.add('completed-deadline');
+    } else if (status.isOverdue) {
+      deadlineText.classList.add('overdue');
+    } else if (status.isDueSoon) {
+      deadlineText.classList.add('due-soon');
+    }
     
     deadlineText.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -449,9 +456,10 @@ export class TreeRenderer {
     const colTimeLeft = document.createElement('div');
     colTimeLeft.className = 'col-timeleft';
 
-    if (node.deadline && status.timePct !== null) {
+    if (!isCompleted && node.deadline && status.timePct !== null) {
       const timeText = document.createElement('span');
       timeText.className = 'time-left-text';
+      if (status.isOverdue) timeText.classList.add('overdue');
       timeText.textContent = status.label;
 
       const timeBg = document.createElement('div');
@@ -460,13 +468,13 @@ export class TreeRenderer {
       timeFill.className = 'time-bar-fill';
       timeFill.style.width = `${Math.min(100, Math.max(0, status.timePct))}%`;
 
-      // Time Remaining Color Thresholds: Red if <25%, Yellow if 25%-74%, Green if >=75%
-      if (status.timePct < 25) {
-        timeFill.dataset.level = 'low'; // Red if less than 25%
-      } else if (status.timePct < 75) {
-        timeFill.dataset.level = 'medium'; // Yellow if 25% - 74%
+      // Time Remaining Color Thresholds: Red if overdue or < 25%, Green when > 75%, Yellow when 25%-75%
+      if (status.isOverdue || status.timePct < 25) {
+        timeFill.dataset.level = 'low'; // Red if overdue or < 25% time left
+      } else if (status.timePct > 75) {
+        timeFill.dataset.level = 'high'; // Green when > 75% time left
       } else {
-        timeFill.dataset.level = 'high'; // Green if 75% or more
+        timeFill.dataset.level = 'medium'; // Yellow when 25% - 75% time left
       }
 
 
@@ -506,6 +514,11 @@ export class TreeRenderer {
       progressText.textContent = `${pVal}%`;
 
       colProgress.append(progressBg, progressText);
+    } else {
+      const progressMuted = document.createElement('span');
+      progressMuted.className = 'time-left-muted';
+      progressMuted.textContent = '-';
+      colProgress.appendChild(progressMuted);
     }
 
 
@@ -893,6 +906,106 @@ export class TreeRenderer {
     setTimeout(() => document.addEventListener('click', closeHandler), 10);
   }
 
+  showColumnPicker(anchorEl) {
+    document.querySelectorAll('.priority-dropdown, .status-dropdown, .domain-dropdown, .type-dropdown, .level-dropdown, .column-dropdown').forEach(el => el.remove());
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'column-dropdown';
+
+    const header = document.createElement('div');
+    header.className = 'column-dropdown-header';
+    
+    const title = document.createElement('span');
+    title.className = 'column-dropdown-title';
+    title.textContent = 'Toggle Columns';
+
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'column-dropdown-reset';
+    resetBtn.textContent = 'Show All';
+    resetBtn.title = 'Reset all columns to visible';
+    resetBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.store.resetColumnVisibility();
+      this.renderColumnPickerItems(itemsContainer);
+    });
+
+    header.append(title, resetBtn);
+    dropdown.appendChild(header);
+
+    const itemsContainer = document.createElement('div');
+    itemsContainer.className = 'column-dropdown-items';
+    this.renderColumnPickerItems(itemsContainer);
+
+    dropdown.appendChild(itemsContainer);
+
+    const rect = anchorEl.getBoundingClientRect();
+    dropdown.style.position = 'fixed';
+    dropdown.style.left = `${Math.min(rect.left, window.innerWidth - 220)}px`;
+    dropdown.style.zIndex = '10000';
+
+    document.body.appendChild(dropdown);
+
+    const dropHeight = dropdown.offsetHeight || 260;
+    if (rect.bottom + dropHeight > window.innerHeight - 20) {
+      dropdown.style.top = `${Math.max(10, rect.top - dropHeight - 4)}px`;
+    } else {
+      dropdown.style.top = `${rect.bottom + 4}px`;
+    }
+
+    const closeHandler = (e) => {
+      if (!dropdown.contains(e.target) && e.target !== anchorEl && !anchorEl.contains(e.target)) {
+        dropdown.remove();
+        document.removeEventListener('click', closeHandler);
+      }
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 10);
+  }
+
+  renderColumnPickerItems(container) {
+    container.replaceChildren();
+
+    const columns = [
+      { id: 'title', label: 'Goal Title' },
+      { id: 'type', label: 'Type' },
+      { id: 'status', label: 'Status' },
+      { id: 'priority', label: 'Priority' },
+      { id: 'deadline', label: 'Deadline' },
+      { id: 'timeleft', label: 'Time Left' },
+      { id: 'progress', label: 'Progress' },
+      { id: 'actions', label: 'Actions' }
+    ];
+
+    const vis = this.store.columnVisibility || {};
+
+    columns.forEach(col => {
+      const isVisible = vis[col.id] !== false;
+
+      const row = document.createElement('label');
+      row.className = 'column-option';
+      
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'column-option-checkbox';
+      checkbox.checked = isVisible;
+
+      const labelText = document.createElement('span');
+      labelText.className = 'column-option-label';
+      labelText.textContent = col.label;
+
+      row.append(checkbox, labelText);
+
+      row.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const nextState = !checkbox.checked;
+        checkbox.checked = nextState;
+        this.store.toggleColumnVisibility(col.id);
+      });
+
+      container.appendChild(row);
+    });
+  }
+
 
 
 
@@ -989,7 +1102,7 @@ export class TreeRenderer {
 
 
 
-  getDeadlineStatus(deadlineStr, nodeType = 'task', createdAtStr = null, deadlineSetAtStr = null) {
+  getDeadlineStatus(deadlineStr, nodeType = 'task', createdAtStr = null) {
     if (!deadlineStr) return { label: '-', formattedDate: 'Set date', isOverdue: false, isDueSoon: false, timePct: null };
 
     // Set deadline to end of target day (23:59:59) so the full target day is included
@@ -1000,12 +1113,10 @@ export class TreeRenderer {
     today.setHours(0, 0, 0, 0);
 
     let startDate;
-    if (deadlineSetAtStr) {
-      startDate = new Date(deadlineSetAtStr);
-    } else if (createdAtStr) {
+    if (createdAtStr) {
       startDate = new Date(createdAtStr);
     } else {
-      startDate = new Date(today);
+      startDate = new Date('2026-07-04');
     }
     startDate.setHours(0, 0, 0, 0);
 
@@ -1029,7 +1140,7 @@ export class TreeRenderer {
     if (remainingDays <= 0) {
       return { label: `0 / ${totalDays}d remaining`, formattedDate, isOverdue: true, isDueSoon: false, timePct: 0 };
     } else {
-      return { label: `${remainingDays} / ${totalDays}d remaining`, formattedDate, isOverdue: remainingDays <= 3, isDueSoon: remainingDays <= 3, timePct };
+      return { label: `${remainingDays} / ${totalDays}d remaining`, formattedDate, isOverdue: false, isDueSoon: remainingDays <= 3, timePct };
     }
   }
 
