@@ -4,6 +4,139 @@
       {
         "children": [
           {
+            "children": [],
+            "collapsed": false,
+            "completed": false,
+            "deadline": "2026-07-12",
+            "description": "",
+            "id": "milestone-1783091728918-xarq",
+            "priority": "urgent",
+            "progress": 50,
+            "status": "in-progress",
+            "title": "Reach Soldier level",
+            "type": "milestone"
+          },
+          {
+            "children": [],
+            "collapsed": false,
+            "completed": false,
+            "deadline": "2026-08-01",
+            "deadlineSetAt": "2026-07-03",
+            "description": "",
+            "id": "milestone-1783091738801-s1gt",
+            "priority": "high",
+            "progress": 0,
+            "status": "not-started",
+            "title": "Reach Sergeant level",
+            "type": "milestone"
+          },
+          {
+            "children": [],
+            "collapsed": false,
+            "completed": false,
+            "deadline": "2026-10-01",
+            "deadlineSetAt": "2026-07-03",
+            "description": "",
+            "id": "milestone-1783091755766-biju",
+            "priority": "medium",
+            "progress": 0,
+            "status": "not-started",
+            "title": "Reach Captain level",
+            "type": "milestone"
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "collapsed": true,
+                "completed": false,
+                "createdAt": "2026-07-05",
+                "deadline": "2026-08-01",
+                "deadlineSetAt": "2026-07-05",
+                "description": "",
+                "id": "task-1783213111329-x34g",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "July Test",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": true,
+                "completed": false,
+                "createdAt": "2026-07-05",
+                "deadline": "2026-09-01",
+                "deadlineSetAt": "2026-07-05",
+                "description": "",
+                "id": "task-1783213121484-gkqj",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "August Test",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": true,
+                "completed": false,
+                "createdAt": "2026-07-05",
+                "deadline": "2026-10-01",
+                "deadlineSetAt": "2026-07-05",
+                "description": "",
+                "id": "task-1783213122257-broa",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "September Test",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
+            "completed": false,
+            "createdAt": "2026-07-05",
+            "deadline": "2026-10-01",
+            "deadlineSetAt": "2026-07-05",
+            "description": "",
+            "id": "milestone-1783213067924-71a5",
+            "priority": "high",
+            "progress": 0,
+            "status": "not-started",
+            "title": "Check cholesterol levels",
+            "type": "milestone"
+          }
+        ],
+        "collapsed": false,
+        "completed": false,
+        "deadline": "2026-10-01",
+        "deadlineSetAt": "2026-07-03",
+        "description": "",
+        "id": "project-1783091246260-sunv",
+        "priority": "high",
+        "progress": 13,
+        "status": "in-progress",
+        "title": "Become a Captain",
+        "type": "project"
+      }
+    ],
+    "collapsed": false,
+    "completed": false,
+    "deadline": "2027-01-01",
+    "deadlineSetAt": "2026-07-03",
+    "description": "",
+    "domain": "health",
+    "id": "program-1783091001168-9ku5",
+    "priority": "urgent",
+    "progress": 13,
+    "status": "in-progress",
+    "title": "Fix health - Reduce cholesterol levels",
+    "type": "program"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
             "children": [
               {
                 "children": [],
@@ -55,6 +188,37 @@
                 "status": "in-progress",
                 "title": "Finalize deck",
                 "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": true,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-05",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783165463070-46n7",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Put message for Mari",
+                "type": "task",
+                "pickedUp": true
+              },
+              {
+                "children": [],
+                "collapsed": true,
+                "completed": false,
+                "createdAt": "2026-07-04",
+                "deadline": "2026-07-05",
+                "deadlineSetAt": "2026-07-04",
+                "description": "",
+                "id": "task-1783165487238-jqyx",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Do rehearsal",
+                "type": "task"
               }
             ],
             "collapsed": false,
@@ -65,7 +229,7 @@
             "description": "",
             "id": "milestone-1783092673006-kqjp",
             "priority": "urgent",
-            "progress": 50,
+            "progress": 30,
             "status": "in-progress",
             "title": "I/O BLR deliver",
             "type": "milestone"
@@ -198,7 +362,7 @@
         "description": "",
         "id": "project-1783091213389-ha7v",
         "priority": "high",
-        "progress": 6,
+        "progress": 3,
         "status": "in-progress",
         "title": "Q3 2026",
         "type": "project"
@@ -212,81 +376,9 @@
     "domain": "work",
     "id": "program-1783090983036-33mb",
     "priority": "high",
-    "progress": 6,
+    "progress": 3,
     "status": "in-progress",
     "title": "Get promoted at Work",
-    "type": "program"
-  },
-  {
-    "children": [
-      {
-        "children": [
-          {
-            "children": [],
-            "collapsed": false,
-            "completed": false,
-            "deadline": "2026-07-12",
-            "description": "",
-            "id": "milestone-1783091728918-xarq",
-            "priority": "urgent",
-            "progress": 50,
-            "status": "in-progress",
-            "title": "Reach Soldier level",
-            "type": "milestone"
-          },
-          {
-            "children": [],
-            "collapsed": false,
-            "completed": false,
-            "deadline": "2026-08-01",
-            "deadlineSetAt": "2026-07-03",
-            "description": "",
-            "id": "milestone-1783091738801-s1gt",
-            "priority": "high",
-            "progress": 0,
-            "status": "not-started",
-            "title": "Reach Sergeant level",
-            "type": "milestone"
-          },
-          {
-            "children": [],
-            "collapsed": false,
-            "completed": false,
-            "deadline": "2026-10-01",
-            "deadlineSetAt": "2026-07-03",
-            "description": "",
-            "id": "milestone-1783091755766-biju",
-            "priority": "medium",
-            "progress": 0,
-            "status": "not-started",
-            "title": "Reach Captain level",
-            "type": "milestone"
-          }
-        ],
-        "collapsed": false,
-        "completed": false,
-        "deadline": "2026-10-01",
-        "deadlineSetAt": "2026-07-03",
-        "description": "",
-        "id": "project-1783091246260-sunv",
-        "priority": "high",
-        "progress": 17,
-        "status": "in-progress",
-        "title": "Become a Captain",
-        "type": "project"
-      }
-    ],
-    "collapsed": false,
-    "completed": false,
-    "deadline": "2027-01-01",
-    "deadlineSetAt": "2026-07-03",
-    "description": "",
-    "domain": "health",
-    "id": "program-1783091001168-9ku5",
-    "priority": "urgent",
-    "progress": 17,
-    "status": "in-progress",
-    "title": "Fix health - Reduce cholesterol levels",
     "type": "program"
   },
   {
@@ -434,6 +526,21 @@
                 "type": "task"
               },
               {
+                "id": "task-1783213436489-ssgg",
+                "title": "Narayana - Confirm",
+                "type": "task",
+                "status": "not-started",
+                "description": "",
+                "priority": "medium",
+                "deadline": "",
+                "createdAt": "2026-07-05",
+                "progress": 0,
+                "collapsed": false,
+                "completed": false,
+                "children": [],
+                "pickedUp": true
+              },
+              {
                 "children": [],
                 "collapsed": true,
                 "completed": false,
@@ -442,7 +549,7 @@
                 "deadlineSetAt": "2026-07-04",
                 "description": "",
                 "id": "task-1783092604126-tgo5",
-                "pickedUp": true,
+                "pickedUp": false,
                 "priority": "high",
                 "progress": 0,
                 "status": "not-started",
@@ -451,7 +558,7 @@
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": false,
                 "createdAt": "2026-07-04",
                 "deadline": "",
@@ -465,7 +572,7 @@
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": false,
                 "createdAt": "2026-07-04",
                 "deadline": "",
@@ -479,7 +586,21 @@
               },
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
+                "completed": false,
+                "createdAt": "2026-07-05",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783213169649-mn35",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "PFT Test",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": true,
                 "completed": false,
                 "createdAt": "2026-07-04",
                 "deadline": "",
@@ -500,7 +621,7 @@
             "description": "",
             "id": "milestone-1783159969650-2n5d",
             "priority": "high",
-            "progress": 33,
+            "progress": 25,
             "status": "in-progress",
             "title": "Health checkup",
             "type": "milestone"
@@ -558,7 +679,7 @@
         "description": "",
         "id": "project-1783091580737-lnfr",
         "priority": "high",
-        "progress": 33,
+        "progress": 31,
         "status": "in-progress",
         "title": "Manage Bengaluru visit",
         "type": "project"
@@ -571,7 +692,7 @@
     "domain": "relationship",
     "id": "program-1783091126605-oqkg",
     "priority": "high",
-    "progress": 33,
+    "progress": 31,
     "status": "in-progress",
     "title": "Manage relationship with Parents",
     "type": "program"
@@ -711,7 +832,7 @@
                 "deadlineSetAt": "2026-07-04",
                 "description": "",
                 "id": "task-1783092619718-ii0v",
-                "pickedUp": true,
+                "pickedUp": false,
                 "priority": "high",
                 "progress": 0,
                 "status": "not-started",
@@ -729,6 +850,49 @@
             "progress": 0,
             "status": "not-started",
             "title": "Relatives",
+            "type": "milestone"
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-05",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783213329508-7b0l",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Vicky",
+                "type": "task"
+              },
+              {
+                "children": [],
+                "collapsed": false,
+                "completed": false,
+                "createdAt": "2026-07-05",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783213332019-j3lx",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Shubham",
+                "type": "task"
+              }
+            ],
+            "collapsed": false,
+            "completed": false,
+            "createdAt": "2026-07-05",
+            "deadline": "",
+            "description": "",
+            "id": "milestone-1783213323012-6ov6",
+            "priority": "high",
+            "progress": 0,
+            "status": "not-started",
+            "title": "Friends",
             "type": "milestone"
           }
         ],
@@ -773,7 +937,7 @@
                 "deadlineSetAt": "2026-07-04",
                 "description": "",
                 "id": "task-1783163166836-0hkb",
-                "pickedUp": true,
+                "pickedUp": false,
                 "priority": "medium",
                 "progress": 0,
                 "status": "not-started",
@@ -781,32 +945,32 @@
                 "type": "task"
               },
               {
-                "id": "task-1783165326597-y1cc",
-                "title": "Fill foreign asset schedule",
-                "type": "task",
-                "status": "not-started",
-                "description": "",
-                "priority": "medium",
-                "deadline": "",
-                "createdAt": "2026-07-04",
-                "progress": 0,
-                "collapsed": false,
+                "children": [],
+                "collapsed": true,
                 "completed": false,
-                "children": []
+                "createdAt": "2026-07-04",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783165326597-y1cc",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Fill foreign assets",
+                "type": "task"
               },
               {
-                "id": "task-1783165347033-bh33",
-                "title": "Help aunty to fill ITR",
-                "type": "task",
-                "status": "not-started",
-                "description": "",
-                "priority": "medium",
-                "deadline": "",
-                "createdAt": "2026-07-04",
-                "progress": 0,
-                "collapsed": false,
+                "children": [],
+                "collapsed": true,
                 "completed": false,
-                "children": []
+                "createdAt": "2026-07-04",
+                "deadline": "",
+                "description": "",
+                "id": "task-1783165347033-bh33",
+                "priority": "medium",
+                "progress": 0,
+                "status": "not-started",
+                "title": "Help aunty to fill ITR",
+                "type": "task"
               }
             ],
             "collapsed": false,
@@ -826,7 +990,7 @@
             "children": [
               {
                 "children": [],
-                "collapsed": false,
+                "collapsed": true,
                 "completed": false,
                 "createdAt": "2026-07-04",
                 "deadline": "2026-07-11",
@@ -917,6 +1081,21 @@
             "status": "completed",
             "title": "Create Goal Tracker",
             "type": "milestone"
+          },
+          {
+            "id": "milestone-1783213480102-s0yq",
+            "title": "Scooty servicing",
+            "type": "milestone",
+            "status": "not-started",
+            "description": "",
+            "priority": "high",
+            "deadline": "2026-08-10",
+            "createdAt": "2026-07-05",
+            "progress": 0,
+            "collapsed": false,
+            "completed": false,
+            "children": [],
+            "deadlineSetAt": "2026-07-05"
           }
         ],
         "collapsed": false,
@@ -927,8 +1106,8 @@
         "description": "",
         "id": "project-1783162426215-qwri",
         "priority": "high",
-        "progress": 100,
-        "status": "completed",
+        "progress": 50,
+        "status": "in-progress",
         "title": "Q3 2026",
         "type": "project"
       }
@@ -941,9 +1120,9 @@
     "domain": "growth",
     "id": "program-1783162353430-mjms",
     "priority": "medium",
-    "progress": 100,
-    "status": "completed",
-    "title": "Personal development",
+    "progress": 50,
+    "status": "in-progress",
+    "title": "Personal",
     "type": "program"
   }
 ]
