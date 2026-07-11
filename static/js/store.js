@@ -16,7 +16,7 @@ export class GoalStore {
     this.tree = initialData;
     this.selectedNodeId = null;
     this.searchQuery = '';
-    this.hideCompleted = false;
+    this.hideCompleted = true;
     this.showOnlyAchievements = false;
     this.sortBy = 'manual';
     this.listeners = [];
@@ -80,6 +80,11 @@ export class GoalStore {
 
   toggleAchievementFilter() {
     this.showOnlyAchievements = !this.showOnlyAchievements;
+    if (this.showOnlyAchievements) {
+      this.sortBy = 'completedAt-asc';
+    } else {
+      this.sortBy = 'manual';
+    }
     this.notify();
     return this.showOnlyAchievements;
   }
@@ -689,14 +694,13 @@ export class GoalStore {
   /**
    * Move node to a new parent or new position in tree
    */
-  moveNode(nodeId, newParentId, newIndex) {
+  moveNode(nodeId, newParentId, beforeNodeId = null) {
     this.sortBy = 'manual';
     const res = this.findNode(nodeId);
     if (!res) return false;
-
-
+ 
     const movingNode = res.node;
-
+ 
     // Validate type hierarchy
     let expectedParentType = 'root';
     if (newParentId) {
@@ -704,21 +708,21 @@ export class GoalStore {
       if (!parentRes) return false;
       expectedParentType = parentRes.node.type;
     }
-
+ 
     if (TYPE_HIERARCHY[expectedParentType] !== movingNode.type) {
       console.warn(`Invalid move: ${movingNode.type} cannot be child of ${expectedParentType}`);
       return false;
     }
-
+ 
     // Determine current parent array
     let sourceArray = this.tree;
     if (res.parent) {
       sourceArray = res.parent.children;
     }
-
+ 
     const oldIndex = sourceArray.findIndex(n => n.id === nodeId);
     if (oldIndex === -1) return false;
-
+ 
     // Determine target parent array
     let targetArray = this.tree;
     if (newParentId) {
@@ -726,14 +730,20 @@ export class GoalStore {
       if (!targetParentRes.node.children) targetParentRes.node.children = [];
       targetArray = targetParentRes.node.children;
     }
-
+ 
     // Remove from source location
     sourceArray.splice(oldIndex, 1);
-
-    // Clamp newIndex
-    const clampedIndex = Math.max(0, Math.min(newIndex, targetArray.length));
-    targetArray.splice(clampedIndex, 0, movingNode);
-
+ 
+    // Find insertion index
+    let insertIndex = targetArray.length;
+    if (beforeNodeId) {
+      const idx = targetArray.findIndex(n => n.id === beforeNodeId);
+      if (idx !== -1) {
+        insertIndex = idx;
+      }
+    }
+    targetArray.splice(insertIndex, 0, movingNode);
+ 
     this.notify();
     return true;
   }
@@ -781,7 +791,7 @@ export class GoalStore {
    * Search and completion filter check
    */
   matchesSearch(node, query) {
-    if (this.hideCompleted && this.isNodeCompleted(node)) {
+    if (!this.showOnlyAchievements && this.hideCompleted && this.isNodeCompleted(node)) {
       return false;
     }
     if (!query) return true;
@@ -843,6 +853,16 @@ export class GoalStore {
           return (b.progress || 0) - (a.progress || 0);
         case 'progress-asc':
           return (a.progress || 0) - (b.progress || 0);
+        case 'completedAt-asc': {
+          const compA = a.completedAt || '';
+          const compB = b.completedAt || '';
+          return compA.localeCompare(compB);
+        }
+        case 'completedAt-desc': {
+          const compA = a.completedAt || '';
+          const compB = b.completedAt || '';
+          return compB.localeCompare(compA);
+        }
         default:
           return 0;
       }

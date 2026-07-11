@@ -46,7 +46,7 @@ export class TreeRenderer {
       }
     });
 
-    if (visibleCount === 0 && searchQuery) {
+    if (visibleCount === 0 && (searchQuery || this.store.hideCompleted)) {
       this.renderNoSearchResults();
       return;
     }
@@ -181,11 +181,17 @@ export class TreeRenderer {
 
     const title = document.createElement('div');
     title.className = 'empty-title';
-    title.textContent = 'No matching goals found';
 
     const desc = document.createElement('div');
     desc.className = 'empty-desc';
-    desc.textContent = `No items match "${this.store.searchQuery}". Try a different keyword.`;
+
+    if (this.store.searchQuery) {
+      title.textContent = 'No matching goals found';
+      desc.textContent = `No items match "${this.store.searchQuery}". Try a different keyword.`;
+    } else {
+      title.textContent = 'All goals hidden';
+      desc.textContent = 'Toggle "Show completed goals" to see completed goals.';
+    }
 
     empty.append(title, desc);
     this.container.appendChild(empty);
@@ -199,10 +205,9 @@ export class TreeRenderer {
 
     const isAchievementMode = this.store.showOnlyAchievements;
 
-    // Achievement Mode Logic: Only show completed milestones and their ancestor Programs/Projects (no tasks, no uncompleted milestones!)
+    // Achievement Mode Logic: Only show completed tasks/milestones and their ancestor Programs/Projects (no uncompleted tasks/milestones!)
     if (isAchievementMode) {
-      if (node.type === 'task') return null;
-      if (node.type === 'milestone') {
+      if (node.type === 'task') {
         const isDone = node.completed || node.status === 'completed' || node.progress === 100;
         if (!isDone) return null;
       }
@@ -228,14 +233,20 @@ export class TreeRenderer {
     }
 
     if (isAchievementMode) {
-      if (node.type !== 'milestone' && childMatchCount === 0) {
+      if (node.type === 'milestone') {
+        const isDone = node.completed || node.status === 'completed' || node.progress === 100;
+        if (!isDone && childMatchCount === 0) {
+          return null;
+        }
+      } else if (node.type !== 'task' && childMatchCount === 0) {
         return null;
       }
       childrenContainer.classList.remove('collapsed');
     }
 
-    // Hide node if search filter is active and neither self nor children match
-    if (searchQuery && !matchesSelf && childMatchCount === 0) {
+    // Hide node if search filter or hideCompleted filter is active and neither self nor children match
+    const isFiltering = searchQuery || (this.store.hideCompleted && !isAchievementMode);
+    if (isFiltering && !matchesSelf && childMatchCount === 0) {
       return null;
     }
 
@@ -300,17 +311,20 @@ export class TreeRenderer {
       leftSec.appendChild(checkbox);
 
       // Red Pick-Up Dot button for Task Execution List
-      const pickupDot = document.createElement('button');
-      pickupDot.className = `pickup-dot ${node.pickedUp ? 'active' : ''}`;
-      pickupDot.title = node.pickedUp ? 'Remove from Daily To-Do list' : 'Pick up task for Daily To-Do list';
-      pickupDot.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isPicked = this.store.togglePickupTask(node.id);
-        if (typeof window.showToast === 'function') {
-          window.showToast(isPicked ? 'Task added to Daily To-Do list ⚡' : 'Task removed from Daily To-Do list');
-        }
-      });
-      leftSec.appendChild(pickupDot);
+      const isTaskCompleted = !!node.completed || node.status === 'completed';
+      if (!isTaskCompleted) {
+        const pickupDot = document.createElement('button');
+        pickupDot.className = `pickup-dot ${node.pickedUp ? 'active' : ''}`;
+        pickupDot.title = node.pickedUp ? 'Remove from Daily To-Do list' : 'Pick up task for Daily To-Do list';
+        pickupDot.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isPicked = this.store.togglePickupTask(node.id);
+          if (typeof window.showToast === 'function') {
+            window.showToast(isPicked ? 'Task added to Daily To-Do list ⚡' : 'Task removed from Daily To-Do list');
+          }
+        });
+        leftSec.appendChild(pickupDot);
+      }
     }
 
 
@@ -1173,9 +1187,12 @@ export class TreeRenderer {
         const movedNodeId = evt.item.dataset.id;
         const newParentContainer = evt.to;
         const newParentId = newParentContainer.dataset.parentId || null;
-        const newIndex = evt.newIndex;
+        
+        // Find next sibling element in the DOM to determine insertion position
+        const nextSiblingEl = evt.item.nextElementSibling;
+        const beforeNodeId = nextSiblingEl ? nextSiblingEl.dataset.id : null;
 
-        this.store.moveNode(movedNodeId, newParentId, newIndex);
+        this.store.moveNode(movedNodeId, newParentId, beforeNodeId);
       }
     });
 
