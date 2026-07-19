@@ -2474,6 +2474,28 @@ body {
   flex: 1;
 }
 
+/* Side-by-side Active To-Do List and Vertical Dashboard Layout */
+.todo-dashboard-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  width: 100%;
+}
+
+.todo-dashboard-row .todo-section {
+  flex: 0 0 calc(80% - 10px);
+  margin-bottom: 0 !important;
+}
+
+.todo-dashboard-row .summary-dashboard.vertical-dashboard {
+  flex: 0 0 calc(20% - 10px);
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
 
 
 

@@ -26,26 +26,7 @@
         </div>
       </div>
 
-      <!-- View Navigation Tabs -->
-      <div class="view-tabs">
-        <button id="tab-btn-tree" class="view-tab-btn active" title="Goals Hierarchy Tree">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
-          </svg>
-          Goals Tree
-        </button>
-        <button id="tab-btn-todo" class="view-tab-btn" title="Daily To-Do List & Completed History">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="9 11 12 14 22 4"></polyline>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-          </svg>
-          Daily To-Do
-          <span id="todo-badge-count" class="todo-badge">0</span>
-        </button>
-      </div>
+
 
 
 
@@ -64,20 +45,6 @@
           🏆
         </button>
 
-        <!-- Toggle Hide/Show Completed Button -->
-        <button id="toggle-hide-completed-btn" class="btn-secondary active" title="Show completed goals">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-            <line x1="1" y1="1" x2="23" y2="23"></line>
-          </svg>
-        </button>
-
-        <!-- Toggle Column Visibility Dropdown Button (Icon Only) -->
-        <button id="btn-toggle-columns" class="btn-secondary column-picker-btn" title="Toggle column visibility">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18"></path>
-          </svg>
-        </button>
 
         <!-- Show Level Hierarchy Depth Button (Icon Only, beside Add Program) -->
         <button id="btn-show-level" class="btn-secondary level-picker-btn" title="Expand hierarchy up to specific depth level (Program, Project, Milestone, Task)">
@@ -101,48 +68,29 @@
       </div>
     </header>
 
-    <!-- Top Summary Dashboard Bar -->
-    <div id="summary-dashboard" class="summary-dashboard"></div>
-
     <!-- View 1: Tree View Workspace -->
     <div id="view-tree" class="app-view active">
+      <!-- Active To-Do & Summary Cards Row -->
+      <div class="todo-dashboard-row">
+        <!-- Active To-Do List Section -->
+        <section class="todo-section">
+          <div class="todo-card-box">
+            <div class="todo-box-header">
+              <div class="todo-box-title">
+                <span class="todo-box-icon">⚡</span>
+                <h2>Active To-Do List</h2>
+              </div>
+              <span id="todo-pending-count" class="todo-count-pill">0 Pending</span>
+            </div>
+            <div id="todo-pending-list" class="todo-task-list"></div>
+          </div>
+        </section>
+
+        <!-- Vertical Summary Dashboard -->
+        <div id="summary-dashboard" class="summary-dashboard vertical-dashboard"></div>
+      </div>
+
       <main id="tree-container" class="tree-container"></main>
-    </div>
-
-    <!-- View 2: Daily To-Do Execution Page -->
-    <div id="view-todo" class="app-view hidden">
-      <!-- Section A: Pending Picked-Up Tasks Box -->
-      <section class="todo-section">
-        <div class="todo-card-box">
-          <div class="todo-box-header">
-            <div class="todo-box-title">
-              <span class="todo-box-icon">⚡</span>
-              <h2>Active To-Do List</h2>
-            </div>
-            <span id="todo-pending-count" class="todo-count-pill">0 Pending</span>
-          </div>
-          <div id="todo-pending-list" class="todo-task-list"></div>
-        </div>
-      </section>
-
-      <!-- Section B: History of Completed Tasks Grouped by Date (Latest First, Collapsed by Default) -->
-      <section class="todo-history-section">
-        <div class="todo-history-box">
-          <div class="todo-box-header">
-            <div class="todo-box-title">
-              <span class="todo-box-icon">📅</span>
-              <h2>Completed Tasks History</h2>
-            </div>
-            <!-- Icon-only collapse/expand button for Completed Tasks History -->
-            <button id="btn-toggle-history" class="btn-secondary history-toggle-btn" title="Expand or collapse all completed task history">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-          </div>
-          <div id="todo-history-list" class="todo-history-accordions"></div>
-        </div>
-      </section>
     </div>
   </div>
 

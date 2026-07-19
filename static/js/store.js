@@ -29,14 +29,14 @@ export class GoalStore {
       title: true,
       type: true,
       status: true,
-      priority: true,
+      priority: false,
       deadline: true,
-      timeleft: true,
-      progress: true,
+      timeleft: false,
+      progress: false,
       actions: true
     };
     try {
-      const saved = localStorage.getItem('goaltracker_column_visibility');
+      const saved = localStorage.getItem('goaltracker_column_visibility_v4');
       if (saved) {
         return { ...defaultCols, ...JSON.parse(saved) };
       }
@@ -50,7 +50,7 @@ export class GoalStore {
     if (Object.prototype.hasOwnProperty.call(this.columnVisibility, colKey)) {
       this.columnVisibility[colKey] = !this.columnVisibility[colKey];
       try {
-        localStorage.setItem('goaltracker_column_visibility', JSON.stringify(this.columnVisibility));
+        localStorage.setItem('goaltracker_column_visibility_v4', JSON.stringify(this.columnVisibility));
       } catch (e) {}
       this.notify();
     }
@@ -62,14 +62,14 @@ export class GoalStore {
       title: true,
       type: true,
       status: true,
-      priority: true,
+      priority: false,
       deadline: true,
-      timeleft: true,
-      progress: true,
+      timeleft: false,
+      progress: false,
       actions: true
     };
     try {
-      localStorage.setItem('goaltracker_column_visibility', JSON.stringify(this.columnVisibility));
+      localStorage.setItem('goaltracker_column_visibility_v4', JSON.stringify(this.columnVisibility));
     } catch (e) {}
     this.notify();
   }
@@ -114,6 +114,59 @@ export class GoalStore {
     this.notify();
   }
 
+  mergeDuplicateMilestones() {
+    const traverseAndMerge = (node) => {
+      if (node.type === 'project' && node.children && node.children.length > 0) {
+        const milestonesMap = new Map();
+        const toRemove = [];
+
+        node.children.forEach(child => {
+          if (child.type === 'milestone') {
+            const titleKey = (child.title || '').trim().toLowerCase();
+            if (milestonesMap.has(titleKey)) {
+              const original = milestonesMap.get(titleKey);
+              
+              // Merge children
+              if (child.children && child.children.length > 0) {
+                if (!original.children) original.children = [];
+                original.children.push(...child.children);
+              }
+              
+              // Keep description if original does not have it
+              if (!original.description && child.description) {
+                original.description = child.description;
+              }
+              // Keep deadline if original does not have it
+              if (!original.deadline && child.deadline) {
+                original.deadline = child.deadline;
+              }
+              
+              toRemove.push(child.id);
+
+              if (this.selectedNodeId === child.id) {
+                this.selectedNodeId = original.id;
+              }
+            } else {
+              milestonesMap.set(titleKey, child);
+            }
+          }
+        });
+
+        if (toRemove.length > 0) {
+          node.children = node.children.filter(child => !toRemove.includes(child.id));
+        }
+      }
+
+      if (node.children && node.children.length > 0) {
+        node.children.forEach(traverseAndMerge);
+      }
+    };
+
+    if (this.tree && Array.isArray(this.tree)) {
+      this.tree.forEach(traverseAndMerge);
+    }
+  }
+
   /**
    * Recalculates progress recursively bottom-up:
    * Task: 100 if completed else 0
@@ -122,6 +175,7 @@ export class GoalStore {
    * Program: Avg of child projects
    */
   recalculateAllProgress() {
+    this.mergeDuplicateMilestones();
     this.evaluateAutoPickup();
     const calculateNodeProgress = (node) => {
       if (!node.children) node.children = [];
@@ -254,6 +308,7 @@ export class GoalStore {
   addChildNode(parentId = null) {
     let parentType = 'root';
     let targetChildren = this.tree;
+    let isParentCompletedMilestone = false;
 
     if (parentId) {
       const res = this.findNode(parentId);
@@ -263,6 +318,10 @@ export class GoalStore {
       targetChildren = res.node.children;
       // Auto expand parent
       res.node.collapsed = false;
+
+      if (parentType === 'milestone' && (res.node.completed || res.node.status === 'completed' || res.node.progress === 100)) {
+        isParentCompletedMilestone = true;
+      }
     }
 
     const childType = TYPE_HIERARCHY[parentType];
@@ -292,6 +351,7 @@ export class GoalStore {
       progress: 0,
       collapsed: false,
       completed: false,
+      pickedUp: isParentCompletedMilestone,
       children: []
     };
 

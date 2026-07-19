@@ -75,16 +75,15 @@ function renderTodoView() {
   const badgeEl = document.getElementById('todo-badge-count');
   const pendingCountEl = document.getElementById('todo-pending-count');
   const pendingListEl = document.getElementById('todo-pending-list');
-  const historyListEl = document.getElementById('todo-history-list');
 
-  if (!pendingListEl || !historyListEl) return;
+  if (!pendingListEl) return;
 
   const pickedUpTasks = store.getPickedUpTasks();
 
   if (badgeEl) badgeEl.textContent = pickedUpTasks.length;
   if (pendingCountEl) pendingCountEl.textContent = `${pickedUpTasks.length} Pending`;
 
-  // Render Section A: Active To-Do List Grouped & Sorted by Due Date
+  // Render Active To-Do List Grouped & Sorted by Due Date
   pendingListEl.innerHTML = '';
 
   if (pickedUpTasks.length === 0) {
@@ -127,7 +126,22 @@ function renderTodoView() {
 
       const title = document.createElement('div');
       title.className = 'todo-item-title';
-      title.textContent = task.title;
+      
+      const titleText = document.createElement('span');
+      titleText.textContent = task.title;
+      title.appendChild(titleText);
+
+      const res = store.findNode(task.id);
+      if (res && res.parent) {
+        const parentSpan = document.createElement('span');
+        parentSpan.className = 'todo-item-parent-badge';
+        parentSpan.textContent = ` [${res.parent.title}]`;
+        parentSpan.style.fontSize = '11px';
+        parentSpan.style.color = 'var(--text-muted)';
+        parentSpan.style.marginLeft = '8px';
+        parentSpan.style.fontWeight = 'normal';
+        title.appendChild(parentSpan);
+      }
 
       const deadlineSpan = document.createElement('span');
       deadlineSpan.className = 'todo-deadline-badge';
@@ -216,143 +230,9 @@ function renderTodoView() {
       pendingListEl.appendChild(dateGroupEl);
     });
   }
-
-  // Render Section B: Completed Task History (Grouped by Date, Latest First, Collapsed by default)
-  historyListEl.innerHTML = '';
-  const historyData = store.getCompletedHistoryGroupedByDate();
-
-  if (historyData.length === 0) {
-    const emptyHist = document.createElement('div');
-    emptyHist.className = 'todo-empty-state';
-    emptyHist.innerHTML = `<span class="empty-subtext">No completed task history available yet.</span>`;
-    historyListEl.appendChild(emptyHist);
-  } else {
-    historyData.forEach(group => {
-      const accordion = document.createElement('div');
-      accordion.className = 'history-accordion collapsed';
-
-      const header = document.createElement('div');
-      header.className = 'history-accordion-header';
-
-      const dateParts = (group.date || '').split('-');
-      const dateObj = dateParts.length === 3 
-        ? new Date(parseInt(dateParts[0], 10), parseInt(dateParts[1], 10) - 1, parseInt(dateParts[2], 10))
-        : new Date(group.date);
-
-      const formattedDate = dateObj.toLocaleDateString(undefined, {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
-
-      header.innerHTML = `
-        <div class="history-date-info">
-          <span class="accordion-chevron">▶</span>
-          <span class="history-date-title">${formattedDate}</span>
-        </div>
-        <span class="history-count-badge">${group.tasks.length} ${group.tasks.length === 1 ? 'task' : 'tasks'} completed</span>
-      `;
-
-      const content = document.createElement('div');
-      content.className = 'history-accordion-content';
-
-      // Group tasks by Program -> Project -> Milestone
-      const hierarchy = {};
-      group.tasks.forEach(t => {
-        const pKey = t.programTitle || 'General Program';
-        const prKey = t.projectTitle || 'General Project';
-        const mKey = t.milestoneTitle || 'General Milestone';
-
-        if (!hierarchy[pKey]) hierarchy[pKey] = { domain: t.domain, projects: {} };
-        if (!hierarchy[pKey].projects[prKey]) hierarchy[pKey].projects[prKey] = {};
-        if (!hierarchy[pKey].projects[prKey][mKey]) hierarchy[pKey].projects[prKey][mKey] = [];
-
-        hierarchy[pKey].projects[prKey][mKey].push(t);
-      });
-
-      const domainIcons = { health: '🏃‍♂️', finance: '💰', relationship: '❤️', work: '💼', growth: '🌱' };
-
-
-      Object.keys(hierarchy).forEach(progTitle => {
-        const progData = hierarchy[progTitle];
-        const progGroupEl = document.createElement('div');
-        progGroupEl.className = 'history-program-group';
-
-        const progHeader = document.createElement('div');
-        progHeader.className = 'history-program-header';
-        progHeader.innerHTML = `
-          <span class="history-domain-icon">${domainIcons[progData.domain] || '💼'}</span>
-          <span class="history-program-title">${progTitle}</span>
-        `;
-        progGroupEl.appendChild(progHeader);
-
-        Object.keys(progData.projects).forEach(projTitle => {
-          const projGroupEl = document.createElement('div');
-          projGroupEl.className = 'history-project-group';
-
-          const projHeader = document.createElement('div');
-          projHeader.className = 'history-project-header';
-          projHeader.innerHTML = `<span class="history-project-badge">PROJECT</span> ${projTitle}`;
-          projGroupEl.appendChild(projHeader);
-
-          Object.keys(progData.projects[projTitle]).forEach(msTitle => {
-            const msGroupEl = document.createElement('div');
-            msGroupEl.className = 'history-milestone-group';
-
-            const msHeader = document.createElement('div');
-            msHeader.className = 'history-milestone-header';
-            msHeader.innerHTML = `<span class="history-milestone-badge">MILESTONE</span> ${msTitle}`;
-            msGroupEl.appendChild(msHeader);
-
-            const taskList = document.createElement('div');
-            taskList.className = 'history-task-list';
-
-            const priorityWeights = { urgent: 4, critical: 4, high: 3, medium: 2, low: 1 };
-            const sortedTasks = [...progData.projects[projTitle][msTitle]].sort((a, b) => {
-              const pA = priorityWeights[a.priority] || 2;
-              const pB = priorityWeights[b.priority] || 2;
-              return pB - pA;
-            });
-
-            sortedTasks.forEach(t => {
-              const item = document.createElement('div');
-              item.className = 'history-task-item';
-              item.innerHTML = `
-                <div class="history-task-check">✓</div>
-                <span class="history-task-title">${t.title}</span>
-              `;
-              taskList.appendChild(item);
-            });
-
-
-
-            msGroupEl.appendChild(taskList);
-            projGroupEl.appendChild(msGroupEl);
-          });
-
-          progGroupEl.appendChild(projGroupEl);
-        });
-
-        content.appendChild(progGroupEl);
-      });
-
-
-      header.addEventListener('click', () => {
-        accordion.classList.toggle('collapsed');
-      });
-
-      accordion.append(header, content);
-      historyListEl.appendChild(accordion);
-    });
-  }
 }
 
 function locateNodeInTree(nodeId) {
-  const tabTreeBtn = document.getElementById('tab-btn-tree');
-  const viewTreeEl = document.getElementById('view-tree');
-  const viewTodoEl = document.getElementById('view-todo');
-
   if (store.showOnlyAchievements) {
     store.showOnlyAchievements = false;
     const filterAchievementsBtn = document.getElementById('btn-filter-achievements');
@@ -360,19 +240,6 @@ function locateNodeInTree(nodeId) {
   }
 
   store.expandParentsOfNode(nodeId);
-
-  if (tabTreeBtn && viewTreeEl) {
-    tabTreeBtn.classList.add('active');
-    const tabTodoBtn = document.getElementById('tab-btn-todo');
-    if (tabTodoBtn) tabTodoBtn.classList.remove('active');
-
-    viewTreeEl.classList.remove('hidden');
-    viewTreeEl.classList.add('active');
-    if (viewTodoEl) {
-      viewTodoEl.classList.add('hidden');
-      viewTodoEl.classList.remove('active');
-    }
-  }
 
   setTimeout(() => {
     renderer.setFocusedNode(nodeId);
@@ -422,44 +289,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderSummaryDashboard();
   renderTodoView();
 
-  // View Tab Switcher logic
-  const tabTreeBtn = document.getElementById('tab-btn-tree');
-  const tabTodoBtn = document.getElementById('tab-btn-todo');
-  const tabCompletedBtn = document.getElementById('tab-btn-completed');
-
-  const viewTreeEl = document.getElementById('view-tree');
-  const viewTodoEl = document.getElementById('view-todo');
-  const viewCompletedEl = document.getElementById('view-completed-summary');
-
-  const switchView = (activeTab, activeView) => {
-    [tabTreeBtn, tabTodoBtn, tabCompletedBtn].forEach(b => b && b.classList.remove('active'));
-    [viewTreeEl, viewTodoEl, viewCompletedEl].forEach(v => {
-      if (v) {
-        v.classList.add('hidden');
-        v.classList.remove('active');
-      }
-    });
-
-    if (activeTab) activeTab.classList.add('active');
-    if (activeView) {
-      activeView.classList.remove('hidden');
-      activeView.classList.add('active');
-    }
-  };
-
-  if (tabTreeBtn) {
-    tabTreeBtn.addEventListener('click', () => {
-      switchView(tabTreeBtn, viewTreeEl);
-    });
-  }
-
-  if (tabTodoBtn) {
-    tabTodoBtn.addEventListener('click', () => {
-      switchView(tabTodoBtn, viewTodoEl);
-      renderTodoView();
-    });
-  }
-
   const filterAchievementsBtn = document.getElementById('btn-filter-achievements');
   if (filterAchievementsBtn) {
     filterAchievementsBtn.addEventListener('click', () => {
@@ -476,29 +305,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  const toggleColumnsBtn = document.getElementById('btn-toggle-columns');
-  if (toggleColumnsBtn) {
-    toggleColumnsBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      renderer.showColumnPicker(toggleColumnsBtn);
-    });
-  }
 
-  const toggleHistoryBtn = document.getElementById('btn-toggle-history');
-  let isHistoryExpanded = false;
-
-  if (toggleHistoryBtn) {
-    toggleHistoryBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      isHistoryExpanded = !isHistoryExpanded;
-      const accordions = document.querySelectorAll('#todo-history-list .history-accordion');
-      accordions.forEach(acc => {
-        acc.classList.toggle('collapsed', !isHistoryExpanded);
-      });
-      toggleHistoryBtn.classList.toggle('active', isHistoryExpanded);
-      toggleHistoryBtn.title = isHistoryExpanded ? 'Collapse all history items' : 'Expand all history items';
-    });
-  }
 
   function applyColumnVisibility(vis) {
     const container = document.querySelector('.app-container') || document.body;
@@ -507,10 +314,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       container.classList.toggle(`hide-col-${col}`, vis && vis[col] === false);
     });
 
-    if (toggleColumnsBtn && store) {
-      const isAnyHidden = store.isAnyColumnHidden();
-      toggleColumnsBtn.classList.toggle('active', isAnyHidden);
-    }
+
   }
 
   // Initial column visibility application
@@ -548,32 +352,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Toggle Hide/Show Completed Button
-  const toggleHideCompletedBtn = document.getElementById('toggle-hide-completed-btn');
-  if (toggleHideCompletedBtn) {
-    toggleHideCompletedBtn.addEventListener('click', () => {
-      const isHidden = store.toggleHideCompleted();
-      if (isHidden) {
-        toggleHideCompletedBtn.classList.add('active');
-        toggleHideCompletedBtn.title = 'Show completed goals';
-        toggleHideCompletedBtn.innerHTML = `
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-            <line x1="1" y1="1" x2="23" y2="23"></line>
-          </svg>
-        `;
-      } else {
-        toggleHideCompletedBtn.classList.remove('active');
-        toggleHideCompletedBtn.title = 'Hide completed goals';
-        toggleHideCompletedBtn.innerHTML = `
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        `;
-      }
-    });
-  }
+
 
 
 
@@ -722,20 +501,6 @@ function renderSummaryDashboard() {
       </div>
       <div class="summary-card-body">
         ${createCircularSvg(stats.completedTasks, stats.totalTasks, 'emerald')}
-      </div>
-    </div>
-
-    <div class="summary-card priority-guidelines-card">
-      <div class="summary-card-header">
-        <span class="summary-card-title">Priority Guidelines</span>
-        <span class="summary-card-icon">🎯</span>
-      </div>
-      <div class="priority-guide-list">
-        <div class="guide-item urgent"><span class="guide-dot urgent"></span><span><strong>Urgent:</strong> Must do ASAP</span></div>
-        <div class="guide-item high"><span class="guide-dot high"></span><span><strong>High:</strong> Must do today</span></div>
-        <div class="guide-item medium"><span class="guide-dot medium"></span><span><strong>Medium:</strong> Should do, flexible timeline</span></div>
-
-        <div class="guide-item low"><span class="guide-dot low"></span><span><strong>Low:</strong> Optional / Nice to have</span></div>
       </div>
     </div>
   `;

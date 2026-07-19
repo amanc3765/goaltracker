@@ -144,14 +144,18 @@ export class TreeRenderer {
 
     const isAchievementMode = this.store ? this.store.showOnlyAchievements : false;
 
-    if (isCompletedView || isAchievementMode) {
-      headerRow.append(leftSpacer, colTitle, colType, colStatus, colPriority);
+    if (isCompletedView) {
+      headerRow.append(leftSpacer, colTitle, colStatus, colPriority, colType);
+    } else if (isAchievementMode) {
+      const colActions = document.createElement('div');
+      colActions.className = 'table-header-col col-actions';
+      headerRow.append(leftSpacer, colTitle, colStatus, colPriority, colProgress, colType, colActions);
     } else {
       const colDeadline = createHeaderCol('deadline', 'Deadline', 'col-deadline');
       const colTimeLeft = createHeaderCol('deadline', 'Time Left', 'col-timeleft');
       const colActions = document.createElement('div');
       colActions.className = 'table-header-col col-actions';
-      headerRow.append(leftSpacer, colTitle, colType, colStatus, colPriority, colDeadline, colTimeLeft, colProgress, colActions);
+      headerRow.append(leftSpacer, colTitle, colDeadline, colStatus, colPriority, colTimeLeft, colProgress, colType, colActions);
     }
 
 
@@ -543,63 +547,86 @@ export class TreeRenderer {
     const actionsGroup = document.createElement('div');
     actionsGroup.className = 'node-actions';
 
-    const moveUpBtn = document.createElement('button');
-    moveUpBtn.className = 'icon-btn';
-    moveUpBtn.title = 'Move up';
-    moveUpBtn.appendChild(this.createSvgIcon('arrow-up'));
-    moveUpBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.store.moveNodeRelative(node.id, -1);
-    });
-    actionsGroup.appendChild(moveUpBtn);
-
-    const moveDownBtn = document.createElement('button');
-    moveDownBtn.className = 'icon-btn';
-    moveDownBtn.title = 'Move down';
-    moveDownBtn.appendChild(this.createSvgIcon('arrow-down'));
-    moveDownBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.store.moveNodeRelative(node.id, 1);
-    });
-    actionsGroup.appendChild(moveDownBtn);
-
-    const childType = TYPE_HIERARCHY[node.type];
-    if (childType) {
-      const addBtn = document.createElement('button');
-      addBtn.className = 'icon-btn';
-      addBtn.title = `+ Add ${childType.charAt(0).toUpperCase() + childType.slice(1)}`;
-      addBtn.appendChild(this.createSvgIcon('plus'));
-      addBtn.addEventListener('click', (e) => {
+    if (isAchievementMode) {
+      if (node.type === 'task') {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'icon-btn delete-btn';
+        delBtn.title = 'Delete item';
+        delBtn.appendChild(this.createSvgIcon('trash'));
+        delBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.showConfirmDialog({
+            title: 'Delete Goal Item',
+            message: `Are you sure you want to delete <strong>"${node.title}"</strong> and all its sub-items?`,
+            confirmText: 'Delete',
+            onConfirm: () => {
+              this.store.deleteNode(node.id);
+            }
+          });
+        });
+        actionsGroup.appendChild(delBtn);
+      }
+    } else {
+      const moveUpBtn = document.createElement('button');
+      moveUpBtn.className = 'icon-btn';
+      moveUpBtn.title = 'Move up';
+      moveUpBtn.appendChild(this.createSvgIcon('arrow-up'));
+      moveUpBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        this.store.addChildNode(node.id);
+        this.store.moveNodeRelative(node.id, -1);
       });
-      actionsGroup.appendChild(addBtn);
+      actionsGroup.appendChild(moveUpBtn);
+
+      const moveDownBtn = document.createElement('button');
+      moveDownBtn.className = 'icon-btn';
+      moveDownBtn.title = 'Move down';
+      moveDownBtn.appendChild(this.createSvgIcon('arrow-down'));
+      moveDownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.store.moveNodeRelative(node.id, 1);
+      });
+      actionsGroup.appendChild(moveDownBtn);
+
+      const childType = TYPE_HIERARCHY[node.type];
+      if (childType) {
+        const addBtn = document.createElement('button');
+        addBtn.className = 'icon-btn';
+        addBtn.title = `+ Add ${childType.charAt(0).toUpperCase() + childType.slice(1)}`;
+        addBtn.appendChild(this.createSvgIcon('plus'));
+        addBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.store.addChildNode(node.id);
+        });
+        actionsGroup.appendChild(addBtn);
+      }
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'icon-btn delete-btn';
+      delBtn.title = 'Delete item';
+      delBtn.appendChild(this.createSvgIcon('trash'));
+      delBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.showConfirmDialog({
+          title: 'Delete Goal Item',
+          message: `Are you sure you want to delete <strong>"${node.title}"</strong> and all its sub-items?`,
+          confirmText: 'Delete',
+          onConfirm: () => {
+            this.store.deleteNode(node.id);
+          }
+        });
+      });
+      actionsGroup.appendChild(delBtn);
     }
 
-    const delBtn = document.createElement('button');
-    delBtn.className = 'icon-btn delete-btn';
-    delBtn.title = 'Delete item';
-    delBtn.appendChild(this.createSvgIcon('trash'));
-    delBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.showConfirmDialog({
-        title: 'Delete Goal Item',
-        message: `Are you sure you want to delete <strong>"${node.title}"</strong> and all its sub-items?`,
-        confirmText: 'Delete',
-        onConfirm: () => {
-          this.store.deleteNode(node.id);
-        }
-      });
-    });
-
-    actionsGroup.appendChild(delBtn);
     colActions.appendChild(actionsGroup);
 
-    // Assemble Card in exact field order: Title -> Type -> Status -> Priority -> Deadline -> Time Left -> Progress -> Actions
-    if (isCompletedView || isAchievementMode) {
-      card.append(leftSec, colType, colStatus, colPriority);
+    // Assemble Card in exact field order: Title -> Deadline -> Status -> Priority -> Time Left -> Progress -> Type -> Actions
+    if (isCompletedView) {
+      card.append(leftSec, colStatus, colPriority, colType);
+    } else if (isAchievementMode) {
+      card.append(leftSec, colStatus, colPriority, colProgress, colType, colActions);
     } else {
-      card.append(leftSec, colType, colStatus, colPriority, colDeadline, colTimeLeft, colProgress, colActions);
+      card.append(leftSec, colDeadline, colStatus, colPriority, colTimeLeft, colProgress, colType, colActions);
     }
 
     nodeWrapper.append(card, childrenContainer);
@@ -980,12 +1007,12 @@ export class TreeRenderer {
 
     const columns = [
       { id: 'title', label: 'Goal Title' },
-      { id: 'type', label: 'Type' },
+      { id: 'deadline', label: 'Deadline' },
       { id: 'status', label: 'Status' },
       { id: 'priority', label: 'Priority' },
-      { id: 'deadline', label: 'Deadline' },
       { id: 'timeleft', label: 'Time Left' },
       { id: 'progress', label: 'Progress' },
+      { id: 'type', label: 'Type' },
       { id: 'actions', label: 'Actions' }
     ];
 
